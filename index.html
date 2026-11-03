@@ -1261,12 +1261,19 @@ function onsenSoakToggle(){ac();if(OW.soak){OW.soak=false;splashSnd(.25);const a
 function onsenTapWalk(x,z){if(OW.soak){OW.soak=false;splashSnd(.25);}const c=onsenCollide(x,z);walkTo(OW,c[0],c[1]);showMark(OS.scene,c[0],Math.max(onsenGround(c[0],c[1]),0),c[1]);syncOnsenUI();}
 /* water sound */
 const OSND={on:store.onsenSnd!==false,run:false,n:null,next:0};
+const ONSEN_URL='onsen-loop.webm',ONSEN_GAIN=.35,OREC={el:null,g:null,loading:null,t:0};
+function onsenRecLoad(){if(OREC.loading)return OREC.loading;
+  OREC.loading=fetch(ONSEN_URL).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob();}).then(b=>{const el=new Audio();el.src=URL.createObjectURL(b);el.loop=true;OREC.el=el;
+    const c=A.ctx;OREC.g=c.createGain();OREC.g.gain.value=0;c.createMediaElementSource(el).connect(OREC.g);OREC.g.connect(A.master);return el;}).catch(e=>{OREC.loading=null;throw e;});
+  return OREC.loading;}
 function onsenSndStart(){const c=A.ctx;if(!c||OSND.run)return;OSND.run=true;const out=c.createGain();out.gain.value=0;out.gain.setTargetAtTime(1,c.currentTime,.8);out.connect(A.master);
   const src=(buf,type,f,q,v)=>{const s=c.createBufferSource();s.buffer=buf;s.loop=true;const fl=c.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q;const g=c.createGain();g.gain.value=v;s.connect(fl);fl.connect(g);g.connect(out);s.start(0,Math.random()*2);return {s,g};};
-  const pour=src(A.white,'bandpass',1500,.6,.06),spl=src(A.white,'lowpass',900,.7,.05),bub=src(A.brown,'lowpass',420,.7,.14);
-  const lfo=[];[[pour.g.gain,9.3,.025],[pour.g.gain,5.1,.018],[spl.g.gain,3.3,.025],[bub.g.gain,.7,.04]].forEach(([p,f,d])=>{const o=c.createOscillator();o.frequency.value=f;const g=c.createGain();g.gain.value=d;o.connect(g);g.connect(p);o.start();lfo.push(o);});
-  OSND.n={out,srcs:[pour,spl,bub],lfo};OSND.next=t+1;}
-function onsenSndStop(){if(!OSND.run)return;OSND.run=false;const n=OSND.n,c=A.ctx,now=c.currentTime;OSND.n=null;n.out.gain.cancelScheduledValues(now);n.out.gain.setValueAtTime(n.out.gain.value,now);n.out.gain.setTargetAtTime(0,now,.4);
+  const pour=src(A.white,'bandpass',1500,.6,.025),spl=src(A.white,'lowpass',900,.7,.02),bub=src(A.brown,'lowpass',420,.7,.06);
+  const lfo=[];[[pour.g.gain,9.3,.01],[pour.g.gain,5.1,.008],[spl.g.gain,3.3,.01],[bub.g.gain,.7,.018]].forEach(([p,f,d])=>{const o=c.createOscillator();o.frequency.value=f;const g=c.createGain();g.gain.value=d;o.connect(g);g.connect(p);o.start();lfo.push(o);});
+  OSND.n={out,srcs:[pour,spl,bub],lfo};OSND.next=t+1;clearTimeout(OREC.t);
+  onsenRecLoad().then(el=>{if(!OSND.run)return;const now=A.ctx.currentTime,g=OREC.g.gain;g.cancelScheduledValues(now);g.setValueAtTime(g.value,now);g.setTargetAtTime(ONSEN_GAIN,now,1);const pr=el.play();if(pr&&pr.catch)pr.catch(()=>{});}).catch(()=>{});}
+function onsenSndStop(){if(!OSND.run)return;OSND.run=false;const n=OSND.n,c=A.ctx,now=c.currentTime;OSND.n=null;
+  if(OREC.el){const g=OREC.g.gain;g.cancelScheduledValues(now);g.setValueAtTime(g.value,now);g.setTargetAtTime(0,now,.4);clearTimeout(OREC.t);OREC.t=setTimeout(()=>{if(!OSND.run)OREC.el.pause();},1800);}n.out.gain.cancelScheduledValues(now);n.out.gain.setValueAtTime(n.out.gain.value,now);n.out.gain.setTargetAtTime(0,now,.4);
   setTimeout(()=>{n.srcs.forEach(x=>{try{x.s.stop();}catch(e){}});n.lfo.forEach(o=>{try{o.stop();}catch(e){}});try{n.out.disconnect();}catch(e){}},2200);}
 function onsenSndTick(){if(!OSND.run||t<OSND.next)return;OSND.next=t+rand(.25,1.4);const c=A.ctx,now=c.currentTime,o=c.createOscillator(),f=rand(700,1300);o.frequency.setValueAtTime(f,now);o.frequency.exponentialRampToValueAtTime(f*1.9,now+.06);
   const g=c.createGain();g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(rand(.012,.03),now+.005);g.gain.exponentialRampToValueAtTime(.0001,now+.09);o.connect(g);g.connect(OSND.n.out);o.start(now);o.stop(now+.1);}
