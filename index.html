@@ -1109,10 +1109,10 @@ function showMark(S,x,y,z){S.add(MARK);MARK.position.set(x,y+.02,z);MARK.userDat
 function updMark(dt){const u=MARK.userData;if(u.a>2)return;u.a+=dt;const k=u.a/1.2;MARK.material.opacity=Math.max(0,.9*(1-k));MARK.scale.setScalar(1+k*.8);}
 
 /* ---------- 법당: 방석 여러 개 + 걷기 ---------- */
-const TW=mkWalker(0,6.2,0);TW.pendWalk=null;TW.resv=-1;
+const TW=mkWalker(0,7.4,0);TW.pendWalk=null;TW.resv=-1;
 const TCUSH=[];
 (function(){const S=TS.scene,cm=new THREE.MeshLambertMaterial({color:'#7a2a3a'}),tm=new THREE.MeshLambertMaterial({color:'#c9963e'}),cg=new THREE.BoxGeometry(.85,.08,1.25),tg=new THREE.BoxGeometry(.87,.012,1.27);
-  [.6,2.2,3.8].forEach(z=>[-3,-1.5,0,1.5,3].forEach(x=>{const c=new THREE.Mesh(cg,cm);c.position.set(x,.04,z-.12);S.add(c);const tr=new THREE.Mesh(tg,tm);tr.position.set(x,.085,z-.12);S.add(tr);TCUSH.push({x,z});}));})();
+  [-.2,2.2,4.6].forEach(z=>[-4,-2,0,2,4].forEach(x=>{const c=new THREE.Mesh(cg,cm);c.position.set(x,.04,z-.12);S.add(c);const tr=new THREE.Mesh(tg,tm);tr.position.set(x,.085,z-.12);S.add(tr);TCUSH.push({x,z});}));})();
 const T_PILLARS=[[-7,-7,.5],[7,-7,.5],[-7,-1,.5],[7,-1,.5],[-7,5,.5],[7,5,.5]];
 function templeCollide(x,z){return pushOut(clamp(x,-10.1,10.1),clamp(z,-7.35,8.4),T_PILLARS);}
 function cushionTaken(c){const i=TCUSH.indexOf(c);for(const r of NET.peers.values()){const o=r.obj;if(!o||o.scene!=='temple')continue;if(r.pr.tp&&r.pr.tp.rc===i)return true;if(o.wk&&Math.hypot(o.wk.x-c.x,o.wk.z-c.z)<.5)return true;}return false;}
@@ -1517,7 +1517,7 @@ function enterFire(){ac();if(scene==='fire')return;commitOnsen();{let s0=FSEAT_A
   toast('모닥불 앞에 앉았습니다. 가만히 불을 바라보세요.');}
 function commitFire(){if(scene==='fire'){if(MSH.on){MSH.on=false;MSH.lit=false;FP.arm=0;$('#fMallow').textContent='마시멜로 굽기';$('#mMeter').hidden=true;$('#mLbl').hidden=true;}store.fireMin=(store.fireMin||0)+FS.elapsed/60;FS.elapsed=0;save();}}
 function enterMed(){ac();commitFire();commitOnsen();showScene('med');M.running=false;$('#medSetup').hidden=false;$('#medLive').hidden=true;startAmb('nature');if(BW.on)bowlDroneStart();}
-function enterTemple(){ac();commitFire();commitOnsen();showScene('temple');T.pose=cp(POSE.STAND);T.hap=false;T.sit=false;TW.x=0;TW.z=6.2;TW.yaw=0;TW.tx=null;TW.pendWalk=null;TW.amt=0;TW.resv=-1;T.queue=[];T.to=null;T.auto=false;$('#auto').checked=false;startAmb('temple');if(CH.on)chantStart();
+function enterTemple(){ac();commitFire();commitOnsen();showScene('temple');T.pose=cp(POSE.STAND);T.hap=false;T.sit=false;TW.x=0;TW.z=7.4;TW.yaw=0;TW.tx=null;TW.pendWalk=null;TW.amt=0;TW.resv=-1;T.queue=[];T.to=null;T.auto=false;$('#auto').checked=false;startAmb('temple');if(CH.on)chantStart();
   setTimeout(()=>{if(scene==='temple')bowl(165,8,.15);},300);syncActs();toast('바닥을 누르면 걸어가요. 큰절을 누르면 빈 방석을 찾아가 절을 올립니다.',4200);}
 function goHome(){commitFire();commitOnsen();onsenSndStop();if(scene==='med'&&M.running)commitMinutes();M.running=false;T.auto=false;T.queue=[];stopAmb();chantStop();bowlDroneStop();fireSndStop();scene='home';ringEl.hidden=true;
   $('#scene').hidden=true;$('#modal').hidden=true;$('#wishModal').hidden=true;$('#home').hidden=false;CAM.ty=CAM.tp=0;renderTally();document.body.classList.add('at-home');netScene('home');}
