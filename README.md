@@ -14,8 +14,9 @@
 
 ## 함께하기
 
-claude.ai 아티팩트로 열면 법당·모닥불·온천·바다에서 여러 사람이 함께 머물 수 있고, 입장할 때마다 '맑은 연꽃 42' 같은 이름이 무작위로 주어집니다.
-GitHub Pages 같은 일반 웹 서버에서 열면 함께하기 기능 없이 혼자 즐기는 화면으로 동작합니다.
+- **claude.ai 아티팩트**로 열면 claude.ai의 실시간 기능으로 함께합니다(로그인 필요).
+- **GitHub Pages 등 일반 웹**에서는 [Supabase Realtime](https://supabase.com/docs/guides/realtime/presence)으로 로그인 없이 누구나 함께할 수 있습니다. `index.html` 안의 `window.SANSA_RT`에 Supabase 프로젝트 URL과 publishable(anon) 키를 넣으면 켜지고, 비어 있으면 혼자 즐기는 화면으로 동작합니다.
+- 법당·모닥불·온천·바다에서 함께할 수 있고, 호숫가 명상은 혼자만의 공간입니다. 입장할 때마다 '맑은 연꽃 42' 같은 이름이 무작위로 주어집니다.
 
 ## 파일
 

@@ -410,6 +410,8 @@ body.at-home .people{left:auto;right:max(16px,env(safe-area-inset-right,0px));to
   </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>window.SANSA_RT={"url": "", "key": "", "room": "sansa-lobby"};</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (()=>{
@@ -607,8 +609,20 @@ function netFrameSea(dt){if(t-NET.tk>.25){NET.tk=t;netSea();}
   for(const r of NET.peers.values()){const o=r.obj;if(!o||!o.an||o.scene!=='sea')continue;const sp=r.pr.sp||{},an=o.an,st=typeof sp.st==='string'?sp.st:'idle';
     an.bobOn=!!sp.on;const tx=o.ox+num(sp.bx),tz=o.oz+num(sp.bz);if(!o.seen&&an.bobOn){an.bobPos.set(tx,0,tz);o.seen=true;}an.bobPos.x+=(tx-an.bobPos.x)*Math.min(1,dt*4);an.bobPos.z+=(tz-an.bobPos.z)*Math.min(1,dt*4);
     an.dip=st==='bite'?.25+Math.sin(t*14)*.08:st==='reel'?.15:0;an.ten+=((st==='reel'?55:0)-an.ten)*Math.min(1,dt*3);an.phi+=((st==='reel'?.85:st==='cast'?1.6:.65)-an.phi)*Math.min(1,dt*3);updateAngler(an,dt);}}
-async function netInit(){if(!window.claude||typeof window.claude.use!=='function')return;let room=null,user=null;
-  try{room=await window.claude.use('room');}catch(e){return;}
+/* GitHub Pages 등 일반 웹에서는 Supabase Realtime 프레즌스로 같은 모양의 방을 만든다 */
+function supaRoom(cfg){const me='p'+Math.random().toString(36).slice(2,10);let sb,ch;
+  try{sb=window.supabase.createClient(cfg.url,cfg.key,{realtime:{params:{eventsPerSecond:8}}});ch=sb.channel(cfg.room||'sansa-lobby',{config:{presence:{key:me}}});}catch(e){return null;}
+  let state={},handler=null,ready=false,last=0,timer=null;
+  const push=()=>{if(!ready)return;const w=260-(Date.now()-last);if(w>0){if(!timer)timer=setTimeout(()=>{timer=null;push();},w);return;}last=Date.now();try{ch.track({s:state}).catch(()=>{});}catch(e){}};
+  const peers=()=>{const ps=ch.presenceState(),out=[];for(const k in ps){const arr=ps[k],p=arr&&arr[arr.length-1];out.push({peer:k,isMe:k===me,sameTab:k===me,kind:'viewer',by:null,guest:false,presence:(p&&p.s&&typeof p.s==='object')?p.s:{}});}return out;};
+  const fire=()=>{if(handler)handler({peers:peers(),joined:[],left:[],updated:[]});};
+  ch.on('presence',{event:'sync'},fire);ch.subscribe(st=>{if(st==='SUBSCRIBED'){ready=true;push();}});
+  addEventListener('pagehide',()=>{try{ch.untrack();sb.removeChannel(ch);}catch(e){}});
+  return {presence(patch){for(const k in patch){if(patch[k]===null)delete state[k];else state[k]=patch[k];}push();return Promise.resolve();},
+    onPeers(h){handler=h;setTimeout(fire,0);return ()=>{handler=null;};}};}
+async function netInit(){let room=null;
+  if(window.claude&&typeof window.claude.use==='function'){try{room=await window.claude.use('room');}catch(e){room=null;}}
+  const rt=window.SANSA_RT;if(!room&&rt&&rt.url&&rt.key&&window.supabase)room=supaRoom(rt);
   if(!room)return;NET.room=room;
   NET.st.scene=scene;NET.st.nick=MY_NICK;NET.sent=JSON.stringify(NET.st);room.presence(Object.assign({},NET.st)).catch(()=>{});
   room.onPeers(onPeersChange,()=>{NET.room=null;renderPeople();});setTimeout(()=>{NET.ready=true;},3000);}
