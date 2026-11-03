@@ -519,7 +519,7 @@ const MY_NICK=pick(NICK_A)+' '+pick(NICK_B)+' '+(10+Math.floor(Math.random()*90)
 function cleanNick(v){return typeof v==='string'?v.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u202a-\u202e\u2066-\u2069]/g,'').trim().slice(0,20):'';}
 const NET={room:null,user:null,uid:null,st:{},sent:'',peers:new Map(),names:{},avs:{},meAv:'',ready:false,tk:0,tseq:0,tact:'',fseq:{wood:0,aur:0,wish:0,fw:0}};
 const SCENE_LABEL={home:'처음 화면',med:'호숫가 명상',fire:'숲속 모닥불',temple:'산사 법당',onsen:'노천온천',sea:'선상낚시'};
-const ROBES=['#5f6b5a','#7a6650','#5a6274','#6e5a6a','#7b6a4f','#4f6a6a'],JACKETS=['#6e4a3a','#3f6650','#5a4a78','#7a6a3a','#3a5a78','#6a3a4a'],HATS=['#2f5a7a','#c9963e','#3a6a4a','#7a2a5a','#d8d0c0','#4a4a4a'];
+const ROBES=['#8a4b2c','#7a5a3a','#9a5a34','#6a3a2a','#8a6a3a','#7a4a3a'],JACKETS=['#6e4a3a','#3f6650','#5a4a78','#7a6a3a','#3a5a78','#6a3a4a'],HATS=['#2f5a7a','#c9963e','#3a6a4a','#7a2a5a','#d8d0c0','#4a4a4a'];
 const T_SLOTS=[-1.35,1.35,-2.7,2.7,-4.05,4.05],F_SLOTS=[1.15,-1.15,2.25,-2.25,Math.PI];
 function pres(patch){Object.assign(NET.st,patch);if(!NET.room)return;const js=JSON.stringify(NET.st);if(js===NET.sent)return;NET.sent=js;NET.room.presence(patch).catch(()=>{});}
 function restState(){return T.sit?(T.hap?'SIT_HAP':'SIT'):(T.hap?'HAP':'STAND');}
@@ -577,7 +577,7 @@ function makeObj(r,want){if(want==='sea'){const used=new Set();for(const q of NE
   if(want==='temple'){F=buildFigure(TS.scene,{},0,ROBES[ci],'#1d1814');lab.scale.set(.9,.2,1);lab.position.set(0,1.95,0);F.g.add(lab);
     r.obj={scene:want,F,lab,wk,pl:{pose:cp(restPose(src.st)),from:null,to:null,dur:1,st:0,q:[]},st:src.st,seq:num(src.seq)};}
   else if(want==='fire'){F=makePerson(FS.scene,JACKETS[ci],HATS[ci],false,false);lab.scale.set(.72,.16,1);F.g.add(lab);r.obj={scene:want,F,lab,wk,d:num(src.d),w:num(src.w),a:num(src.a),s:num(src.s),k:num(src.k)};}
-  else{F=makePerson(OS.scene,JACKETS[ci],'#f2eee6',false,false);lab.scale.set(.72,.16,1);F.g.add(lab);r.obj={scene:want,F,lab,wk};}
+  else{F=makePerson(OS.scene,JACKETS[ci],'#f2eee6',false,false,'onsen');lab.scale.set(.72,.16,1);F.g.add(lab);r.obj={scene:want,F,lab,wk};}
   if(NET.ready&&want===scene)toast(nm(r)+'님이 '+({temple:'법당에 들어왔어요.',fire:'모닥불에 왔어요.',onsen:'온천에 왔어요.'})[want]);}
 function dropObj(r){const o=r.obj;r.obj=null;if(!o)return;const S=sceneOf(o.scene);if(o.parts){o.parts.forEach(x=>S.remove(x));return;}if(o.F)S.remove(o.F.g);}
 function remoteUpdate(r){const o=r.obj;if(o&&o.an){const sp=r.pr.sp||{};if(num(sp.c)>o.c){o.c=num(sp.c);const f=FISH[num(sp.f)];if(f&&scene==='sea')toast(f.junk?nm(r)+'님이 낡은 장화를 낚았어요.':nm(r)+'님이 '+f.n+' '+num(sp.s)+'cm를 낚았어요!',4200);}return;}
@@ -854,13 +854,18 @@ const POSE={
   RAISE:{head:[.5,.12],sh:[.33,.22],hip:[-.12,.3],knee:[.2,.05],ankle:[-.25,.05],toe:[-.32,.02],el:[.5,.07],hand:[.6,.22],lat:[.24,.2]}
 };
 const cp=p=>{const o={};for(const k in p)o[k]=[p[k][0],p[k][1]];return o;};
+function makeHead(skin){const M=makeHead.m||(makeHead.m={eye:new THREE.MeshBasicMaterial({color:'#2a1e1a'}),hi:new THREE.MeshBasicMaterial({color:'#ffffff'}),blush:new THREE.MeshBasicMaterial({color:'#ff8f9e',transparent:true,opacity:.6}),mouth:new THREE.MeshBasicMaterial({color:'#9a4a3a'}),g:new THREE.SphereGeometry(1,12,8),h:new THREE.SphereGeometry(1,24,18)});
+  const h=new THREE.Group();h.add(new THREE.Mesh(M.h,skin));const add=(m,x,y,z,sx,sy,sz)=>{const e=new THREE.Mesh(M.g,m);e.position.set(x,y,z);e.scale.set(sx,sy,sz);h.add(e);};
+  [-1,1].forEach(q=>{add(M.eye,q*.34,.06,-.93,.11,.16,.06);add(M.hi,q*.31,.13,-.99,.035,.045,.02);add(M.blush,q*.6,-.2,-.76,.17,.1,.05);});
+  add(M.mouth,0,-.33,-.94,.1,.035,.03);add(skin,0,-.08,-1.0,.08,.07,.06);return h;}
 function buildFigure(S,F=FIG,x=0,robeCol='#6f6a63',hairCol='#1d1814'){
   const g=new THREE.Group();g.position.set(x,0,1.6);S.add(g);F.g=g;
   const cyl=new THREE.CylinderGeometry(1,1,1,14),sph=new THREE.SphereGeometry(1,18,12);
-  const robe=new THREE.MeshLambertMaterial({color:robeCol}),pants=new THREE.MeshLambertMaterial({color:'#47444a'}),skin=new THREE.MeshLambertMaterial({color:'#c9a07e'}),hair=new THREE.MeshLambertMaterial({color:hairCol});
+  const robe=new THREE.MeshLambertMaterial({color:'#8e8c84'}),pants=robe,skin=new THREE.MeshLambertMaterial({color:'#f1cba9',emissive:'#4a2a1c'}),hair=new THREE.MeshLambertMaterial({color:'#c4a58c'}),shoe=new THREE.MeshLambertMaterial({color:'#f4f2ec'}),kasa=new THREE.MeshLambertMaterial({color:robeCol==='#6f6a63'?'#8a4b2c':robeCol});
   const mk=(geo,mat)=>{const m=new THREE.Mesh(geo,mat);g.add(m);return m;};
-  F.L={};[-1,1].forEach(s=>{F.L[s]={th:mk(cyl,pants),sh:mk(cyl,pants),ft:mk(cyl,pants),kn:mk(sph,pants),ua:mk(cyl,robe),fa:mk(cyl,robe),el:mk(sph,robe),so:mk(sph,robe),hd:mk(sph,skin)};});
-  F.torso=mk(cyl,robe);F.tTop=mk(sph,robe);F.tBot=mk(sph,robe);F.head=mk(sph,skin);F.hair=mk(new THREE.SphereGeometry(1,18,10,0,Math.PI*2,0,Math.PI*.55),hair);
+  F.L={};[-1,1].forEach(s=>{F.L[s]={th:mk(cyl,pants),sh:mk(cyl,pants),ft:mk(cyl,shoe),kn:mk(sph,pants),ua:mk(cyl,robe),fa:mk(cyl,robe),el:mk(sph,robe),so:mk(sph,robe),hd:mk(sph,skin)};});
+  F.torso=mk(cyl,robe);F.tTop=mk(sph,robe);F.tBot=mk(sph,robe);F.head=makeHead(skin);g.add(F.head);F.hair=mk(new THREE.SphereGeometry(1,18,10,0,Math.PI*2,0,Math.PI*.5),hair);
+  const sash=new THREE.Mesh(new THREE.CylinderGeometry(1.04,1.04,.2,20,1,true),kasa);sash.rotation.z=.75;F.torso.add(sash);const sash2=new THREE.Mesh(new THREE.CylinderGeometry(1.03,1.03,.16,20,1,true),kasa);sash2.position.y=-.38;F.torso.add(sash2);
   const sh=new THREE.Mesh(new THREE.PlaneGeometry(1.6,2),new THREE.MeshBasicMaterial({map:TEX.shadow,transparent:true,depthWrite:false}));sh.rotation.x=-Math.PI/2;sh.position.set(0,.005,-.15);g.add(sh);
   return F;}
 function seg(m,a,b,rx,rz=rx){tmpV.subVectors(b,a);const L=Math.max(tmpV.length(),1e-4);m.position.copy(a).addScaledVector(tmpV,.5);m.quaternion.setFromUnitVectors(UP,tmpV.multiplyScalar(1/L));m.scale.set(rx,L,rz);}
@@ -869,15 +874,16 @@ function poseFig(F=FIG,P=T.pose){const v=(k,lat)=>V3(lat,P[k][1],-P[k][0]),vs=(k
   [-1,1].forEach(s=>{const L=F.L[s],hip=v('hip',.1*s),knee=vs('knee',.1*s,s),ank=vs('ankle',.1*s,s),toe=vs('toe',.1*s,s),sh=v('sh',.19*s),el=vs('el',ell*s,s),hd=vs('hand',hl*s,s);
     seg(L.th,hip,knee,.085);seg(L.sh,knee,ank,.065);seg(L.ft,ank,toe,.045);L.kn.position.copy(knee);L.kn.scale.setScalar(.08);
     seg(L.ua,sh,el,.06);seg(L.fa,el,hd,.05);L.el.position.copy(el);L.el.scale.setScalar(.055);L.so.position.copy(sh);L.so.scale.setScalar(.075);
-    tmpV.subVectors(hd,el).normalize();L.hd.position.copy(hd).addScaledVector(tmpV,.05);L.hd.quaternion.setFromUnitVectors(UP,tmpV);L.hd.scale.set(.035,.085,.022);});
+    tmpV.subVectors(hd,el).normalize();L.hd.position.copy(hd).addScaledVector(tmpV,.05);L.hd.quaternion.setFromUnitVectors(UP,tmpV);L.hd.scale.set(.048,.052,.044);});
   const hipC=v('hip',0),shC=v('sh',0),dir=shC.clone().sub(hipC).normalize();
   const a=hipC.clone().addScaledVector(dir,.03),b=shC.clone().addScaledVector(dir,-.07);seg(F.torso,a,b,.19,.13);
   F.tTop.position.copy(b);F.tTop.quaternion.copy(F.torso.quaternion);F.tTop.scale.set(.19,.09,.13);
   F.tBot.position.copy(a);F.tBot.quaternion.copy(F.torso.quaternion);F.tBot.scale.set(.19,.12,.15);
-  const hd=v('head',0);F.head.position.copy(hd);F.head.scale.setScalar(.11);
-  /* hair: crown of the head, tilted toward the back (+z in torso frame) */
-  hairTilt.set(0,0,.55).applyQuaternion(F.torso.quaternion);const hdir=hd.clone().sub(shC).normalize().add(hairTilt).normalize();
-  F.hair.position.copy(hd);F.hair.quaternion.setFromUnitVectors(UP,hdir);F.hair.scale.setScalar(.116);}
+  const hd=v('head',0),hup=hd.clone().sub(shC).normalize();hd.addScaledVector(hup,.06);F.head.position.copy(hd);F.head.scale.setScalar(.168);
+  const fz=V3(0,0,-1).addScaledVector(hup,hup.z);if(fz.lengthSq()<.06)fz.set(0,-1,0).addScaledVector(hup,hup.y);fz.normalize();const zA=fz.clone().negate(),xA=hup.clone().cross(zA);
+  HEAD_M.makeBasis(xA,hup,zA);F.head.quaternion.setFromRotationMatrix(HEAD_M);
+  F.hair.position.copy(hd);F.hair.quaternion.copy(F.head.quaternion);F.hair.rotateX(.3);F.hair.scale.setScalar(.172);}
+const HEAD_M=new THREE.Matrix4();
 
 const T={pose:cp(POSE.STAND),from:null,to:null,dur:1,st:0,cb:null,queue:[],hap:false,sit:false,count:0,goal:3,auto:false,wait:0,done:false,pulse:0};
 function play(steps){T.queue.push(...steps);if(!T.to)next();}
@@ -1009,13 +1015,20 @@ const FV={third:store.fireThird!==false};
 const FP={arm:0};
 const MSH={on:false,d:0,lit:false,ui:''};
 const MALLOW_RAMP=[[0,'#f7f1e6'],[.45,'#f0d29a'],[.68,'#d39248'],[.85,'#8a5225'],[1,'#2a1a10']].map(([k,c])=>[k,new THREE.Color(c)]);
-function makePerson(S,jc='#4b5a6e',hc='#9a3c2e',loose=false,bench=false){const F={arm:0,ph:rand(0,6)},g=new THREE.Group();S.add(g);F.g=g;
+function makePerson(S,jc='#4b5a6e',hc='#9a3c2e',loose=false,bench=false,style='fire'){const F={arm:0,ph:rand(0,6),style,pf:style==='fire'?1.18:style==='sea'?1.12:1,bf:style==='onsen'?1.14:1,tf:style==='onsen'?1.22:style==='fire'?1.1:1},g=new THREE.Group();S.add(g);F.g=g;
   const cyl=new THREE.CylinderGeometry(1,1,1,12),sph=new THREE.SphereGeometry(1,16,12);
-  const jacket=new THREE.MeshLambertMaterial({color:jc}),pants=new THREE.MeshLambertMaterial({color:'#2f2d35'}),skin=new THREE.MeshLambertMaterial({color:'#c99f7e'}),
-    hat=new THREE.MeshLambertMaterial({color:hc}),boot=new THREE.MeshLambertMaterial({color:'#3a2a20'}),scarf=new THREE.MeshLambertMaterial({color:'#d8b45a'});
+  const L_=c=>new THREE.MeshLambertMaterial({color:c}),skin=new THREE.MeshLambertMaterial({color:'#f1cba9',emissive:'#4a2a1c'}),towel=L_('#f7f5ef');
+  const C=style==='onsen'?{tor:skin,che:skin,bel:towel,arm:skin,hand:skin,thi:towel,shin:skin,foot:skin,hat:towel,scarf:null}
+    :style==='sea'?{tor:L_(jc),che:L_(jc),bel:L_(jc),arm:L_('#3d6b8f'),hand:skin,thi:L_('#2c3448'),shin:L_('#2c3448'),foot:L_('#e8c23a'),hat:L_(hc),scarf:null}
+    :{tor:L_(jc),che:L_(jc),bel:L_(jc),arm:L_(jc),hand:L_('#d8b45a'),thi:L_('#3a3440'),shin:L_('#3a3440'),foot:L_('#5a3a26'),hat:L_(hc),scarf:L_('#d8b45a')};
   const mk=(geo,mat)=>{const m=new THREE.Mesh(geo,mat);g.add(m);return m;};
-  F.p={torso:mk(cyl,jacket),chest:mk(sph,jacket),belly:mk(sph,jacket),scarf:mk(new THREE.TorusGeometry(1,.45,8,18),scarf),head:mk(sph,skin),hat:mk(new THREE.SphereGeometry(1,16,10,0,Math.PI*2,0,Math.PI*.56),hat),pom:mk(sph,hat),L:{}};
-  [-1,1].forEach(s=>{F.p.L[s]={th:mk(cyl,pants),sh:mk(cyl,pants),kn:mk(sph,pants),ft:mk(cyl,boot),ua:mk(cyl,jacket),fa:mk(cyl,jacket),so:mk(sph,jacket),el:mk(sph,jacket),hd:mk(sph,skin)};});
+  const hatGeo=style==='onsen'?new THREE.BoxGeometry(1.15,.38,.85):new THREE.SphereGeometry(1,16,10,0,Math.PI*2,0,Math.PI*.56);
+  const head=makeHead(skin);g.add(head);
+  F.p={torso:mk(cyl,C.tor),chest:mk(sph,C.che),belly:mk(sph,C.bel),scarf:mk(new THREE.TorusGeometry(1,.45,8,18),C.scarf||skin),head,hat:mk(hatGeo,C.hat),pom:mk(sph,C.hat),L:{}};
+  if(!C.scarf)F.p.scarf.visible=false;if(style!=='fire')F.p.pom.visible=false;
+  if(style==='sea'){F.p.brim=mk(new THREE.CylinderGeometry(1,1,1,20),C.hat);}
+  if(style==='onsen'){F.p.wrap=mk(new THREE.CylinderGeometry(1,1.12,1,18),towel);}
+  [-1,1].forEach(s=>{F.p.L[s]={th:mk(cyl,C.thi),sh:mk(cyl,C.shin),kn:mk(sph,style==='onsen'?skin:C.thi),ft:mk(cyl,C.foot),ua:mk(cyl,C.arm),fa:mk(cyl,style==='onsen'?skin:C.arm),so:mk(sph,C.arm),el:mk(sph,C.arm),hd:mk(sph,C.hand)};});
   let host=g;if(loose){F.lg=new THREE.Group();S.add(F.lg);host=F.lg;}
   F.stick=new THREE.Mesh(new THREE.CylinderGeometry(.006,.009,1,6),new THREE.MeshLambertMaterial({color:'#7a5532'}));host.add(F.stick);
   F.mMat=new THREE.MeshLambertMaterial({color:'#f7f1e6',emissive:'#ff6a20',emissiveIntensity:0});
@@ -1023,7 +1036,7 @@ function makePerson(S,jc='#4b5a6e',hc='#9a3c2e',loose=false,bench=false){const F
   F.mFire=sprite(TEX.glow,'#ff9a40',0);F.mFire.scale.set(.22,.32,1);host.add(F.mFire);
   if(bench){const b=new THREE.Mesh(new THREE.CylinderGeometry(.2,.22,1.6,12),new THREE.MeshLambertMaterial({map:barkTx}));b.rotation.set(0,0,Math.PI/2);b.position.set(0,.2,2.14);g.add(b);}
   return F;}
-Object.assign(FP,makePerson(FS.scene,'#4b5a6e','#9a3c2e',true,false));
+Object.assign(FP,makePerson(FS.scene,'#c0503a','#3f6aa8',true,false,'fire'));
 /* night-sky aurora curtains */
 const AUR_FS=`uniform float time,aur,seed;varying vec2 vUv;
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -1040,19 +1053,23 @@ FS.aur=0;FS.aurT=0;FS.aurU=[];
   const m=new THREE.Mesh(geo,new THREE.ShaderMaterial({uniforms:u,vertexShader:FIRE_VS,fragmentShader:AUR_FS,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,fog:false}));
   m.position.set(x,62,z);m.rotation.y=ry;m.renderOrder=1;FS.scene.add(m);FS.aurU.push(u);});
 const P3=(x,y,z)=>V3(x,y,z);
+function poseHat(F,x,hy,z,tilt){const P=F.p;
+  if(F.style==='onsen'){P.hat.position.set(x,hy+.165,z+.01);P.hat.scale.setScalar(.15);P.hat.rotation.set(0,.25,tilt);}
+  else if(F.style==='sea'){P.hat.position.set(x,hy+.035,z);P.hat.scale.setScalar(.178);P.hat.rotation.set(-.12,0,tilt);P.brim.position.set(x,hy+.05,z-.01);P.brim.scale.set(.25,.012,.25);P.brim.rotation.set(-.12,0,tilt);}
+  else{P.hat.position.set(x,hy+.035,z+.01);P.hat.scale.setScalar(.178);P.hat.rotation.set(-.15,0,tilt);P.pom.position.set(x*2,hy+.215,z+.02);P.pom.scale.setScalar(.048);}}
+function poseWrap(F,hipY,z){if(F.p.wrap){F.p.wrap.position.set(0,hipY-.05,z);F.p.wrap.scale.set(.25,.32,.2);}}
 function posePerson(F,on,d,lit,dt){const b=(RM?0:.5+.5*Math.sin(t*1.15+F.ph))*.012,P=F.p;
   F.arm+=((on?1:0)-F.arm)*Math.min(1,dt*3);const k=ease(clamp(F.arm,0,1));
   [-1,1].forEach(s=>{const L=P.L[s],hip=P3(s*.11,.47,2.08),knee=P3(s*.14,.47,1.66),ank=P3(s*.15,.07,1.6),toe=P3(s*.15,.03,1.47),sh=P3(s*.2,.98+b,2.03);
     const elR=P3(s*.26,.74,1.86),hdR=P3(s*.15,.56,1.68);let el=elR,hd=hdR;
     if(s===1){el=elR.clone().lerp(P3(.28,.84,1.76),k);hd=hdR.clone().lerp(P3(.22,.8,1.5),k);}
-    seg(L.th,hip,knee,.085);seg(L.sh,knee,ank,.065);seg(L.ft,ank,toe,.05);L.kn.position.copy(knee);L.kn.scale.setScalar(.085);
+    seg(L.th,hip,knee,.085*F.tf);seg(L.sh,knee,ank,.065);seg(L.ft,ank,toe,.055);L.kn.position.copy(knee);L.kn.scale.setScalar(.085*F.tf);
     seg(L.ua,sh,el,.062);seg(L.fa,el,hd,.052);L.el.position.copy(el);L.el.scale.setScalar(.058);L.so.position.copy(sh);L.so.scale.setScalar(.08);
-    L.hd.position.copy(hd);L.hd.scale.set(.045,.04,.055);});
-  const hipC=P3(0,.47,2.08),shC=P3(0,1.0+b,2.03);seg(P.torso,hipC.clone().setY(.52),shC.clone().setY(.94+b),.2,.15);
-  P.chest.position.set(0,.94+b,2.03);P.chest.scale.set(.2,.08,.15);P.belly.position.set(0,.54,2.07);P.belly.scale.set(.21,.11,.17);
+    L.hd.position.copy(hd);L.hd.scale.setScalar(.055);});
+  const hipC=P3(0,.47,2.08),shC=P3(0,1.0+b,2.03),pf=F.pf;seg(P.torso,hipC.clone().setY(.52),shC.clone().setY(.94+b),.2*pf,.15*pf);
+  P.chest.position.set(0,.94+b,2.03);P.chest.scale.set(.2*pf,.08*pf,.15*pf);P.belly.position.set(0,.54,2.07);P.belly.scale.set(.21*pf*F.bf,.11*F.bf,.17*pf*F.bf);poseWrap(F,.52,2.08);
   P.scarf.position.set(0,1.04+b,2.02);P.scarf.rotation.x=Math.PI/2;P.scarf.scale.setScalar(.075);
-  const hy=1.18+b*1.1,tilt=RM?0:Math.sin(t*.37+F.ph)*.04;P.head.position.set(tilt*.3,hy,1.99);P.head.scale.setScalar(.105);
-  P.hat.position.set(tilt*.3,hy+.012,2.0);P.hat.scale.setScalar(.112);P.hat.rotation.set(-.15,0,tilt);P.pom.position.set(tilt*.6,hy+.125,2.01);P.pom.scale.setScalar(.035);
+  const hy=1.26+b*1.1,tilt=RM?0:Math.sin(t*.37+F.ph)*.04;P.head.position.set(tilt*.3,hy,1.99);P.head.scale.setScalar(.17);P.head.rotation.set(0,0,tilt);poseHat(F,tilt*.3,hy,1.99,tilt);
   const vis=F.arm>.05;F.stick.visible=F.mallow.visible=vis;
   if(vis){const hand=P.L[1].hd.position,sw=RM?0:Math.sin(t*1.3+F.ph)*.015,tip=P3(.06+sw,.6+sw*.5,.44).lerp(hand.clone().add(P3(-.05,-.1,-.4)),1-k);
     const dir=tip.clone().sub(hand).normalize(),base=hand.clone().addScaledVector(dir,-.16);seg(F.stick,base,tip,1,1);
@@ -1193,12 +1210,12 @@ function gaitPose(ph,amt,hap){const P=cp(hap?POSE.HAP:POSE.STAND),s=Math.sin(ph)
 function posePersonStand(F,ph,amt,dt){F.arm+=(0-F.arm)*Math.min(1,dt*4);const P=F.p,s=Math.sin(ph),c=Math.cos(ph),bob=.06*amt*(1-Math.abs(c)),br=(RM?0:.5+.5*Math.sin(t*1.15+F.ph))*.01,hipY=.92-bob;
   [-1,1].forEach(sg=>{const L=P.L[sg],a=.4*amt*s*sg,bend=.75*amt*Math.max(0,c*sg);
     const hip=P3(sg*.11,hipY,0),knee=P3(sg*.12,hipY-.43*Math.cos(a),-.43*Math.sin(a)),ank=P3(sg*.13,knee.y-.43*Math.cos(a-bend),knee.z-.43*Math.sin(a-bend)),toe=ank.clone().add(P3(0,-.03,-.13));
-    seg(L.th,hip,knee,.085);seg(L.sh,knee,ank,.065);seg(L.ft,ank,toe,.05);L.kn.position.copy(knee);L.kn.scale.setScalar(.085);
-    const sh=P3(sg*.2,1.42-bob+br,0),ca=-.35*amt*s*sg,el=P3(sg*.23,sh.y-.28*Math.cos(ca),-.28*Math.sin(ca)),hd=P3(sg*.22,el.y-.26*Math.cos(ca+.2*amt),el.z-.26*Math.sin(ca+.2*amt));
-    seg(L.ua,sh,el,.062);seg(L.fa,el,hd,.052);L.el.position.copy(el);L.el.scale.setScalar(.058);L.so.position.copy(sh);L.so.scale.setScalar(.08);L.hd.position.copy(hd);L.hd.scale.set(.045,.055,.04);});
-  seg(P.torso,P3(0,hipY+.05,0),P3(0,1.38-bob+br,0),.2,.15);P.chest.position.set(0,1.38-bob+br,0);P.chest.scale.set(.2,.08,.15);P.belly.position.set(0,hipY+.06,0);P.belly.scale.set(.21,.11,.17);
+    seg(L.th,hip,knee,.085*F.tf);seg(L.sh,knee,ank,.065);seg(L.ft,ank,toe,.055);L.kn.position.copy(knee);L.kn.scale.setScalar(.085*F.tf);
+    const sh=P3(sg*.2,1.42-bob+br,0),ca=-.35*amt*s*sg,el=P3(sg*.23,sh.y-.23*Math.cos(ca),-.23*Math.sin(ca)),hd=P3(sg*.22,el.y-.21*Math.cos(ca+.2*amt),el.z-.21*Math.sin(ca+.2*amt));
+    seg(L.ua,sh,el,.062);seg(L.fa,el,hd,.052);L.el.position.copy(el);L.el.scale.setScalar(.058);L.so.position.copy(sh);L.so.scale.setScalar(.08);L.hd.position.copy(hd);L.hd.scale.setScalar(.055);});
+  const pf=F.pf;seg(P.torso,P3(0,hipY+.05,0),P3(0,1.38-bob+br,0),.2*pf,.15*pf);P.chest.position.set(0,1.38-bob+br,0);P.chest.scale.set(.2*pf,.08*pf,.15*pf);P.belly.position.set(0,hipY+.06,0);P.belly.scale.set(.21*pf*F.bf,.11*F.bf,.17*pf*F.bf);poseWrap(F,hipY+.03,0);
   P.scarf.position.set(0,1.47-bob+br,0);P.scarf.rotation.x=Math.PI/2;P.scarf.scale.setScalar(.075);
-  const hy=1.62-bob+br;P.head.position.set(0,hy,-.01);P.head.scale.setScalar(.105);P.hat.position.set(0,hy+.012,0);P.hat.scale.setScalar(.112);P.hat.rotation.set(-.15,0,0);P.pom.position.set(0,hy+.125,.01);P.pom.scale.setScalar(.035);
+  const hy=1.7-bob+br;P.head.position.set(0,hy,-.01);P.head.scale.setScalar(.17);P.head.rotation.set(0,0,0);poseHat(F,0,hy,-.01,0);
   F.stick.visible=F.mallow.visible=false;F.mFire.material.opacity=0;}
 /* destination marker */
 const MARK=new THREE.Mesh(new THREE.RingGeometry(.16,.22,40),new THREE.MeshBasicMaterial({color:'#f3d9a0',transparent:true,opacity:0,depthWrite:false,fog:false}));MARK.rotation.x=-Math.PI/2;MARK.userData.a=9;
@@ -1377,7 +1394,7 @@ function onsenSndTick(){if(!OSND.run||t<OSND.next)return;OSND.next=t+rand(.25,1.
 function setOnsenSnd(on){OSND.on=on;store.onsenSnd=on;save();if(on&&scene==='onsen'&&ac())onsenSndStart();else if(!on)onsenSndStop();}
 function setSnow(on){OS.snowOn=on;store.snowOn=on;save();OS.snow.visible=on;}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)onsenSndStop();else if(scene==='onsen'&&OSND.on&&A.ctx)onsenSndStart();});
-const OP=makePerson(OS.scene,'#2c3e63','#f2eee6',false,false);
+const OP=makePerson(OS.scene,'#2c3e63','#f2eee6',false,false,'onsen');
 function poseBather(F,w,soak,dt){if(soak){const y=w.yaw;F.g.position.set(w.x-Math.sin(y)*2.05,-.95,w.z-Math.cos(y)*2.05);F.g.rotation.y=y;posePerson(F,false,0,false,dt);}
   else{F.g.position.set(w.x,onsenGround(w.x,w.z),w.z);F.g.rotation.y=w.yaw;posePersonStand(F,w.ph,w.amt,dt);}}
 function frameOnsen(dt){OS.elapsed+=dt;if(OW.soak)OS.soakT+=dt;
@@ -1466,7 +1483,7 @@ function makeBoat(S,stripe){const g=new THREE.Group();S.add(g);
   const box=new THREE.Mesh(new THREE.BoxGeometry(.4,.22,.28),new THREE.MeshLambertMaterial({color:'#2e7a5a'}));box.position.set(-.2,.32,-.3);g.add(box);
   return {g,bucket:V3(-1.65,.4,-.3),perch:V3(BL/2*.93,hullG(.97)+.03,0)};}
 const P_SEAT=V3(-1.1,.42,0);
-function makeAngler(S,x,z,jc,hc,stripe){const B=makeBoat(S,stripe);B.g.position.set(x,0,z);const F=makePerson(B.g,jc,hc,false,false);F.g.rotation.y=Math.PI;F.g.position.set(P_SEAT.x,P_SEAT.y-.47,P_SEAT.z+2.08);
+function makeAngler(S,x,z,jc,hc,stripe){const B=makeBoat(S,stripe);B.g.position.set(x,0,z);const F=makePerson(B.g,jc,hc,false,false,'sea');F.g.rotation.y=Math.PI;F.g.position.set(P_SEAT.x,P_SEAT.y-.47,P_SEAT.z+2.08);
   const rod=new THREE.Mesh(new THREE.CylinderGeometry(.006,.017,1,6),new THREE.MeshPhongMaterial({color:'#2a2a30',shininess:60}));S.add(rod);
   const reel=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.05,12),new THREE.MeshPhongMaterial({color:'#b8bcc2',shininess:80}));S.add(reel);
   const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(14*3),3));const line=new THREE.Line(lg,new THREE.LineBasicMaterial({color:'#f4f4f0',transparent:true,opacity:.75}));line.frustumCulled=false;S.add(line);
@@ -1487,7 +1504,7 @@ function updateAngler(an,dt){const b=an.B.g,x=b.position.x,z=b.position.z,h=seaH
   else{an.bob.visible=an.bobFly||false;const hang=an.bobFly?an.bob.position:an.tip.clone().add(V3(0,-.35,0));if(!an.bobFly){an.bob.position.copy(hang);an.bob.visible=true;}
     for(let i=0;i<n;i++){const k=i/(n-1);pa.setXYZ(i,lerp(an.tip.x,hang.x,k),lerp(an.tip.y,hang.y+.06,k),lerp(an.tip.z,hang.z,k));}}
   pa.needsUpdate=true;}
-const ME=makeAngler(SEA.scene,0,0,'#e0682e','#2c4a6b','#2f5fa8');
+const ME=makeAngler(SEA.scene,0,0,'#f07a2e','#c9b98a','#2f5fa8');
 /* fish */
 const FISH=[
   {n:'고등어',min:24,max:40,w:22,c:'#3c6f86',b:'#e8eef0',note:'등의 물결무늬가 선명해요.'},
