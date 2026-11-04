@@ -200,6 +200,66 @@ body.at-home .people{left:auto;right:max(16px,env(safe-area-inset-right,0px));to
   .ghost{padding:7px 11px}
   .guide{top:30%;max-width:60%}
 }
+
+@media (min-width:980px){.home-inner{grid-template-columns:minmax(0,1fr) minmax(0,660px);max-width:1240px}.choices{display:grid;grid-template-columns:1fr 1fr}.choice{padding:16px 18px}.c-name{font-size:21px}.c-desc{font-size:13px;line-height:1.6}}
+/* 점술방 */
+.layer select,.layer textarea,.ft-body{pointer-events:auto}
+.dock.fort{width:min(100%,720px)}
+.ft-say{display:flex;gap:10px;align-items:baseline;padding:0 2px 10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.ft-who{flex:none;font-family:var(--display);font-weight:700;color:var(--gold);font-size:14px}
+#ftSay{margin:0;font-family:var(--display);font-size:15.5px;line-height:1.6;min-height:1.6em}
+.ft-form{display:grid;gap:10px}
+.ft-r{flex-wrap:wrap;gap:8px}
+.ft-gl{margin-left:auto}
+.ft-in{font:inherit;font-size:14px;color:var(--paper);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:8px;padding:7px 10px;-webkit-user-select:text;user-select:text;min-width:0}
+.ft-in:focus{border-color:var(--gold);outline:none}
+select.ft-in option{background:#1a1420;color:var(--paper)}
+#ftY{width:5.6em}
+#ftH{flex:1;max-width:280px}
+.ft-unit{color:var(--paper-dim);margin-left:-4px}
+.ft-note{font-size:12px;color:var(--paper-dim)}
+.ft-err{margin:0;color:#ff9f8f;font-size:13px}
+.ft-head{gap:8px;flex-wrap:wrap}
+.ft-tabs{display:flex;gap:4px;background:rgba(255,255,255,.05);border-radius:999px;padding:3px}
+.ft-tabs button{border:0;background:none;border-radius:999px;padding:7px 13px;font-size:13.5px;color:var(--paper-dim)}
+.ft-tabs button[aria-selected="true"]{background:var(--paper);color:#1b1408;font-weight:600}
+.ft-me{margin:8px 2px 4px;font-size:12px;color:var(--paper-dim)}
+.ft-body{max-height:min(36vh,330px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;-webkit-user-select:text;user-select:text;padding:2px 6px 2px 2px}
+.ft-body h4{margin:16px 0 5px;font-family:var(--display);color:var(--gold);font-size:15.5px}
+.ft-body p{margin:0 0 6px;line-height:1.72}
+.ft-date{font-size:12.5px;color:var(--paper-dim)}
+.ft-stars{color:var(--gold);letter-spacing:.18em;font-size:19px;margin:2px 0 6px!important}
+.ft-dl{display:grid;grid-template-columns:3em 1fr;gap:7px 10px;margin:6px 0 10px}
+.ft-dl dt{color:var(--gold);font-weight:600}.ft-dl dd{margin:0;line-height:1.65;text-align:left;font-family:var(--ui);font-weight:400;font-size:14px}
+.ft-body{text-align:left}
+.ft-lucky{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.ft-lucky span{padding:5px 11px;border:1px solid var(--line);border-radius:999px;font-size:12.5px;color:var(--paper-dim)}.ft-lucky b{color:var(--paper);font-weight:600}
+.ft-word{font-family:var(--display);color:var(--hanji);font-size:15.5px;margin-top:12px!important}
+.ft-pil{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 4px}
+.ft-col{display:grid;gap:4px;text-align:center}
+.ft-pn{font-size:11.5px;color:var(--paper-dim)}
+.ft-col.me .ft-pn{color:var(--gold);font-weight:600}
+.ft-ch{display:grid;gap:2px;padding:7px 0 6px;border-radius:8px;background:rgba(255,255,255,.05);border-top:3px solid var(--c);font-family:var(--display);font-size:25px;font-weight:700;line-height:1.1}
+.ft-ch i{font-style:normal;font-family:var(--ui);font-size:11px;font-weight:400;color:var(--paper-dim)}
+.ft-ch.none{border-top-color:var(--line);color:var(--paper-dim)}
+.ft-col.me .ft-ch{background:rgba(220,174,85,.12)}
+.ft-bars{display:grid;gap:6px;margin:6px 0 10px}
+.ft-bar{display:grid;grid-template-columns:3.6em 1fr 1.4em;align-items:center;gap:8px;font-size:12.5px}
+.ft-bar i{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--c) var(--w),rgba(255,255,255,.08) var(--w))}
+.ft-bar b{font-weight:600;text-align:right}
+.ft-life{margin:0;padding-left:1.1em;line-height:1.72}.ft-life li{margin-bottom:4px}.ft-life b{color:var(--gold);font-weight:600;margin-right:4px}
+.ft-chat{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ft-m{display:flex;flex-direction:column}
+.ft-m p{margin:0;padding:9px 13px;border-radius:12px;line-height:1.68;max-width:90%;white-space:pre-wrap}
+.ft-m.me{align-items:flex-end}.ft-m.me p{background:rgba(220,174,85,.18)}
+.ft-m.her p{background:rgba(138,123,255,.15);font-family:var(--display);font-size:15px}
+.ft-m.wait p{opacity:.7;animation:ftp 1.2s ease-in-out infinite}
+@keyframes ftp{50%{opacity:.35}}
+.ft-sug{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ft-sug button{background:none;border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:12.5px;color:var(--paper-dim)}
+.ft-sug button:hover{border-color:var(--gold);color:var(--paper)}
+.ft-ask{display:flex;gap:8px;margin-top:10px}.ft-ask .ft-in{flex:1}
+@media (max-width:640px){.ft-gl{margin-left:0}.ft-body{max-height:30vh}#ftSay{font-size:14.5px}.ft-tabs button{padding:6px 10px;font-size:13px}.ft-ch{font-size:21px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -247,6 +307,11 @@ body.at-home .people{left:auto;right:max(16px,env(safe-area-inset-right,0px));to
         <span class="c-tag">예불 · 禮佛</span>
         <span class="c-name">산사 법당</span>
         <span class="c-desc">합장, 반배, 큰절(오체투지)을 올리고 염주로 셉니다. 소원을 적은 연등을 법당 천장에 걸어 둘 수 있습니다.</span>
+      </button>
+      <button class="choice" id="goFort">
+        <span class="c-tag">점술 · 占</span>
+        <span class="c-name">달님 보살의 점술방</span>
+        <span class="c-desc">수정 구슬이 놓인 탁자 앞에서 점술사 아주머니가 사주를 봐 드려요. 양력·음력 생일과 태어난 시를 알려 주면 오늘의 운세와 평생 사주를 보고, 궁금한 것도 물어볼 수 있어요.</span>
       </button>
     </div>
   </div>
@@ -376,6 +441,29 @@ body.at-home .people{left:auto;right:max(16px,env(safe-area-inset-right,0px));to
     </div>
   </div>
 
+  <div class="dock fort" id="dockFort" hidden>
+    <div class="ft-say"><span class="ft-who">달님 보살</span><p id="ftSay" aria-live="polite"></p></div>
+    <form id="ftForm" class="ft-form" autocomplete="off">
+      <div class="row ft-r"><span class="lbl">달력</span><div class="seg" data-key="ftCal"><button type="button" data-v="s">양력</button><button type="button" data-v="l">음력</button></div>
+        <label class="switch" id="ftLeapW" hidden><input type="checkbox" id="ftLeap"><span id="ftLeapT">윤달</span></label>
+        <span class="lbl ft-gl">성별</span><div class="seg" data-key="ftG"><button type="button" data-v="f">여</button><button type="button" data-v="m">남</button></div></div>
+      <div class="row ft-r"><span class="lbl">생일</span><input id="ftY" class="ft-in" type="number" inputmode="numeric" min="1920" max="2050" aria-label="태어난 해"><span class="ft-unit">년</span><select id="ftM" class="ft-in" aria-label="태어난 달"></select><select id="ftD" class="ft-in" aria-label="태어난 날"></select></div>
+      <div class="row ft-r"><span class="lbl">태어난 시</span><select id="ftH" class="ft-in" aria-label="태어난 시"></select></div>
+      <p class="ft-err" id="ftErr" hidden></p>
+      <div class="row between"><span class="ft-note">재미로 보는 점이에요. 생일은 이 기기에만 저장돼요.</span><button class="primary" id="ftGo" type="submit">점 보기</button></div>
+    </form>
+    <div id="ftOut" hidden>
+      <div class="row between ft-head"><div class="ft-tabs" id="ftTabs" role="tablist"><button type="button" data-t="today" role="tab">오늘의 운세</button><button type="button" data-t="life" role="tab">평생 사주</button><button type="button" data-t="ask" role="tab">물어보기</button></div><button type="button" class="ghost sm" id="ftRedo">다시 입력</button></div>
+      <p class="ft-me" id="ftWho"></p>
+      <div class="ft-body" id="ftBody">
+        <div id="ftToday"></div><div id="ftLife" hidden></div>
+        <div id="ftAsk" hidden><ul class="ft-chat" id="ftChat"></ul>
+          <div class="ft-sug" id="ftSug"><button type="button">올해 연애운은 어떨까요?</button><button type="button">이직해도 될까요?</button><button type="button">돈은 언제 모일까요?</button><button type="button">저한테 맞는 일은 뭘까요?</button></div></div>
+      </div>
+      <form class="ft-ask" id="ftAskF" hidden autocomplete="off"><input id="ftQ" class="ft-in" type="text" maxlength="200" placeholder="궁금한 것을 물어보세요" aria-label="질문"><button class="primary" id="ftAskBtn" type="submit">묻기</button></form>
+    </div>
+  </div>
+
   <div class="mala" id="malaPanel" hidden>
     <span class="mala-cap">옆으로 밀어 굴리기 · M</span>
     <canvas id="malaCv" aria-label="염주. 좌우로 끌어 한 알씩 굴립니다."></canvas>
@@ -451,6 +539,7 @@ function startAmb(kind){stopAmb();if(!ac())return;A.ambOn=true;A.next=t+2;
   if(kind==='nature'){const wv={dawn:.28,dusk:.4,night:.18}[M.pal];ambNoise(A.brown,'lowpass',420,.7,wv,.07,260);ambNoise(A.white,'bandpass',850,.6,.035,.18,280);}
   else if(kind==='sea'){ambNoise(A.brown,'lowpass',300,.7,.05,.06,100);}
   else if(kind==='onsen'){ambNoise(A.brown,'lowpass',240,.7,.07,.04,90);}
+  else if(kind==='fort'){ambNoise(A.brown,'lowpass',190,.7,.07,.04,50);ambNoise(A.white,'bandpass',1800,.8,.004,.07,500);}
   else if(kind==='fire'){ambNoise(A.brown,'lowpass',260,.7,.09,.05,120);ambNoise(A.white,'bandpass',700,.5,.012,.11,200);}
   else{ambNoise(A.brown,'lowpass',170,.7,.2,.05,40);ambNoise(A.brown,'lowpass',380,.7,.05,.06,200);}}
 function env(o,g,now,peak,att,dur,dest){g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(peak,now+att);g.gain.exponentialRampToValueAtTime(.0001,now+dur);o.connect(g);g.connect(dest||A.master);o.start(now);o.stop(now+dur+.05);}
@@ -479,6 +568,7 @@ function pungyeong(){const c=A.ctx;if(!c)return;const now=c.currentTime,f=rand(1
 function ambientEvents(){if(!A.ctx||!A.on||!A.ambOn||t<A.next)return;
   if(scene==='med'){if(M.pal==='dawn'){chirp();A.next=t+rand(2.5,7);}else if(M.pal==='night'){cricket();A.next=t+rand(.5,1.4);}else A.next=t+5;}
   else if(scene==='fire'){cricket();if(Math.random()<.5)setTimeout(cricket,140);if(lakeDist(FW.x,FW.z)<14&&Math.random()<.35)frog();A.next=t+rand(.7,2);}
+  else if(scene==='fort'){const f=pick([1046.5,1174.7,1318.5,1568,1760,2093]);softTone(f,.012,3);if(Math.random()<.5)setTimeout(()=>softTone(f*1.5,.008,2.6),220);A.next=t+rand(6,13);}
   else A.next=t+5;}
 
 
@@ -634,7 +724,7 @@ let toastTimer;function toast(msg,ms=3600){dockFit();const el=$('#toast');el.tex
 renderTally();
 
 /* ---------- WebGL setup ---------- */
-function glFail(msg){const e=$('#glErr');e.hidden=false;if(msg)e.textContent=msg;['#goMed','#goTem','#goFire','#goOnsen','#goSea'].forEach(s=>$(s).disabled=true);}
+function glFail(msg){const e=$('#glErr');e.hidden=false;if(msg)e.textContent=msg;['#goMed','#goTem','#goFire','#goOnsen','#goSea','#goFort'].forEach(s=>$(s).disabled=true);}
 if(!window.THREE){glFail('3D 엔진을 불러오지 못했습니다. 네트워크 연결을 확인한 뒤 새로고침해 주세요.');return;}
 const cv=$('#c');let R=null;
 try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true});}catch(e){R=null;}
@@ -1916,6 +2006,350 @@ function frameTemple(dt){
 }
 
 /* ==========================================================
+   점술방 — 사주 계산 (만세력: 음력표 1920–2050, 절기는 태양 황경으로 계산)
+   ========================================================== */
+const LUN=[[50,0,3474],[404,0,3365],[758,5,6733],[1142,0,2390],[1496,0,693],[1850,4,5549],[2235,0,1748],[2589,0,3497],[2944,2,7570],[3328,0,3730],[3682,6,3366],[4065,0,1319],[4419,0,2647],[4774,5,4790],[5158,0,2778],[5513,0,1748],[5867,3,3753],[6251,0,1865],[6605,7,5779],[6989,0,2707],[7343,0,1323],[7697,6,2651],[8081,0,2413],[8436,0,2922],[8791,4,6996],[9175,0,2980],[9529,0,2889],[9883,2,6803],[10267,0,2709],[10621,7,5419],[11005,0,1325],[11359,0,2733],[11714,5,5482],[12098,0,3506],[12453,0,3492],[12807,3,7497],[13191,0,3402],[13545,8,6805],[13929,0,2710],[14283,0,1366],[14637,6,2741],[15021,0,2773],[15376,0,1746],[15730,4,3749],[16114,0,3749],[16469,0,3658],[16823,3,3222],[17206,0,2715],[17561,7,5462],[17945,0,1386],[18299,0,2905],[18654,5,5970],[19038,0,1874],[19392,0,1829],[19746,4,5707],[20130,0,2635],[20484,8,4779],[20868,0,685],[21222,0,1387],[21577,6,2921],[21961,0,3497],[22316,0,3474],[22670,4,6949],[23054,0,3365],[23408,10,6733],[23792,0,2646],[24146,0,694],[24500,6,5549],[24885,0,1748],[25239,0,3497],[25594,5,7570],[25978,0,3730],[26332,0,3366],[26686,3,2646],[27069,0,2647],[27424,8,4790],[27808,0,2906],[28163,0,1748],[28517,5,3785],[28901,0,1865],[29255,0,1683],[29609,4,5415],[29993,0,1323],[30347,0,2651],[30702,2,5466],[31086,0,874],[31440,7,6997],[31825,0,2980],[32179,0,2889],[32533,5,6803],[32917,0,2709],[33271,0,1325],[33625,3,2653],[34009,0,2733],[34364,9,5546],[34748,0,1490],[35102,0,3493],[35457,5,7498],[35841,0,3402],[36195,0,2709],[36549,4,5421],[36933,0,1366],[37287,0,2741],[37642,2,5546],[38026,0,1746],[38380,6,3749],[38764,0,3749],[39119,0,3658],[39473,5,3222],[39856,0,3227],[40211,0,1370],[40565,3,2773],[40949,0,2921],[41304,11,5970],[41688,0,1874],[42042,0,2853],[42396,6,5707],[42780,0,2635],[43134,0,1195],[43488,5,1371],[43872,0,1389],[44227,0,2921],[44582,2,6994],[44966,0,3474],[45320,7,7461],[45704,0,3365],[46058,0,2637],[46412,5,5293],[46796,0,694],[47150,0,1461],[47505,3,1449]],LUN0=2422325;
+const GAN='甲乙丙丁戊己庚辛壬癸',JI='子丑寅卯辰巳午未申酉戌亥',GAN_K='갑을병정무기경신임계',JI_K='자축인묘진사오미신유술해';
+const GAN_E=[0,0,1,1,2,2,3,3,4,4],JI_E=[4,2,0,0,2,1,1,2,3,3,2,4],JI_Y=[0,1,0,1,0,1,1,0,0,1,0,1];
+const EL=['목','화','토','금','수'],EL_H='木火土金水',EL_C=['#4f9a64','#d4553f','#c89a3c','#d9d4c8','#3f62a8'];
+const ANIMAL=['쥐','소','호랑이','토끼','용','뱀','말','양','원숭이','닭','개','돼지'];
+const SIJIN=[['자시','23:30~01:29'],['축시','01:30~03:29'],['인시','03:30~05:29'],['묘시','05:30~07:29'],['진시','07:30~09:29'],['사시','09:30~11:29'],['오시','11:30~13:29'],['미시','13:30~15:29'],['신시','15:30~17:29'],['유시','17:30~19:29'],['술시','19:30~21:29'],['해시','21:30~23:29']];
+function jdnOf(y,m,d){return Math.floor(Date.UTC(y,m-1,d)/864e5)+2440588;}
+function ymdOf(j){const d=new Date((j-2440588)*864e5);return [d.getUTCFullYear(),d.getUTCMonth()+1,d.getUTCDate()];}
+function lunMonths(y){const r=LUN[y-1920];if(!r)return null;const out=[];let j=LUN0+r[0],i=0;for(let m=1;m<=12;m++)for(const lp of (m===r[1]?[0,1]:[0])){const len=(r[2]>>i&1)?30:29;out.push({m,lp,len,j});j+=len;i++;}return out;}
+function lunarToSolar(y,m,d,leap){const ms=lunMonths(y);if(!ms)return null;const e=ms.find(o=>o.m===m&&o.lp===(leap?1:0));if(!e||d<1||d>e.len)return null;return e.j+d-1;}
+function lunarLeapOf(y){const r=LUN[y-1920];return r?r[1]:0;}
+function lunarLen(y,m,leap){const ms=lunMonths(y);const e=ms&&ms.find(o=>o.m===m&&o.lp===(leap?1:0));return e?e.len:30;}
+function solarToLunar(j){for(let k=LUN.length-1;k>=0;k--){if(LUN0+LUN[k][0]<=j){const ms=lunMonths(1920+k);for(const o of ms)if(j<o.j+o.len)return {y:1920+k,m:o.m,d:j-o.j+1,lp:o.lp};}}return null;}
+function sunLon(jd){const T=(jd-2451545)/36525,r=Math.PI/180,L0=280.46646+36000.76983*T+.0003032*T*T,M=(357.52911+35999.05029*T-.0001537*T*T)*r;
+  const C=(1.914602-.004817*T-.000014*T*T)*Math.sin(M)+(.019993-.000101*T)*Math.sin(2*M)+.000289*Math.sin(3*M);return ((L0+C-.00569-.00478*Math.sin((125.04-1934.136*T)*r))%360+360)%360;}
+function relOf(dm,e){if(e===dm)return 0;if((dm+1)%5===e)return 1;if((dm+2)%5===e)return 2;if((e+2)%5===dm)return 3;return 4;}
+const REL_G=['비겁','식상','재성','관성','인성'],SIP=[['비견','겁재'],['식신','상관'],['편재','정재'],['편관','정관'],['편인','정인']];
+function sipsin(ds,stem){const g=relOf(GAN_E[ds],GAN_E[stem]);return {g,name:SIP[g][(ds%2)===(stem%2)?0:1],same:(ds%2)===(stem%2)};}
+function sipsinB(ds,br){const g=relOf(GAN_E[ds],JI_E[br]);return {g,name:SIP[g][(ds%2)===JI_Y[br]?0:1]};}
+/* 사주 세우기: j=양력 날짜의 JDN, hi=시진 번호(0~11, 모르면 -1) */
+function makeSaju(j,hi){const hr=hi<0?12:(hi===0?.5:hi*2+.5),jd=j-.5+(hr-9)/24,lon=sunLon(jd),[Y,Mo]=ymdOf(j),mi=Math.floor(((lon-315)%360+360)%360/30);
+  const sy=(Mo<=2&&mi>=10)?Y-1:Y,yi=((sy-4)%60+60)%60,ys=yi%10,yb=yi%12,ms=((ys%5)*2+2+mi)%10,mb=(mi+2)%12,di=(j+49)%60,ds=di%10,db=di%12;
+  const P={y:[ys,yb],m:[ms,mb],d:[ds,db],h:hi<0?null:[((ds%5)*2+hi)%10,hi]};
+  const cnt=[0,0,0,0,0];['y','m','d','h'].forEach(k=>{if(P[k]){cnt[GAN_E[P[k][0]]]++;cnt[JI_E[P[k][1]]]++;}});
+  const grp=[0,0,0,0,0];['y','m','h'].forEach(k=>{if(P[k])grp[relOf(GAN_E[ds],GAN_E[P[k][0]])]++;});['y','m','d','h'].forEach(k=>{if(P[k])grp[relOf(GAN_E[ds],JI_E[P[k][1]])]++;});
+  return {P,ds,db,dm:GAN_E[ds],cnt,grp,yb,sy};}
+function gz(p){return GAN[p[0]]+JI[p[1]];}
+function gzK(p){return GAN_K[p[0]]+JI_K[p[1]];}
+function seedRng(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19;}return ()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return (h>>>0)/4294967296;};}
+
+/* ---------- 풀이 글 ---------- */
+const DMT=[
+ {img:'하늘로 곧게 뻗은 큰 나무',key:'곧고 정직한 대장부 기질',good:'한번 마음먹으면 끝까지 밀고 가는 추진력이 있고, 사람들을 이끄는 우두머리 기운이 있어요.',care:'굽힐 줄 몰라 부러지기도 하니, 가끔은 바람 따라 흔들려 주는 여유가 필요해요.'},
+ {img:'바위틈에서도 피어나는 꽃과 덩굴',key:'부드럽지만 질긴 생명력',good:'어디에 가도 금방 어울리고, 사람 마음을 잘 헤아려 주변에 늘 사람이 모여요. 끈기는 누구도 못 따라가요.',care:'남 눈치를 보다 내 뜻을 접기 쉬우니, 싫은 건 싫다고 말하는 연습을 해 봐요.'},
+ {img:'온 세상을 비추는 한낮의 태양',key:'밝고 뜨거운 열정',good:'있는 그대로 솔직하고 화끈해서 어디서든 분위기를 환하게 만들어요. 인기와 존재감이 타고났어요.',care:'불같이 타올랐다가 금방 식기도 하니, 끝까지 가는 뒷심을 길러야 해요.'},
+ {img:'어둠을 밝히는 촛불과 등불',key:'따뜻하고 섬세한 마음',good:'겉으론 조용해도 속정이 깊고, 한 사람을 끝까지 챙기는 헌신이 있어요. 예술 감각도 빼어나요.',care:'속으로 끙끙 앓는 버릇이 있으니, 서운한 건 그때그때 꺼내 놓아야 병이 안 돼요.'},
+ {img:'모든 걸 품는 크고 듬직한 산',key:'믿음직한 신용과 포용력',good:'말보다 행동으로 보여 주는 사람이라 한번 믿은 사람은 오래 가요. 어려울 때 기대고 싶은 사람이에요.',care:'고집이 산만큼 세고 변화에 느리니, 새 바람을 한 번씩 들여 주면 좋아요.'},
+ {img:'곡식을 길러 내는 기름진 논밭',key:'실속 있고 꼼꼼한 살림꾼',good:'작은 것도 허투루 넘기지 않아 차곡차곡 쌓아 가는 힘이 있고, 사람을 보살피는 품이 넓어요.',care:'걱정을 미리 당겨 하는 편이라, 일어나지 않은 일에는 마음을 덜 써도 돼요.'},
+ {img:'단단한 바위와 무쇠',key:'결단력과 의리',good:'옳고 그름이 분명하고, 맺고 끊는 게 확실해요. 내 사람에게는 끝까지 의리를 지켜요.',care:'말이 칼처럼 날카로울 때가 있으니, 한 박자 쉬고 말하면 복이 더 붙어요.'},
+ {img:'갈고 닦아 빛나는 보석',key:'섬세한 감각과 자존심',good:'깔끔하고 눈썰미가 좋아 아름다운 것을 알아보는 눈이 있어요. 맡은 일은 흠 없이 해내요.',care:'작은 말에도 상처받기 쉬우니, 남의 말보다 내 마음을 먼저 믿어 줘요.'},
+ {img:'끝없이 넓은 바다와 큰 강',key:'지혜롭고 큰 그릇',good:'생각의 품이 넓고 머리가 비상해서, 큰 그림을 그리는 데 능해요. 자유롭고 시원한 사람이에요.',care:'물처럼 이리저리 흘러 마음이 자주 바뀌니, 붙잡을 기둥 하나를 정해 두면 좋아요.'},
+ {img:'만물을 적시는 봄비와 아침 이슬',key:'총명한 직관과 배려',good:'눈치가 빠르고 감이 좋아 남들이 못 보는 걸 먼저 알아채요. 조용히 남을 도와주는 사람이에요.',care:'생각이 많아 밤잠을 설치기 쉬우니, 몸을 움직여 머리를 비우는 시간이 필요해요.'}];
+const EL_STRONG=['뻗어 나가려는 나무 기운이 넘쳐서 시작하는 힘이 좋아요. 다만 벌여 놓은 일이 많아지기 쉬우니 하나씩 매듭지어요.',
+ '불 기운이 세서 열정과 표현력이 넘쳐요. 마음이 급해질 땐 물 한 잔 마시고 숨부터 고르면 좋아요.',
+ '흙 기운이 두터워 믿음직하고 버티는 힘이 좋아요. 대신 답답하게 고이지 않게 가끔은 새 길로 걸어 봐요.',
+ '쇠 기운이 강해 결단력과 원칙이 분명해요. 너무 날을 세우면 다치니 부드러운 말 한마디를 곁들여요.',
+ '물 기운이 많아 지혜롭고 생각이 깊어요. 생각이 생각을 낳지 않게 몸을 움직이는 습관이 좋아요.'];
+const EL_WEAK=['나무 기운이 약하니 초록 식물을 곁에 두고, 아침 햇살 아래 산책을 해 봐요. 새 일을 시작하는 용기가 붙어요.',
+ '불 기운이 약하니 따뜻한 차와 햇볕을 가까이하고, 붉은 빛깔 소품으로 기운을 북돋아요. 웃음이 보약이에요.',
+ '흙 기운이 약하니 끼니를 거르지 말고, 땅을 밟는 시간을 늘려 봐요. 마음의 중심이 단단해져요.',
+ '쇠 기운이 약하니 맺고 끊는 연습이 필요해요. 흰색·금빛 소품, 깔끔한 정리 정돈이 운을 열어 줘요.',
+ '물 기운이 약하니 물을 자주 마시고, 잠을 넉넉히 자요. 가끔 물가에 가 앉아 있기만 해도 기운이 차요.'];
+const EL_BODY=['간과 눈','심장과 혈압','위장과 소화','폐와 피부','신장과 허리'];
+const EL_DIR=['동쪽','남쪽','가운데(집 근처)','서쪽','북쪽'],EL_NUM=[[3,8],[2,7],[5,10],[4,9],[1,6]],EL_COLN=['초록·청록','빨강·분홍','노랑·황토','흰색·금빛','검정·남색'];
+const GRP_HAS=['독립심이 강하고 자존심이 세요. 친구·형제와의 의리를 중히 여기고, 남 밑에 있기보다 내 일을 하고 싶어 해요.',
+ '재주가 많고 표현하는 걸 좋아해요. 말·글·손재주로 사람들을 즐겁게 하고, 하고 싶은 건 해 봐야 직성이 풀려요.',
+ '현실 감각이 좋고 돈 냄새를 잘 맡아요. 부지런히 움직이고 사람을 사귀는 데도 능해요.',
+ '책임감이 강하고 원칙을 지켜요. 조직에서 믿음을 얻고, 이름을 알리는 자리에 서게 되는 기운이에요.',
+ '배우기를 좋아하고 생각이 깊어요. 어른과 스승의 덕을 보고, 문서·자격증 운이 따라요.'];
+const GRP_NONE=['내 편을 만드는 데 서툴러 혼자 다 짊어지기 쉬워요. 도움을 청하는 것도 능력이에요.',
+ '속마음을 잘 드러내지 않는 편이에요. 좋은 마음은 말로 꺼내야 상대가 알아요.',
+ '돈을 쫓아가기보다, 잘하는 일을 하다 보면 돈이 따라오는 사주예요.',
+ '틀에 매이기 싫어하는 자유로운 기운이라, 내 방식대로 일할 수 있는 자리가 맞아요.',
+ '누가 가르쳐 주기보다 스스로 부딪혀 깨치는 사람이에요. 경험이 곧 공부예요.'];
+const CAREER=['내 사업·프리랜서, 영업, 운동·체육 쪽','디자인·예술·방송, 요리, 교육·강의 쪽','사업·장사, 금융·재무, 유통·무역 쪽','공무원·공공기관, 큰 조직의 관리직, 법·행정 쪽','연구·학문, 교육, 의료·상담, 글 쓰는 일 쪽'];
+const STAGE=['초년(~20세)','청년(20~40세)','중년(40~60세)','말년(60세~)'];
+const STAGE_G=['스스로 길을 내며 사람들 속에서 힘을 키우는','재능이 꽃피고 하고 싶은 일을 마음껏 펼치는','부지런히 움직인 만큼 실속이 쌓이는','책임을 맡고 이름이 알려지는','배움과 귀인의 도움으로 단단해지는'];
+const DAY=[ // 오늘 일진의 십신(비견..정인 순서: 비견,겁재,식신,상관,편재,정재,편관,정관,편인,정인)
+ {s:3,t:'어깨를 나란히 할 사람이 나타나는 날이에요.',m:'나눠 쓰는 돈이 생기니 더치페이가 마음 편해요.',l:'연인보다 친구처럼 편안한 대화가 잘 통해요.',h:'몸은 가뿐한 편, 대신 무리하게 경쟁하진 마요.',a:'혼자 다 하려 말고 손을 맞잡으면 일이 쉬워져요.'},
+ {s:2,t:'욕심과 경쟁심이 고개를 드는 날이에요.',m:'충동구매·보증·빌려주는 돈은 오늘만큼은 참아요.',l:'괜한 질투가 일 수 있으니 한 번 더 믿어 줘요.',h:'열이 오르기 쉬우니 찬물 세수로 식혀요.',a:'이기려 하기보다 지지 않는 게 오늘의 지혜예요.'},
+ {s:5,t:'먹을 복과 여유가 넘치는 날이에요.',m:'작은 즐거움에 쓰는 돈은 아깝지 않아요.',l:'맛있는 걸 함께 먹으면 정이 깊어져요.',h:'소화가 잘 되는 날, 과식만 조심해요.',a:'하고 싶던 취미를 슬쩍 시작해 보기 좋은 날이에요.'},
+ {s:3,t:'말재주가 빛나지만 말실수도 따라붙는 날이에요.',m:'아이디어가 돈이 되지만 계약서는 꼼꼼히 봐요.',l:'솔직한 말이 상처가 될 수 있으니 부드럽게 돌려 말해요.',h:'목과 어깨가 뻐근하니 자주 기지개를 켜요.',a:'윗사람 앞에선 한 박자 쉬고 말해요. 창작엔 아주 좋은 날이에요.'},
+ {s:4,t:'뜻밖의 기회와 사람이 들어오는 활기찬 날이에요.',m:'생각지 않은 돈이 들어오지만, 쓰는 손도 커지니 조심해요.',l:'새 인연을 만나기 좋아요. 모임엔 꼭 나가 봐요.',h:'바쁘게 돌아다니니 물을 자주 마셔요.',a:'움직이는 만큼 운이 붙어요. 오늘은 밖으로!'},
+ {s:4,t:'성실하게 한 만큼 고스란히 돌아오는 안정된 날이에요.',m:'계획한 대로 쓰고 모으기 좋아요. 가계부를 써 봐요.',l:'믿음직한 모습이 상대 마음을 움직여요.',h:'규칙적인 식사와 잠이 보약이에요.',a:'큰 한 방보다 작은 꾸준함이 복을 불러요.'},
+ {s:2,t:'일과 책임이 한꺼번에 몰려오는 날이에요.',m:'나가야 할 돈이 생기니 지갑을 단단히 여며요.',l:'바빠서 소홀해지기 쉬우니 짧은 연락이라도 해요.',h:'피로가 쌓이기 쉬우니 오늘 밤은 일찍 자요.',a:'버티고 나면 인정받는 날이에요. 조금만 힘내요.'},
+ {s:4,t:'인정받고 칭찬 듣는 반듯한 날이에요.',m:'정해진 수입이 든든하고, 공적인 일에서 득이 있어요.',l:'예의 바른 모습에 호감이 커져요. 진지한 대화도 좋아요.',h:'몸과 마음의 균형이 좋은 날이에요.',a:'원칙대로 하면 길이 열려요. 서류·면접에 좋아요.'},
+ {s:3,t:'직감이 예민해지고 혼자 생각이 많아지는 날이에요.',m:'충동적인 결정은 하루만 미뤄도 돼요.',l:'혼자만의 시간이 필요하다고 솔직히 말해요.',h:'잠을 설치기 쉬우니 따뜻한 차 한 잔 하고 자요.',a:'공부·연구·기획엔 아주 좋은 날, 계획이 바뀌어도 너무 마음 쓰지 마요.'},
+ {s:5,t:'귀인이 도와주는 복된 날이에요.',m:'문서운이 좋아 계약·신청이 술술 풀려요.',l:'다정한 말 한마디가 큰 위로가 되어 돌아와요.',h:'몸과 마음이 편안해지는 날이에요.',a:'어른이나 선배에게 조언을 구해 보면 답이 보여요.'}];
+const LUCKY_ITEM=['따뜻한 차 한 잔','손수건','은반지','파란 펜','귤','향초','책갈피','운동화','작은 거울','동전 지갑','머리끈','우산','꽃 한 송이','노트','이어폰','털장갑'];
+/* ---------- 풀이 만들기 ---------- */
+function josa(w,a,b){const c=w.charCodeAt(w.length-1)-44032;return w+(c>=0&&c<11172&&c%28?a:b);}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function todayJ(){const n=new Date(Date.now()+9*3600e3);return jdnOf(n.getUTCFullYear(),n.getUTCMonth()+1,n.getUTCDate());}
+function weakEl(S){let w=0;for(let i=1;i<5;i++)if(S.cnt[i]<S.cnt[w])w=i;return w;}
+function strongEl(S){let w=0;for(let i=1;i<5;i++)if(S.cnt[i]>S.cnt[w])w=i;return w;}
+function topGrp(S){let w=0;for(let i=1;i<5;i++)if(S.grp[i]>S.grp[w])w=i;return w;}
+function todayRead(S,key){const tj=todayJ(),ti=(tj+49)%60,ts=ti%10,tb=ti%12,sp=sipsin(S.ds,ts),D=DAY[sp.g*2+(sp.same?0:1)];
+  let score=D.s,extra='';if((tb+S.db)%12===1){score++;extra='오늘 일진의 '+JI_K[tb]+'('+JI[tb]+')가 손님 일지와 합을 이루니 사람 운이 붙어요. 반가운 연락이 올 수 있어요.';}
+  else if(Math.abs(tb-S.db)===6){score--;extra='오늘 일진의 '+JI_K[tb]+'('+JI[tb]+')가 손님 일지와 부딪히니 이동할 땐 조심하고, 말다툼은 피해 가요.';}
+  score=clamp(score,1,5);const r=seedRng(key+'|'+tj),w=weakEl(S),num=EL_NUM[w][Math.floor(r()*2)],item=LUCKY_ITEM[Math.floor(r()*LUCKY_ITEM.length)],[yy,mm,dd]=ymdOf(tj);
+  return {tj,ts,tb,sp,D,score,extra,w,num,item,date:yy+'년 '+mm+'월 '+dd+'일',gz:GAN_K[ts]+JI_K[tb]+'('+GAN[ts]+JI[tb]+')일'};}
+function todayHTML(S,key){const R=todayRead(S,key),st='★★★★★'.slice(0,R.score)+'☆☆☆☆☆'.slice(0,5-R.score);
+  return '<p class="ft-date">'+R.date+' · '+R.gz+' · 오늘은 <b>'+R.sp.name+'</b>의 날</p>'+
+  '<p class="ft-stars" aria-label="오늘의 운 '+R.score+'점 / 5점">'+st+'</p>'+
+  '<dl class="ft-dl"><dt>총운</dt><dd>'+R.D.t+(R.extra?' '+R.extra:'')+'</dd><dt>재물</dt><dd>'+R.D.m+'</dd><dt>애정</dt><dd>'+R.D.l+'</dd><dt>건강</dt><dd>'+R.D.h+'</dd></dl>'+
+  '<div class="ft-lucky"><span>행운의 색 <b>'+EL_COLN[R.w]+'</b></span><span>숫자 <b>'+R.num+'</b></span><span>방향 <b>'+EL_DIR[R.w]+'</b></span><span>물건 <b>'+R.item+'</b></span></div>'+
+  '<p class="ft-word">“'+R.D.a+'”</p>';}
+function pillarHTML(S){const cols=[['시주',S.P.h],['일주',S.P.d],['월주',S.P.m],['연주',S.P.y]];
+  return '<div class="ft-pil">'+cols.map(([n,p])=>'<div class="ft-col'+(n==='일주'?' me':'')+'"><span class="ft-pn">'+n+'</span>'+(p?
+    '<span class="ft-ch" style="--c:'+EL_C[GAN_E[p[0]]]+'">'+GAN[p[0]]+'<i>'+GAN_K[p[0]]+'·'+EL[GAN_E[p[0]]]+'</i></span><span class="ft-ch" style="--c:'+EL_C[JI_E[p[1]]]+'">'+JI[p[1]]+'<i>'+JI_K[p[1]]+'·'+EL[JI_E[p[1]]]+'</i></span>'
+    :'<span class="ft-ch none">?<i>시 모름</i></span><span class="ft-ch none">?<i>&nbsp;</i></span>')+'</div>').join('')+'</div>';}
+function lifeRead(S,g){const D=DMT[S.ds],w=weakEl(S),s=strongEl(S),tg=topGrp(S),sp=g==='m'?2:3,spc=S.grp[sp],tot=S.cnt.reduce((a,b)=>a+b,0);
+  const stages=[S.P.y&&relOf(S.dm,GAN_E[S.P.y[0]]),S.P.m&&relOf(S.dm,GAN_E[S.P.m[0]]),relOf(S.dm,JI_E[S.db]),S.P.h?relOf(S.dm,GAN_E[S.P.h[0]]):-1];
+  const love=spc===0?'배우자 별이 사주에 드러나지 않아 인연이 늦게 무르익는 편이에요. 서두르지 않으면 오히려 좋은 사람이 와요.':spc===1?'배우자 별이 하나 반듯하게 앉아 있어, 한 사람과 오래 진득하게 가는 사랑이에요.':'배우자 별이 여럿이라 인기가 많고 인연이 자주 찾아와요. 마음 줄 사람은 신중하게 골라요.';
+  const money=S.grp[2]===0?(S.grp[1]?'재물 별은 숨어 있지만 재주가 돈을 불러오는 사주예요. 잘하는 일에 매진하면 재물이 따라와요.':'큰돈을 쫓기보다 꾸준히 모으는 게 맞아요. 돈 관리는 믿을 만한 곳에 맡기면 좋아요.'):S.grp[2]>=3?'재물 별이 많아 돈이 들고 나는 폭이 커요. 들어올 때 반드시 떼어 모아 두면 큰 부자 사주예요.':'재물 운이 반듯해서, 성실하게 일한 만큼 차곡차곡 쌓여요.'+(S.grp[1]?' 재주가 돈으로 이어지는 흐름도 있어요.':'');
+  return {D,w,s,tg,love,money,stages,tot};}
+function lifeHTML(S,g,F){const L=lifeRead(S,g),mx=Math.max(...S.cnt,1),lun=solarToLunar(F.j),[sy,sm,sd]=ymdOf(F.j);
+  const bars='<div class="ft-bars">'+S.cnt.map((c,i)=>'<div class="ft-bar"><span>'+EL[i]+' '+EL_H[i]+'</span><i style="--c:'+EL_C[i]+';--w:'+(c/mx*100)+'%"></i><b>'+c+'</b></div>').join('')+'</div>';
+  const grp=S.grp.map((c,i)=>c?'':GRP_NONE[i]).filter(Boolean);
+  return '<p class="ft-date">양력 '+sy+'.'+sm+'.'+sd+' · 음력 '+(lun?(lun.lp?'윤':'')+lun.m+'.'+lun.d:'')+' · '+(F.h<0?'시 모름':SIJIN[F.h][0])+' · '+ANIMAL[S.yb]+'띠 ('+gzK(S.P.y)+'년생)</p>'+pillarHTML(S)+
+  '<h4>타고난 기운</h4><p>손님은 <b>'+GAN_K[S.ds]+EL[S.dm]+'('+GAN[S.ds]+EL_H[S.dm]+')</b> 일간, <b>'+L.D.img+'</b> 같은 사람이에요. '+josa(L.D.key,'을','를')+' 타고났지요. '+L.D.good+' '+L.D.care+'</p>'+
+  '<h4>오행의 균형</h4>'+bars+'<p>'+(S.cnt[L.s]>=3?EL_STRONG[L.s]+' ':'')+EL_WEAK[L.w]+'</p>'+
+  '<h4>성격과 재능</h4><p>'+GRP_HAS[L.tg]+(grp.length?' '+grp[0]:'')+'</p>'+
+  '<h4>재물운</h4><p>'+L.money+'</p>'+
+  '<h4>일과 적성</h4><p>'+CAREER[L.tg]+'의 일이 잘 맞아요.'+(S.grp[3]&&L.tg!==3?' 조직 안에서 책임을 맡는 자리도 어울려요.':'')+'</p>'+
+  '<h4>애정·인연</h4><p>'+L.love+'</p>'+
+  '<h4>건강</h4><p>'+EL_BODY[L.w]+'를 아껴 주면 좋은 사주예요. 무리하지 말고 쉬어 가며 살펴 주세요.</p>'+
+  '<h4>인생의 흐름</h4><ul class="ft-life">'+L.stages.map((g2,i)=>'<li><b>'+STAGE[i]+'</b> '+(g2<0?'태어난 시를 모르니 말년은 손님 마음먹기에 달렸어요. 좋은 습관이 곧 말년 복이에요.':STAGE_G[g2]+' 시기예요.')+'</li>').join('')+'</ul>'+
+  '<p class="ft-word">“'+ANIMAL[S.yb]+'띠 '+GAN_K[S.ds]+EL[S.dm]+' 손님, 사주는 타고난 지도일 뿐 길은 손님이 걸어가는 거예요.”</p>';}
+function sajuSummary(S,g,F){const L=lifeRead(S,g),R=todayRead(S,F.key),lun=solarToLunar(F.j),[sy,sm,sd]=ymdOf(F.j);
+  return '생년월일: 양력 '+sy+'-'+sm+'-'+sd+(lun?' (음력 '+(lun.lp?'윤':'')+lun.m+'월 '+lun.d+'일)':'')+', '+(F.h<0?'태어난 시 모름':SIJIN[F.h][0]+'('+SIJIN[F.h][1]+')')+', '+(g==='m'?'남성':'여성')+', '+ANIMAL[S.yb]+'띠\n'+
+  '사주팔자: 연주 '+gz(S.P.y)+', 월주 '+gz(S.P.m)+', 일주 '+gz(S.P.d)+', 시주 '+(S.P.h?gz(S.P.h):'모름')+'\n'+
+  '일간: '+GAN_K[S.ds]+EL[S.dm]+' ('+L.D.img+')\n오행 개수: '+EL.map((e,i)=>e+S.cnt[i]).join(' ')+' (가장 강함 '+EL[L.s]+', 가장 약함 '+EL[L.w]+')\n'+
+  '십신 분포: '+REL_G.map((e,i)=>e+S.grp[i]).join(' ')+'\n'+
+  '오늘('+R.date+') 일진: '+R.gz+', 일간 기준 '+R.sp.name+'의 날, 오늘 운 '+R.score+'/5. '+R.D.t+(R.extra?' '+R.extra:'');}
+const QA_CAT=[
+ {k:/연애|사랑|결혼|남자친구|여자친구|남친|여친|짝|인연|애인|썸|소개팅|배우자|남편|아내|이혼|재회|헤어/,f:(S,L,R)=>L.love+' 오늘은 '+R.sp.name+'의 날이라 '+R.D.l.replace(/요\.$/,'요.')},
+ {k:/돈|재물|부자|주식|투자|코인|로또|복권|월급|연봉|빚|대출|부동산|집값/,f:(S,L,R)=>L.money+' 오늘 재물 흐름은 이래요. '+R.D.m+' 큰돈 걸린 결정은 재미로 보는 점보다 전문가와 꼭 상의해요.'},
+ {k:/직장|회사|취업|이직|승진|사업|창업|면접|일자리|퇴사|알바|진로|직업|프리랜서|일이/,f:(S,L,R)=>'손님 사주엔 '+CAREER[L.tg]+'의 기운이 흘러요. '+GRP_HAS[L.tg].split('.')[0]+'. '+(R.score>=4?'지금은 움직여도 좋은 운이에요.':'서두르기보다 준비를 다지는 게 좋은 때예요.')+' '+R.D.a},
+ {k:/건강|아프|병|몸|다이어트|잠|수면|피곤/,f:(S,L,R)=>EL_BODY[L.w]+' 쪽을 아껴 주면 좋은 사주예요. '+EL_WEAK[L.w]+' 다만 몸 일은 구슬보다 의사 선생님이 훨씬 정확하니, 불편하면 꼭 진료를 받아 봐요.'},
+ {k:/시험|합격|공부|자격증|수능|성적|학교|대학|유학/,f:(S,L,R)=>(S.grp[4]?'인성이 사주에 자리 잡아 공부와 문서 운이 따르는 사람이에요.':'스스로 부딪혀 깨치는 타입이라, 문제를 많이 풀어 보는 게 지름길이에요.')+' '+(R.sp.g===4||R.sp.g===3?'오늘은 공부 기운이 특히 좋아요.':'오늘은 짧게라도 꾸준히 하는 게 중요해요.')},
+ {k:/이사|집|여행|이동|해외|방향/,f:(S,L,R)=>'손님에겐 '+EL_DIR[L.w]+' 방향이 기운을 채워 줘요. '+(R.extra.includes('부딪')?'오늘은 이동할 때 특히 조심해요.':'움직여서 새 기운을 받기 괜찮은 흐름이에요.')+' 큰 이사는 계절이 바뀔 때 차분히 정하면 좋아요.'},
+ {k:/가족|부모|엄마|아빠|자식|아이|딸|아들|형제|친구|사람|관계|동료|상사/,f:(S,L,R)=>(S.grp[0]?'의리를 중히 여기는 사주라 사람 덕도, 사람 걱정도 함께 따라요.':'혼자 짊어지기 쉬운 사주라, 먼저 손 내밀면 관계가 훨씬 편해져요.')+' '+R.D.a}];
+function qaFallback(q,S,g,F){const L=lifeRead(S,g),R=todayRead(S,F.key),r=seedRng(q+'|'+R.tj),c=QA_CAT.find(o=>o.k.test(q));
+  const open=['어디 보자… 구슬 속에 안개가 걷히는구먼요.','흐음, 구슬이 '+EL_COLN[L.w].split('·')[0]+' 빛으로 반짝이네요.','가만있어 봐요, 손님 사주를 다시 짚어 보니…','아이고, 마침 구슬에 뭐가 비치네요.'],
+    end=['그래도 운은 마음 쓰는 대로 흘러가니께, 너무 매이지는 말아요.','점은 길을 비춰 주는 등불일 뿐, 걸음은 손님 몫이에요.','오늘 밤 따뜻하게 자고 나면 마음도 한결 가벼울 거예요.'];
+  const pk=a=>a[Math.floor(r()*a.length)];
+  let body;if(c)body=c.f(S,L,R);else{const yes=r()<.62;body=(yes?'좋은 쪽으로 기우는 기운이 보여요. ':'지금은 한 박자 쉬어 가라는 기운이 보여요. ')+GAN_K[S.ds]+EL[S.dm]+' 일간 손님은 '+L.D.good.split('.')[0]+'. 그 장점을 믿고 '+(yes?'밀고 나가 봐요.':'때를 기다려 봐요.')+' '+R.D.a;}
+  return pk(open)+' '+body+' '+pk(end);}
+/* ==========================================================
+   점술방 — 장면 (구슬 놓인 탁자와 점술사 '달님 보살')
+   ========================================================== */
+const FT={scene:new THREE.Scene(),flames:[],smoke:[],read:0,talk:0,hands:0,blinkT:2,sayT:null,busy:false};
+const BALL_Y=.98;
+(function buildFort(){const S=FT.scene;S.background=new THREE.Color('#120a18');S.fog=new THREE.Fog('#120a18',4,11);
+  S.add(new THREE.AmbientLight('#6a4a7a',.55));S.add(new THREE.HemisphereLight('#7a5a9a','#2a1410',.35));
+  const L=c=>new THREE.MeshLambertMaterial({color:c});
+  /* walls: draped fabric */
+  const wallTx=canvasTex(512,256,(g,w,h)=>{for(let x=0;x<w;x++){const k=.5+.5*Math.sin(x/w*Math.PI*2*8),c=Math.round(48+k*40);g.fillStyle='rgb('+c+','+Math.round(c*.36)+','+Math.round(c*.62)+')';g.fillRect(x,0,1,h);}
+    g.fillStyle='rgba(220,174,85,.55)';for(let x=0;x<w;x+=64){g.fillRect(x+30,0,3,h);}g.fillStyle='rgba(220,174,85,.7)';g.fillRect(0,h-18,w,5);g.fillRect(0,14,w,4);
+    for(let x=8;x<w;x+=16){g.beginPath();g.arc(x,h-9,3,0,7);g.fill();}});wallTx.wrapS=THREE.RepeatWrapping;wallTx.repeat.set(4,1);
+  const wall=new THREE.Mesh(new THREE.CylinderGeometry(4.6,4.6,3.4,48,1,true),new THREE.MeshLambertMaterial({map:wallTx,side:THREE.BackSide}));wall.position.y=1.7;S.add(wall);
+  const tentTx=canvasTex(512,64,(g,w,h)=>{for(let x=0;x<w;x++){const k=Math.floor(x/(w/16))%2;g.fillStyle=k?'#3a1530':'#22102e';g.fillRect(x,0,1,h);}});tentTx.wrapS=THREE.RepeatWrapping;
+  const tent=new THREE.Mesh(new THREE.ConeGeometry(4.6,1.6,48,1,true),new THREE.MeshLambertMaterial({map:tentTx,side:THREE.BackSide}));tent.position.y=4.2;S.add(tent);
+  /* rug */
+  const rugTx=canvasTex(512,512,(g,w,h)=>{g.fillStyle='#2a0f16';g.fillRect(0,0,w,h);const cx=w/2;[[250,'#5a1a22'],[220,'#7a2a26'],[205,'#2a0f16'],[190,'#8a5a2a'],[180,'#5a1a22'],[120,'#2a1a3a'],[100,'#7a2a26'],[40,'#c89a3c']].forEach(([r,c])=>{g.fillStyle=c;g.beginPath();g.arc(cx,cx,r,0,7);g.fill();});
+    g.strokeStyle='rgba(220,174,85,.6)';g.lineWidth=3;for(let i=0;i<24;i++){const a=i/24*Math.PI*2;g.beginPath();g.moveTo(cx+Math.cos(a)*120,cx+Math.sin(a)*120);g.lineTo(cx+Math.cos(a)*178,cx+Math.sin(a)*178);g.stroke();}
+    for(let i=0;i<48;i++){const a=i/48*Math.PI*2;g.fillStyle='#c89a3c';g.beginPath();g.arc(cx+Math.cos(a)*212,cx+Math.sin(a)*212,4,0,7);g.fill();}});
+  const floor=new THREE.Mesh(new THREE.CircleGeometry(4.6,48),L('#1e1012'));floor.rotation.x=-Math.PI/2;S.add(floor);
+  const rug=new THREE.Mesh(new THREE.CircleGeometry(2.4,48),new THREE.MeshLambertMaterial({map:rugTx}));rug.rotation.x=-Math.PI/2;rug.position.y=.005;S.add(rug);
+  /* table with star cloth */
+  const clothTx=canvasTex(512,256,(g,w,h)=>{g.fillStyle='#1c1840';g.fillRect(0,0,w,h);for(let i=0;i<90;i++){const x=Math.random()*w,y=Math.random()*h*.88,r=Math.random()*2.2+.6;g.fillStyle='rgba(240,210,140,'+(Math.random()*.5+.4)+')';g.beginPath();g.arc(x,y,r,0,7);g.fill();}
+    g.fillStyle='rgba(240,210,140,.9)';for(let i=0;i<8;i++){const x=i*64+32,y=h*.45;g.beginPath();g.arc(x,y,12,0,7);g.fill();g.fillStyle='#1c1840';g.beginPath();g.arc(x+6,y-3,11,0,7);g.fill();g.fillStyle='rgba(240,210,140,.9)';}
+    g.fillStyle='#c89a3c';g.fillRect(0,h-22,w,8);for(let x=4;x<w;x+=8){g.fillRect(x,h-14,3,14);}});clothTx.wrapS=THREE.RepeatWrapping;clothTx.repeat.set(3,1);
+  const skirtG=new THREE.CylinderGeometry(.98,1.12,.64,64,1,true),pos=skirtG.attributes.position;for(let i=0;i<pos.count;i++){const x=pos.getX(i),z=pos.getZ(i),y=pos.getY(i),a=Math.atan2(z,x),k=(.32-y)/.64,f=1+.05*k*Math.sin(a*18);pos.setX(i,x*f);pos.setZ(i,z*f);}skirtG.computeVertexNormals();
+  const skirt=new THREE.Mesh(skirtG,new THREE.MeshLambertMaterial({map:clothTx,side:THREE.DoubleSide}));skirt.position.y=.32;S.add(skirt);
+  const topTx=canvasTex(256,256,(g,w,h)=>{g.fillStyle='#1c1840';g.fillRect(0,0,w,h);g.strokeStyle='rgba(220,174,85,.55)';g.lineWidth=2;[118,100].forEach(r=>{g.beginPath();g.arc(128,128,r,0,7);g.stroke();});
+    for(let i=0;i<12;i++){const a=i/12*Math.PI*2;g.fillStyle='rgba(240,210,140,.8)';g.beginPath();g.arc(128+Math.cos(a)*109,128+Math.sin(a)*109,3,0,7);g.fill();}for(let i=0;i<40;i++){g.fillStyle='rgba(240,210,140,'+(Math.random()*.4+.2)+')';g.fillRect(Math.random()*w,Math.random()*h,1.5,1.5);}});
+  const top=new THREE.Mesh(new THREE.CylinderGeometry(.99,.99,.03,64),[new THREE.MeshLambertMaterial({color:'#1c1840'}),new THREE.MeshLambertMaterial({map:topTx}),L('#1c1840')]);top.position.y=.645;S.add(top);
+  const gold=new THREE.MeshPhongMaterial({color:'#c89a3c',emissive:'#3a2408',shininess:80,specular:'#ffe2a0'});
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(.99,.012,6,80),gold);rim.rotation.x=Math.PI/2;rim.position.y=.66;S.add(rim);
+  /* crystal ball stand */
+  const stand=new THREE.Mesh(new THREE.LatheGeometry([[0,0],[.16,0],[.15,.02],[.09,.05],[.07,.09],[.12,.13],[.13,.15],[0,.15]].map(p=>new THREE.Vector2(p[0],p[1])),24),gold);stand.position.y=.66;S.add(stand);
+  /* crystal ball */
+  FT.bu={time:{value:0},glow:{value:0}};
+  const ball=new THREE.Mesh(new THREE.SphereGeometry(.17,48,32),new THREE.ShaderMaterial({uniforms:FT.bu,transparent:true,depthWrite:false,
+    vertexShader:`varying vec3 vN,vP,vV;void main(){vP=position;vec4 mv=modelViewMatrix*vec4(position,1.);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}`,
+    fragmentShader:`uniform float time,glow;varying vec3 vN,vP,vV;
+float h(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
+float n(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(mix(h(i),h(i+vec3(1,0,0)),f.x),mix(h(i+vec3(0,1,0)),h(i+vec3(1,1,0)),f.x),f.y),mix(mix(h(i+vec3(0,0,1)),h(i+vec3(1,0,1)),f.x),mix(h(i+vec3(0,1,1)),h(i+vec3(1,1,1)),f.x),f.y),f.z);}
+float fb(vec3 p){float s=0.,a=.5;for(int i=0;i<4;i++){s+=a*n(p);p*=2.1;a*=.5;}return s;}
+void main(){float fr=pow(1.-max(dot(vN,vV),0.),2.4);vec3 p=vP*9.;float sp=.25+glow*1.3;float an=time*sp;p.xz=mat2(cos(an),-sin(an),sin(an),cos(an))*p.xz;
+float m=fb(p+vec3(0.,time*.3*sp,0.));m=smoothstep(.35,.85,m);vec3 c1=vec3(.25,.55,.95),c2=vec3(.85,.35,.9),c3=vec3(.6,.95,.95);
+vec3 col=mix(c1,c2,fb(p*.6+time*.1))*m*(.6+glow*1.2)+c3*pow(m,3.)*glow*.8;col+=vec3(.55,.7,1.)*fr*1.1;float core=1.-length(vP)/.17;col+=vec3(.7,.6,1.)*pow(max(core,0.),.6)*.12*(1.+glow*2.);
+gl_FragColor=vec4(col,clamp(.18+m*.5+fr*.7,0.,.95));}`}));ball.position.y=BALL_Y;S.add(ball);FT.ball=ball;
+  const hl=new THREE.Mesh(new THREE.SphereGeometry(.03,8,6),new THREE.MeshBasicMaterial({color:'#ffffff',transparent:true,opacity:.7}));hl.position.set(-.07,BALL_Y+.09,.11);hl.scale.set(1,.6,.4);S.add(hl);
+  FT.halo=sprite(TEX.glow,'#8a7bff',.45);FT.halo.scale.set(.9,.9,1);FT.halo.position.y=BALL_Y;S.add(FT.halo);
+  FT.bl=new THREE.PointLight('#8a7bff',.9,4,2);FT.bl.position.y=BALL_Y;S.add(FT.bl);
+  /* candles */
+  const wax=L('#efe2c6'),candle=(x,z,hh,s=1,light=false)=>{const c=new THREE.Mesh(new THREE.CylinderGeometry(.035*s,.038*s,hh,12),wax);c.position.set(x,(z>-9?0:0)+hh/2,z);return c;};
+  const place=(parent,x,y,z,hh,s,light)=>{const c=candle(0,0,hh,s);c.position.set(x,y+hh/2,z);S.add(c);const f=sprite(TEX.glow,'#ffb45a',.95);f.scale.set(.09*s,.16*s,1);f.position.set(x,y+hh+.05*s,z);S.add(f);
+    const core=sprite(TEX.glow,'#fff1c8',.9);core.scale.set(.035*s,.07*s,1);core.position.set(x,y+hh+.04*s,z);S.add(core);let pl=null;if(light){pl=new THREE.PointLight('#ff9a48',.8,3.6,1.8);pl.position.set(x,y+hh+.1,z);S.add(pl);}FT.flames.push({f,core,pl,ph:rand(0,6),y:y+hh+.05*s,s});};
+  place(S,.62,.66,.3,.16,1,true);place(S,.72,.66,.12,.11,.9);place(S,-.66,.66,.22,.13,1,true);
+  /* tarot cards fanned */
+  const backTx=canvasTex(64,108,(g,w,h)=>{g.fillStyle='#5a1a2a';g.fillRect(0,0,w,h);g.strokeStyle='#d8b45a';g.lineWidth=3;g.strokeRect(5,5,w-10,h-10);g.fillStyle='#d8b45a';g.beginPath();g.arc(w/2,h/2,12,0,7);g.fill();g.fillStyle='#5a1a2a';g.beginPath();g.arc(w/2+5,h/2-3,11,0,7);g.fill();
+    g.fillStyle='#d8b45a';[[w/2,16],[w/2,h-16]].forEach(([x,y])=>{g.beginPath();for(let i=0;i<10;i++){const a=i/10*Math.PI*2-Math.PI/2,r=i%2?3:7;g.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}g.fill();});});
+  const cardM=[L('#efe6d6'),L('#efe6d6'),L('#efe6d6'),L('#efe6d6'),new THREE.MeshLambertMaterial({map:backTx}),L('#efe6d6')];
+  for(let i=0;i<5;i++){const c=new THREE.Mesh(new THREE.BoxGeometry(.11,.004,.18),cardM);c.position.set(-.38+i*.06,.663+i*.002,.42-Math.abs(i-2)*.015);c.rotation.y=(i-2)*.22;S.add(c);}
+  /* incense + smoke */
+  const ib=new THREE.Mesh(new THREE.CylinderGeometry(.05,.035,.04,14),gold);ib.position.set(-.55,.68,-.25);S.add(ib);
+  const st2=new THREE.Mesh(new THREE.CylinderGeometry(.003,.003,.2,4),L('#5a2a1a'));st2.position.set(-.55,.79,-.25);st2.rotation.z=.15;S.add(st2);FT.inc=V3(-.535,.89,-.25);
+  for(let i=0;i<14;i++){const s=sprite(TEX.glow,'#b8a8c8',0,false);S.add(s);FT.smoke.push({s,a:i/14*5,life:5});}
+  /* coins */
+  for(let i=0;i<5;i++){const c=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.006,16),gold);c.position.set(.42+rand(-.04,.04),.663+i*.006,-.32);S.add(c);}
+  /* hanging lanterns */
+  const lanM=new THREE.MeshLambertMaterial({color:'#ffcf7a',emissive:'#ff9a3a',emissiveIntensity:.9,transparent:true,opacity:.92});FT.lans=[];
+  [[-1.6,2.5,-1.4],[1.7,2.6,-1.2],[-.2,2.9,-2.4],[2.4,2.3,.6],[-2.4,2.4,.4]].forEach(([x,y,z],i)=>{const g=new THREE.Group();g.position.set(x,y,z);S.add(g);
+    const b=new THREE.Mesh(new THREE.OctahedronGeometry(.13,0),lanM);b.scale.set(1,1.4,1);g.add(b);const cap=new THREE.Mesh(new THREE.ConeGeometry(.08,.08,8),gold);cap.position.y=.2;g.add(cap);
+    const ch=new THREE.Mesh(new THREE.CylinderGeometry(.004,.004,1.4,4),gold);ch.position.y=.9;g.add(ch);const gl=sprite(TEX.glow,'#ffb060',.6);gl.scale.set(.8,.8,1);g.add(gl);FT.lans.push({g,ph:i*1.7});});
+  {const pl=new THREE.PointLight('#ff9a50',.6,6,1.6);pl.position.set(0,2.5,-1.8);S.add(pl);}
+  /* beaded curtain behind */
+  const beads=new THREE.InstancedMesh(new THREE.SphereGeometry(.018,6,4),new THREE.MeshLambertMaterial({color:'#e0b860',emissive:'#4a2a08'}),26*22);const dm=new THREE.Object3D();let bi=0;FT.beadB=[];
+  for(let s=0;s<26;s++){const a=-Math.PI/2+(s-12.5)*.045,x=Math.cos(a)*3.6,z=Math.sin(a)*3.6;for(let k=0;k<22;k++){dm.position.set(x,2.8-k*.1,z);dm.updateMatrix();beads.setMatrixAt(bi++,dm.matrix);FT.beadB.push([x,2.8-k*.1,z,k,s]);}}S.add(beads);FT.beads=beads;
+  /* shelves with jars and books */
+  const wood=L('#4a2c1c'),jarC=['#5ac8a8','#c85a8a','#8a6ad8','#d8a84a','#5a8ad8'];
+  [[-2.6,-2.9,.55],[2.6,-2.9,-.55]].forEach(([x,z,ry])=>{const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;S.add(g);
+    [.9,1.5,2.1].forEach(y=>{const b=new THREE.Mesh(new THREE.BoxGeometry(1.3,.05,.32),wood);b.position.y=y;g.add(b);
+      for(let i=0;i<5;i++){const r=Math.random();if(r<.55){const jh=rand(.12,.24),j=new THREE.Mesh(new THREE.CylinderGeometry(rand(.05,.08),rand(.05,.08),jh,12),new THREE.MeshLambertMaterial({color:pick(jarC),emissive:'#1a0a20',transparent:true,opacity:.85}));j.position.set(-.5+i*.25,y+.025+jh/2,0);g.add(j);}
+        else{const bh=rand(.16,.24),bk=new THREE.Mesh(new THREE.BoxGeometry(.06,bh,.2),L(pick(['#7a2a26','#2a4a6a','#4a3a6a','#6a5a2a'])));bk.position.set(-.5+i*.25,y+.025+bh/2,0);bk.rotation.z=rand(-.15,.15);g.add(bk);}}});
+    [-.6,.6].forEach(px=>{const leg=new THREE.Mesh(new THREE.BoxGeometry(.05,2.2,.05),wood);leg.position.set(px,1.1,-.12);g.add(leg);});
+    const c=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.1,10),wax);c.position.set(.45,2.18,0);g.add(c);const f=sprite(TEX.glow,'#ffb45a',.9);f.scale.set(.08,.14,1);c.add(f);f.position.y=.1;FT.flames.push({f,core:null,pl:null,ph:rand(0,6),y:null,s:1});});
+  /* dust motes */
+  {const n=160,g=new THREE.BufferGeometry(),p=new Float32Array(n*3);for(let i=0;i<n;i++){p[i*3]=rand(-2.5,2.5);p[i*3+1]=rand(.3,3);p[i*3+2]=rand(-3,1.5);}g.setAttribute('position',new THREE.BufferAttribute(p,3));
+    FT.dust=new THREE.Points(g,new THREE.PointsMaterial({color:'#d8c0ff',size:.02,transparent:true,opacity:.55,depthWrite:false,blending:THREE.AdditiveBlending}));S.add(FT.dust);}
+  /* stool for the guest side (camera sits here) & a sleeping black cat */
+  const cat=new THREE.Group();cat.position.set(1.25,0,-.75);cat.rotation.y=-.8;S.add(cat);const fur=L('#1e1a24');
+  const cb=new THREE.Mesh(new THREE.SphereGeometry(.2,16,12),fur);cb.scale.set(1.2,.62,.9);cb.position.y=.13;cat.add(cb);
+  const chd=new THREE.Mesh(new THREE.SphereGeometry(.1,16,12),fur);chd.position.set(.2,.14,.08);cat.add(chd);
+  [-1,1].forEach(q=>{const e=new THREE.Mesh(new THREE.ConeGeometry(.035,.07,4),fur);e.position.set(.22,.24,.08+q*.05);e.rotation.z=-.2;chd.parent.add(e);});
+  [-1,1].forEach(q=>{const ey=new THREE.Mesh(new THREE.BoxGeometry(.004,.006,.03),new THREE.MeshBasicMaterial({color:'#e8d070'}));ey.position.set(.295,.16,.08+q*.035);cat.add(ey);});
+  FT.tail=new THREE.Mesh(new THREE.TorusGeometry(.17,.03,8,20,Math.PI*.9),fur);FT.tail.position.set(-.05,.05,0);FT.tail.rotation.x=Math.PI/2;cat.add(FT.tail);
+  const cush=new THREE.Mesh(new THREE.CylinderGeometry(.34,.36,.06,24),L('#7a2a46'));cush.position.y=.03;cat.add(cush);cb.position.y=.18;chd.position.y=.19;cat.children.forEach(o=>{if(o!==cush&&o!==cb&&o!==chd&&o!==FT.tail&&o.geometry&&o.geometry.type==='ConeGeometry')o.position.y=.29;});
+  FT.cat={cb};
+})();
+/* the fortune teller */
+const MUDANG=(function(){const S=FT.scene,root=new THREE.Group();root.position.set(0,0,-1.12);root.rotation.y=Math.PI;S.add(root);
+  const L=c=>new THREE.MeshLambertMaterial({color:c}),skin=new THREE.MeshLambertMaterial({color:'#f2c9a4',emissive:'#4a2a1c'}),gold=new THREE.MeshPhongMaterial({color:'#d8aa48',emissive:'#4a3008',shininess:90,specular:'#fff0b0'});
+  const shawl=L('#5a2a7a'),dress=L('#8a2a3a'),scarfM=L('#c2324a'),hairM=L('#2a1a1e');
+  const mk=(geo,mat,p=root)=>{const m=new THREE.Mesh(geo,mat);p.add(m);return m;};
+  const stool=mk(new THREE.CylinderGeometry(.3,.32,.5,20),L('#3a2030'));stool.position.y=.25;
+  const body=new THREE.Group();root.add(body);
+  const skirtB=mk(new THREE.CylinderGeometry(.26,.38,.32,20),dress,body);skirtB.position.y=.64;
+  const torso=mk(new THREE.SphereGeometry(1,20,14),dress,body);torso.scale.set(.25,.27,.21);torso.position.y=.88;
+  const sh=mk(new THREE.ConeGeometry(.36,.34,24,1,true),shawl,body);sh.position.y=1.0;
+  const shTop=mk(new THREE.SphereGeometry(1,20,10,0,Math.PI*2,0,Math.PI*.5),shawl,body);shTop.scale.set(.25,.1,.21);shTop.position.y=1.15;
+  const fringe=mk(new THREE.TorusGeometry(.35,.012,6,40),gold,body);fringe.rotation.x=Math.PI/2;fringe.position.y=.84;
+  const neck=mk(new THREE.TorusGeometry(.12,.016,8,24),gold,body);neck.rotation.x=Math.PI/2;neck.position.set(0,1.17,-.02);
+  for(let i=0;i<7;i++){const u=(i-3)/3,y=1.03-(1-u*u)*.06,r=.36*(1.17-y)/.34+.02,a=u*.9,b=mk(new THREE.SphereGeometry(.02,8,6),L(['#5ac8a8','#e0b860','#c85a8a'][i%3]),body);b.position.set(Math.sin(a)*r,y,-Math.cos(a)*r);}
+  /* head */
+  const head=makeHead(skin);body.add(head);head.position.set(0,1.42,-.02);head.scale.setScalar(.215);
+  const hg=head;const scarf=mk(new THREE.SphereGeometry(1.08,24,16,0,Math.PI*2,0,Math.PI*.52),scarfM,hg);scarf.rotation.x=-.35;scarf.position.set(0,.06,.08);
+  const knot=mk(new THREE.SphereGeometry(.3,12,10),scarfM,hg);knot.position.set(.0,.25,1.02);
+  [-1,1].forEach(q=>{const tl=mk(new THREE.ConeGeometry(.22,.9,8),scarfM,hg);tl.position.set(q*.22,-.3,1.12);tl.rotation.set(-.25,0,q*.25);});
+  const band=mk(new THREE.TorusGeometry(1.0,.05,8,40),gold,hg);band.rotation.x=Math.PI/2-.32;band.position.set(0,.5,0);
+  for(let i=0;i<9;i++){const a=Math.PI*(.3+i/8*.4),c=mk(new THREE.CylinderGeometry(.085,.085,.02,12),gold,hg);c.position.set(Math.cos(a)*.98,.42-Math.abs(i-4)*.025,-Math.sin(a)*.98);c.quaternion.setFromUnitVectors(UP,V3(Math.cos(a),0,-Math.sin(a)));}
+  [-1,1].forEach(q=>{const puff=mk(new THREE.SphereGeometry(.38,12,10),hairM,hg);puff.position.set(q*.86,-.28,.15);puff.scale.set(.7,1,1);
+    const ear=mk(new THREE.TorusGeometry(.2,.035,8,24),gold,hg);ear.position.set(q*.97,-.66,-.1);});
+  /* eye shadow & lashes for a fortune-teller look */
+  [-1,1].forEach(q=>{const ls=mk(new THREE.BoxGeometry(.22,.03,.03),L('#2a1a1e'),hg);ls.position.set(q*.34,.27,-.94);ls.rotation.z=-q*.18;
+    const es=mk(new THREE.SphereGeometry(1,12,8),new THREE.MeshBasicMaterial({color:'#8a5ab8',transparent:true,opacity:.35}),hg);es.position.set(q*.34,.17,-.9);es.scale.set(.16,.07,.05);});
+  const mole=mk(new THREE.SphereGeometry(.035,6,4),L('#3a2420'),hg);mole.position.set(.32,-.38,-.92);
+  /* lips: tint the mouth a little redder */
+  const eyes=[],mouths=[];head.children.forEach(o=>{if(o.material===makeHead.m.eye)eyes.push(o);if(o.material===makeHead.m.mouth)mouths.push(o);});
+  mouths.forEach(m=>{m.material=new THREE.MeshBasicMaterial({color:'#c23a4a'});m.scale.x*=1.2;});
+  /* arms */
+  const cyl=new THREE.CylinderGeometry(1,1,1,10),sph=new THREE.SphereGeometry(1,12,10),A={};
+  [-1,1].forEach(s=>{A[s]={ua:mk(cyl,shawl,body),fa:mk(cyl,dress,body),hd:mk(sph,skin,body),el:mk(sph,shawl,body),so:mk(sph,shawl,body),br:mk(new THREE.TorusGeometry(1,.3,6,16),gold,body)};});
+  return {root,body,head,eyes,mouths,A,ph:0};})();
+function poseMudang(dt){const M=MUDANG,br=RM?0:Math.sin(t*1.3)*.008,rd=FT.read;M.body.position.y=br;
+  M.head.rotation.set(-.12+(RM?0:Math.sin(t*.7)*.04)-rd*.12,(RM?0:Math.sin(t*.45)*.08)*(1-rd),(RM?0:Math.sin(t*.6)*.05));
+  FT.blinkT-=dt;const bl=FT.blinkT<.12?.15:1;if(FT.blinkT<0)FT.blinkT=rand(2,5);M.eyes.forEach(e=>{e.scale.y=.16*bl*(1-rd*.55);});
+  const talk=FT.talk>0?(.4+.6*Math.abs(Math.sin(t*14))):0;M.mouths.forEach(m=>{m.scale.y=.035*(1+talk*1.6);});
+  /* hands: rest on the table by the ball, or circle over it while reading. root is at z=-1.12 rotated PI: local -z faces the guest; ball is at local (0, BALL_Y, -1.12) */
+  const hz=-1.12,k=FT.hands;[-1,1].forEach(s=>{const a=t*2.2+(s>0?0:Math.PI),sh=P3(s*.27,1.12+br,-.05),
+    rest=P3(s*.3,.71,-.6),over=P3(s*.16+Math.cos(a)*.05,BALL_Y+.14+Math.sin(a*1.3)*.03,hz+.14+Math.sin(a)*.05),hd=rest.clone().lerp(over,k);
+    const mid=sh.clone().lerp(hd,.5);mid.x+=s*.1;mid.y-=.08+k*.02;mid.z+=.04;const X=M.A[s];
+    seg(X.ua,sh,mid,.075);seg(X.fa,mid,hd,.062);X.el.position.copy(mid);X.el.scale.setScalar(.075);X.so.position.copy(sh);X.so.scale.setScalar(.1);X.hd.position.copy(hd);X.hd.scale.set(.06,.05,.07);
+    const wr=mid.clone().lerp(hd,.82);X.br.position.copy(wr);X.br.scale.setScalar(.062);X.br.quaternion.copy(X.fa.quaternion);X.br.rotateX(Math.PI/2);});}
+function frameFort(dt){FT.bu.time.value=t;const tr=FT.busy?1:0;FT.read+=(tr-FT.read)*Math.min(1,dt*2.5);FT.hands+=((FT.busy?1:0)-FT.hands)*Math.min(1,dt*3);FT.talk=Math.max(0,FT.talk-dt);
+  FT.bu.glow.value=FT.read;const pul=1+(RM?0:Math.sin(t*2)*.05);FT.halo.scale.setScalar((.8+FT.read*.7)*pul);FT.halo.material.opacity=.38+FT.read*.4;FT.bl.intensity=.9+FT.read*.8+(RM?0:Math.sin(t*3)*.1);
+  FT.flames.forEach(f=>{const k=RM?1:.85+.15*Math.sin(t*9+f.ph)+.08*Math.sin(t*23+f.ph*2);f.f.scale.y=.16*f.s*k;if(f.core)f.core.scale.y=.07*f.s*k;if(f.pl)f.pl.intensity=.75*k;});
+  FT.lans.forEach(l=>{l.g.rotation.z=RM?0:Math.sin(t*.5+l.ph)*.04;});
+  FT.smoke.forEach(p=>{p.a+=dt;if(p.a>p.life){p.a=0;}const k=p.a/p.life;p.s.position.set(FT.inc.x+Math.sin(p.a*1.3+k*4)*.05*k,FT.inc.y+k*1.1,FT.inc.z+Math.cos(p.a)*.03*k);const sc=.05+k*.35;p.s.scale.set(sc,sc,1);p.s.material.opacity=.22*Math.sin(Math.PI*k);});
+  if(!RM){const a=FT.dust.geometry.attributes.position;for(let i=0;i<a.count;i++){let y=a.getY(i)+dt*.04;if(y>3)y=.3;a.setY(i,y);a.setX(i,a.getX(i)+Math.sin(t*.3+i)*dt*.01);}a.needsUpdate=true;
+    FT.tail.rotation.z=Math.sin(t*.8)*.12;FT.cat.cb.scale.y=.62+Math.sin(t*1.6)*.02;}
+  poseMudang(dt);
+  CAM.yaw+=(CAM.ty-CAM.yaw)*Math.min(1,dt*4);CAM.pitch+=(CAM.tp-CAM.pitch)*Math.min(1,dt*4);
+  const port=W<H,d=port?2.9:2.8,y=CAM.yaw*.6;cam.position.set(Math.sin(y)*d,1.5+CAM.pitch*.8,Math.cos(y)*d-.3);cam.lookAt(0,1.08+CAM.pitch*.3,-.55);
+  {const dh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dockH'))||0,sh=clamp(dh*.5-12,0,H*.36);if(FT.sh===undefined)FT.sh=sh;FT.sh+= (sh-FT.sh)*Math.min(1,dt*4);cam.setViewOffset(W,H,0,FT.sh,W,H);}
+  R.render(FT.scene,cam);}
+/* ---------- 점술방 화면 흐름 ---------- */
+const FU={form:Object.assign({cal:'s',g:'f',y:1990,m:1,d:1,leap:false,h:-1},store.fort||{}),S:null,F:null,turns:[],samp:undefined,ctl:null};
+(async()=>{try{if(window.claude&&typeof window.claude.use==='function'){FU.samp=await window.claude.use('sample');}else FU.samp=null;}catch(e){FU.samp=null;}})();
+function ftSay(text,ms){const el=$('#ftSay');clearInterval(FT.sayT);el.textContent='';let i=0;const chars=[...text];FT.talk=chars.length*.035+.3;
+  if(RM){el.textContent=text;return;}FT.sayT=setInterval(()=>{i++;el.textContent=chars.slice(0,i).join('');if(i>=chars.length)clearInterval(FT.sayT);},ms||32);}
+function ftFill(){const F=FU.form,yS=$('#ftY');yS.value=F.y;$('#ftLeap').checked=!!F.leap;setSeg('ftCal',F.cal);setSeg('ftG',F.g);$('#ftLeapW').hidden=F.cal!=='l';
+  const mS=$('#ftM');if(!mS.options.length)for(let m=1;m<=12;m++)mS.add(new Option(m+'월',m));mS.value=F.m;
+  const hS=$('#ftH');if(!hS.options.length){hS.add(new Option('모름',-1));SIJIN.forEach((s,i)=>hS.add(new Option(s[0]+' ('+s[1]+')',i)));}hS.value=F.h;ftDays();}
+function ftDays(){const F=FU.form,y=+$('#ftY').value||F.y,m=+$('#ftM').value||1,leap=F.cal==='l'&&$('#ftLeap').checked;
+  const lp=F.cal==='l'?lunarLeapOf(y):0;$('#ftLeapW').hidden=F.cal!=='l';$('#ftLeapT').textContent=F.cal==='l'?(lp?'윤달 ('+lp+'월)':'윤달 없음'):'윤달';$('#ftLeap').disabled=!(F.cal==='l'&&lp===m);if($('#ftLeap').disabled)$('#ftLeap').checked=false;
+  const n=F.cal==='l'?(y>=1920&&y<=2050?lunarLen(y,m,leap&&lp===m):30):new Date(Date.UTC(y,m,0)).getUTCDate(),dS=$('#ftD'),cur=+dS.value||F.d;dS.innerHTML='';for(let d=1;d<=n;d++)dS.add(new Option(d+'일',d));dS.value=Math.min(cur,n);}
+function ftErr(msg){const e=$('#ftErr');e.textContent=msg||'';e.hidden=!msg;}
+function ftSubmit(e){if(e)e.preventDefault();ac();const F=FU.form,y=Math.round(+$('#ftY').value),m=+$('#ftM').value,d=+$('#ftD').value,h=+$('#ftH').value,leap=F.cal==='l'&&$('#ftLeap').checked;
+  if(!(y>=1920&&y<=2050)){ftErr('태어난 해는 1920년부터 2050년 사이로 적어 주세요.');return;}
+  const j=F.cal==='l'?lunarToSolar(y,m,d,leap):jdnOf(y,m,d);if(!j||(F.cal==='s'&&ymdOf(j)[2]!==d)){ftErr('그런 날짜가 달력에 없어요. 다시 확인해 주세요.');return;}
+  if(j>todayJ()){ftErr('아직 오지 않은 날이에요. 태어난 날을 적어 주세요.');return;}ftErr('');
+  Object.assign(F,{y,m,d,h,leap});store.fort=F;save();
+  FU.F={j,h,key:j+':'+h+':'+F.g};FU.S=makeSaju(j,h);FU.turns=[];$('#ftChat').innerHTML='';
+  FT.busy=true;$('#ftGo').disabled=true;ftSay('어디 보자… 구슬에 손님 사주를 비춰 볼게요.');crystalHum();
+  setTimeout(()=>{FT.busy=false;$('#ftGo').disabled=false;ftShow('today');const S=FU.S;
+    ftSay(ANIMAL[S.yb]+'띠에 '+GAN_K[S.ds]+EL[S.dm]+' 일간이시네요. '+DMT[S.ds].img+' 같은 분이구먼요. 오늘 운부터 볼까요?');chime();},RM?300:2600);}
+function ftShow(tab){$('#ftForm').hidden=true;$('#ftOut').hidden=false;const S=FU.S,F=FU.form;
+  $('#ftToday').innerHTML=todayHTML(S,FU.F.key);$('#ftLife').innerHTML=lifeHTML(S,F.g,FU.F);ftTab(tab);$('#ftWho').textContent=MY_NICK+' 님 · '+ANIMAL[S.yb]+'띠 · '+gzK(S.P.d)+' 일주';}
+function ftTab(tab){document.querySelectorAll('#ftTabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.t===tab)));
+  $('#ftToday').hidden=tab!=='today';$('#ftLife').hidden=tab!=='life';$('#ftAsk').hidden=tab!=='ask';$('#ftAskF').hidden=tab!=='ask';FU.tab=tab;
+  if(tab==='life')ftSay('평생 사주는 타고난 지도예요. 천천히 읽어 보세요.');else if(tab==='ask'){ftSay('궁금한 걸 물어보세요. 구슬에 비춰 볼게요.');setTimeout(()=>{if(W>=760)$('#ftQ').focus();},50);}
+  const b=$('#ftBody');if(b)b.scrollTop=0;}
+function ftBubble(who,text){const li=document.createElement('li');li.className='ft-m '+who;const p=document.createElement('p');p.textContent=text;li.appendChild(p);$('#ftChat').appendChild(li);li.scrollIntoView({block:'end'});return p;}
+async function ftAsk(e){if(e)e.preventDefault();const q=$('#ftQ').value.trim();if(!q||FT.busy)return;if(!FU.S){ftTab('ask');return;}ac();$('#ftQ').value='';ftBubble('me',q);
+  const p=ftBubble('her','구슬을 들여다보는 중…');p.parentNode.classList.add('wait');FT.busy=true;$('#ftAskBtn').disabled=true;crystalHum();const S=FU.S,F=FU.form;
+  const done=txt=>{FT.busy=false;$('#ftAskBtn').disabled=false;p.parentNode.classList.remove('wait');p.textContent=txt;{const m=txt.match(/^.{8,60}?[.?!…]/);ftSay(m?m[0]:txt.slice(0,48)+'…');}chime();FU.turns.push({role:'user',content:q},{role:'assistant',content:txt});if(FU.turns.length>12)FU.turns.splice(0,2);p.parentNode.scrollIntoView({block:'end'});};
+  if(FU.samp){const rules='너는 3D 힐링 게임 "산사의 고요" 속 점술방의 점술사 "달님 보살"이다. 수정 구슬이 놓인 탁자 앞에 앉은 푸근하고 정 많은 아줌마로, 손님의 사주를 바탕으로 질문에 답한다.\n'+
+      '말투: 한국어 존댓말, 정감 있는 아줌마 말투(가끔 "~구먼요", "~혀요" 정도만 살짝). 3~6문장, 말하듯이, 마크다운·목록·이모지 없이.\n'+
+      '내용: 아래 사주 정보(일간, 오행, 십신, 오늘 일진) 중 한두 가지를 자연스럽게 근거로 들고, 구체적이고 따뜻한 조언으로 마무리한다. 겁주는 예언이나 단정은 하지 않는다. 건강·법률·투자처럼 중요한 결정은 재미로 보는 점이니 전문가와 상의하라고 부드럽게 덧붙인다. 사주와 상관없는 질문에도 점술사답게 재치 있게 답한다.\n\n[손님 사주]\n'+sajuSummary(S,F.g,FU.F);
+    FU.ctl=new AbortController();
+    try{const {text}=await FU.samp([{role:'user',content:rules},...FU.turns,{role:'user',content:q}],{cache:false,modelTier:'quick',signal:FU.ctl.signal,onText:({text})=>{p.parentNode.classList.remove('wait');p.textContent=text;FT.talk=.6;}});done(text.trim());return;}
+    catch(err){if(err&&['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'].includes(err.code))FU.samp=null;}}
+  setTimeout(()=>done(qaFallback(q,S,F.g,FU.F)),RM?200:1800);}
+function crystalHum(){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime;[220,330,440.5].forEach((f,i)=>{const o=c.createOscillator();o.type='sine';o.frequency.value=f;const g=c.createGain();g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.025/(i+1),now+.8);g.gain.linearRampToValueAtTime(0,now+2.6);o.connect(g);g.connect(A.master);o.start(now);o.stop(now+2.7);});}
+function chime(){if(!A.ctx||!A.on)return;[1046.5,1318.5,1568,2093].forEach((f,i)=>setTimeout(()=>softTone(f,.022,1.8),i*110));}
+function enterFort(){ac();if(scene==='fort')return;commitFire();commitOnsen();showScene('fort');startAmb('fort');CAM.ty=CAM.yaw=0;CAM.tp=CAM.pitch=0;ftFill();
+  if(FU.S){ftShow(FU.tab||'today');ftSay('또 오셨네요, '+MY_NICK+' 님. 구슬이 반가워하네요.');}else{$('#ftForm').hidden=false;$('#ftOut').hidden=true;ftSay('어서 와요, '+MY_NICK+' 님. 태어난 날과 시를 알려 주면 구슬에 비춰 볼게요.');}}
+document.querySelectorAll('.seg[data-key="ftCal"] button').forEach(b=>b.onclick=()=>{FU.form.cal=b.dataset.v;setSeg('ftCal',b.dataset.v);ftDays();});
+document.querySelectorAll('.seg[data-key="ftG"] button').forEach(b=>b.onclick=()=>{FU.form.g=b.dataset.v;setSeg('ftG',b.dataset.v);});
+['#ftY','#ftM','#ftLeap'].forEach(s=>$(s).addEventListener('change',ftDays));$('#ftY').addEventListener('input',()=>{if(String($('#ftY').value).length===4)ftDays();});
+$('#ftForm').addEventListener('submit',ftSubmit);$('#ftAskF').addEventListener('submit',ftAsk);
+document.querySelectorAll('#ftTabs button').forEach(b=>b.onclick=()=>ftTab(b.dataset.t));
+$('#ftRedo').onclick=()=>{$('#ftForm').hidden=false;$('#ftOut').hidden=true;ftFill();ftSay('다시 적어 주세요. 천천히 봐 드릴게요.');};
+document.querySelectorAll('#ftSug button').forEach(b=>b.onclick=()=>{$('#ftQ').value=b.textContent;ftAsk();});
+$('#goFort').onclick=enterFort;
+
+/* ==========================================================
    input
    ========================================================== */
 const ptrs=new Map();let dragStart=null,pinch0=0,moved=0;
@@ -1940,10 +2374,10 @@ cv.addEventListener('wheel',e=>{if(scene!=='temple'&&scene!=='fire'&&scene!=='on
 function pickTag(x,y){const list=(scene==='temple'?TS.wishL:scene==='med'?NS.wishL:[]).map(l=>l.userData.tag);if(!list.length)return false;
   ray.setFromCamera({x:x/W*2-1,y:-(y/H)*2+1},cam);ray.camera=cam;const hit=ray.intersectObjects(list,false)[0];if(hit){const w=hit.object.userData.wish;toast('“'+w.text+'”  ·  '+w.d,5000);softTone(523,.04,1.8);return true;}return false;}
 addEventListener('keydown',e=>{if(!$('#modal').hidden||!$('#wishModal').hidden){if(e.key==='Escape')$('#wishModal').hidden=true;return;}
-  if(e.target.matches('textarea,input[type=text]'))return;
+  if(e.target.matches('textarea,input[type=text],input[type=number],select'))return;
   {const km=KEYMAP[e.code];if(km&&(scene==='temple'||scene==='fire'||scene==='onsen')){KEYS.add(km);e.preventDefault();return;}}
   if(e.key==='Escape'){if(scene!=='home')goHome();return;}
-  if(scene!=='home'&&scene!=='fire'&&scene!=='onsen'&&scene!=='sea'&&e.code==='KeyM'){ac();if($('#malaPanel').hidden)setMala(true);advanceBead();return;}
+  if(scene!=='home'&&scene!=='fire'&&scene!=='onsen'&&scene!=='sea'&&scene!=='fort'&&e.code==='KeyM'){ac();if($('#malaPanel').hidden)setMala(true);advanceBead();return;}
   if(scene==='med'&&M.running&&e.code==='Space'){e.preventDefault();M.press=true;}
   else if(scene==='fire'){if(e.target.matches('button,input')&&(e.code==='Space'||e.key==='Enter'))return;if(e.code==='Space'){e.preventDefault();addWood();}else if(e.code==='KeyP')pokeFire();else if(e.code==='KeyF')fireworksShow(false);else if(e.code==='KeyR')mallowToggle();else if(e.code==='KeyV')setFireView(!FV.third);}
   else if(scene==='temple'){if(e.target.matches('button,input')&&(e.code==='Space'||e.key==='Enter'))return;
@@ -1960,17 +2394,17 @@ document.querySelectorAll('.seg').forEach(seg=>seg.addEventListener('click',e=>{
   if(k==='pal'){M.pal=v;applyPal();if(scene==='med')startAmb('nature');}else if(k==='pat')M.pat=v;else if(k==='dur')M.dur=+v;
   else if(k==='goal'){T.goal=+v;resetCount();toast('목표: '+goalName());}setSeg(k,v);}));
 setSeg('pal',M.pal);setSeg('pat',M.pat);setSeg('dur',M.dur);setSeg('goal',T.goal);
-function showScene(kind){scene=kind;document.body.classList.remove('at-home');$('#home').hidden=true;$('#scene').hidden=false;$('#modal').hidden=true;$('#dockMed').hidden=kind!=='med';$('#dockTem').hidden=kind!=='temple';$('#dockFire').hidden=kind!=='fire';$('#dockOnsen').hidden=kind!=='onsen';$('#dockSea').hidden=kind!=='sea';$('#wishBtn').hidden=kind==='onsen'||kind==='sea';$('#guide').hidden=true;
+function showScene(kind){scene=kind;cam.clearViewOffset();FT.sh=undefined;document.body.classList.remove('at-home');$('#home').hidden=true;$('#scene').hidden=false;$('#modal').hidden=true;$('#dockMed').hidden=kind!=='med';$('#dockTem').hidden=kind!=='temple';$('#dockFire').hidden=kind!=='fire';$('#dockOnsen').hidden=kind!=='onsen';$('#dockSea').hidden=kind!=='sea';$('#dockFort').hidden=kind!=='fort';$('#wishBtn').hidden=kind==='onsen'||kind==='sea'||kind==='fort';$('#guide').hidden=true;
   $('#wishBtn').textContent=kind==='med'?'소원 띄우기':kind==='fire'?'소원 태우기':'소원 달기';if(kind!=='temple')chantStop();if(kind!=='med')bowlDroneStop();if(kind!=='fire')fireSndStop();if(kind!=='onsen')onsenSndStop();if(kind!=='sea')seaSndStop();
   CAM.cx=CAM.cz=CAM.cy=undefined;if(kind==='temple'){CAM.yaw=CAM.ty=.3;CAM.pitch=CAM.tp=.3;CAM.dist=CAM.td=W<H?8.5:6.8;}else if(kind==='onsen'){CAM.yaw=CAM.ty=0;CAM.pitch=CAM.tp=.34;CAM.dist=CAM.td=W<H?8.5:6.8;}else if(kind==='sea'){CAM.yaw=CAM.ty=Math.PI-.6;CAM.pitch=CAM.tp=.3;CAM.dist=CAM.td=W<H?9.5:7.5;}else if(kind==='fire'){fireCamReset();}else{CAM.yaw=CAM.ty=0;CAM.pitch=CAM.tp=0;}
-  $('#malaBtn').hidden=kind==='fire'||kind==='onsen'||kind==='sea';if(kind==='fire'||kind==='onsen'||kind==='sea')$('#malaPanel').hidden=true;else setMala(W>=760||$('#malaBtn').getAttribute('aria-pressed')==='true');resize();netScene(kind);}
+  $('#malaBtn').hidden=kind==='fire'||kind==='onsen'||kind==='sea'||kind==='fort';if(kind==='fire'||kind==='onsen'||kind==='sea'||kind==='fort')$('#malaPanel').hidden=true;else setMala(W>=760||$('#malaBtn').getAttribute('aria-pressed')==='true');resize();netScene(kind);}
 function enterFire(){ac();if(scene==='fire')return;commitOnsen();{let s0=FSEAT_A.findIndex((a,i)=>!seatTaken(i));FW.seat=s0;if(s0>=0){const p=seatPt(s0,1.72);FW.x=p[0];FW.z=p[1];FW.yaw=FSEAT_A[s0];}else{FW.x=0;FW.z=3.3;FW.yaw=0;}FW.tx=null;FW.amt=0;syncFireSit();}showScene('fire');FS.elapsed=0;FS.added=0;FS.power=Math.max(FS.power,.72);FS.warned=false;startAmb('fire');if(FR.on)fireSndStart();
   toast('모닥불 앞에 앉았습니다. 가만히 불을 바라보세요.');}
 function commitFire(){if(scene==='fire'){if(MSH.on){MSH.on=false;MSH.lit=false;FP.arm=0;$('#fMallow').textContent='마시멜로 굽기';$('#mMeter').hidden=true;$('#mLbl').hidden=true;}store.fireMin=(store.fireMin||0)+FS.elapsed/60;FS.elapsed=0;save();}}
 function enterMed(){ac();commitFire();commitOnsen();showScene('med');M.running=false;$('#medSetup').hidden=false;$('#medLive').hidden=true;startAmb('nature');if(BW.on)bowlDroneStart();}
 function enterTemple(){ac();commitFire();commitOnsen();showScene('temple');T.pose=cp(POSE.STAND);T.hap=false;T.sit=false;TW.x=0;TW.z=7.4;TW.yaw=0;TW.tx=null;TW.pendWalk=null;TW.amt=0;TW.resv=-1;T.queue=[];T.to=null;T.auto=false;$('#auto').checked=false;startAmb('temple');if(CH.on)chantStart();
   setTimeout(()=>{if(scene==='temple')bowl(165,8,.15);},300);syncActs();toast('바닥을 누르면 걸어가요. 큰절을 누르면 빈 방석을 찾아가 절을 올립니다.',4200);}
-function goHome(){commitFire();commitOnsen();onsenSndStop();seaSndStop();if(scene==='med'&&M.running)commitMinutes();M.running=false;T.auto=false;T.queue=[];stopAmb();chantStop();bowlDroneStop();fireSndStop();scene='home';ringEl.hidden=true;
+function goHome(){cam.clearViewOffset();commitFire();commitOnsen();onsenSndStop();seaSndStop();if(scene==='med'&&M.running)commitMinutes();M.running=false;T.auto=false;T.queue=[];stopAmb();chantStop();bowlDroneStop();fireSndStop();scene='home';ringEl.hidden=true;
   $('#scene').hidden=true;$('#modal').hidden=true;$('#wishModal').hidden=true;$('#home').hidden=false;CAM.ty=CAM.tp=0;renderTally();document.body.classList.add('at-home');netScene('home');}
 function startMed(){M.running=true;M.phase=0;M.pt=0;M.good=0;M.tot=0;M.cg=0;M.ct=0;M.breaths=0;M.elapsed=0;clearLotus();M.follow=$('#follow').checked;
   $('#sFocusWrap').hidden=!M.follow;$('#medSetup').hidden=true;$('#medLive').hidden=false;$('#guide').hidden=false;lastGuide='';lastLive='';bowlStrike(.22);if(!BW.on)cue(0);if(document.activeElement)document.activeElement.blur();}
@@ -1996,13 +2430,13 @@ $('#snd').onclick=e=>{A.on=!A.on;const b=e.currentTarget;b.setAttribute('aria-pr
 
 function resize(){W=innerWidth;H=innerHeight;R.setSize(W,H,false);cam.aspect=W/H;cam.fov=W<H?64:50;cam.updateProjectionMatrix();sizeMala();}
 addEventListener('resize',resize);
-{const n=$('#myNick');n.textContent='오늘 이름 ';const b=document.createElement('b');b.textContent=MY_NICK;n.appendChild(b);n.append(' · 법당·모닥불·온천·바다에서 함께하는 사람들에게 이 이름으로 보여요');}
+{const n=$('#myNick');n.textContent='오늘 이름 ';const b=document.createElement('b');b.textContent=MY_NICK;n.appendChild(b);n.append(' · 법당·모닥불·온천·바다에서 함께하는 사람들에게 이 이름으로 보여요. 명상과 점술방은 혼자만의 공간이에요');}
 applyPal();placeWishes();resize();document.body.classList.add('at-home');netInit();
 if(document.fonts&&document.fonts.load)document.fonts.load('700 30px "Gowun Batang"').then(()=>placeWishes()).catch(()=>{});
 
 let last=performance.now();
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;t+=dt;ambientEvents();bowlTick();
-  if(scene==='temple')frameTemple(dt);else if(scene==='fire')frameFire(dt);else if(scene==='onsen')frameOnsen(dt);else if(scene==='sea')frameSea(dt);else{updMed(dt);frameNature(dt);}
+  if(scene==='temple')frameTemple(dt);else if(scene==='fire')frameFire(dt);else if(scene==='onsen')frameOnsen(dt);else if(scene==='sea')frameSea(dt);else if(scene==='fort')frameFort(dt);else{updMed(dt);frameNature(dt);}
   updMala(dt);requestAnimationFrame(frame);}
 requestAnimationFrame(frame);
 })();
