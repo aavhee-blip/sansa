@@ -490,7 +490,7 @@ select.ft-in option{background:#1a1420;color:var(--paper)}
     <div class="cf-menu" id="cfMenu" aria-label="메뉴"></div>
     <div class="row between cf-row"><span class="cf-cart" id="cfCart"></span><span class="ft-btns"><button type="button" class="ghost sm" id="cfClear" hidden>비우기</button><button type="button" class="primary" id="cfOrder" disabled>주문하기</button></span></div>
     <div class="cf-table" id="cfTable" hidden></div>
-    <div class="row between bowl-row"><label class="switch"><input type="checkbox" id="cfMusic" checked><span>카페 음악</span></label><span class="ft-btns"><button type="button" class="ghost sm" id="cfBus" hidden>그릇 치워 주세요</button><button type="button" class="ghost sm tog" id="cfView" aria-pressed="false">경치만 보기</button></span></div>
+    <div class="row between bowl-row"><label class="switch"><input type="checkbox" id="cfMusic" checked><span>카페 음악</span></label><span class="hint">바닥을 누르면 걸어가요 · 방향키·WASD</span><span class="ft-btns"><button type="button" class="ghost sm" id="cfSit">자리에서 일어나기</button><button type="button" class="ghost sm" id="cfBus" hidden>그릇 치워 주세요</button><button type="button" class="ghost sm tog" id="cfView" aria-pressed="false">경치만 보기</button></span></div>
   </div>
 
   <div class="dock fort" id="dockFort" hidden>
@@ -2638,14 +2638,14 @@ function cfRender(){const m=$('#cfMenu');if(!m.children.length){MENU.forEach(it=
   $('#cfBus').hidden=!CF.items.length;$('#cfBus').disabled=CF.st!=='idle';}
 function cfAdd(id){ac();const room=4-CF.items.length;if(CF.st!=='idle'){toast('지금 주문하신 메뉴를 준비하고 있어요. 조금만 기다려 주세요.');return;}if(CF.cart.length>=room){toast(room>0?'테이블에 '+room+'개까지 더 놓을 수 있어요.':'테이블이 꽉 찼어요. 다 먹은 그릇을 치워 달라고 해 보세요.');return;}CF.cart.push(id);softTone(1568,.015,.4);cfRender();}
 function cfSay(s){$('#cfSt').textContent=s;}
-function cfOrder(){if(!CF.cart.length||CF.st!=='idle')return;ac();CF.pend=CF.cart.length;CF.ord=CF.cart.slice();CF.cart=[];CF.st='prep';CF.t=0;BAR.st='toMachine';BAR.path=[[5.7,4.6]];
+function cfOrder(){if(!CF.cart.length||CF.st!=='idle')return;ac();if(CF.seat<0){toast('자리에 앉아야 주문할 수 있어요. 자리에 앉기를 눌러 보세요.');return;}CF.pend=CF.cart.length;CF.ord=CF.cart.slice();CF.cart=[];CF.st='prep';CF.t=0;BAR.st='toMachine';BAR.path=[[5.7,4.6]];
   cfSay('주문 받았어요! 바리스타가 준비하고 있어요.');toast('“'+CF.ord.map(id=>MENU_BY[id].n).join(', ')+'” 주문 들어갑니다!',3200);bell2();cfRender();}
 function bell2(){[2093,2637].forEach((f,i)=>setTimeout(()=>softTone(f,.03,1.2),i*140));}
 function barGo(path,st){BAR.path=path;BAR.st=st;}
-function cfServePos(){return seatW(CF.seat,.72,-.02);}
-function cfMidPos(){return seatW(CF.seat,1.5,-.3);}
+function cfServePos(){return seatW(CF.tseat,.72,-.02);}
+function cfMidPos(){return seatW(CF.tseat,1.5,-.3);}
 function cfBus(){if(CF.st!=='idle'||!CF.items.length)return;CF.st='clear';cfSay('바리스타가 그릇을 치우러 와요.');const p=cfServePos(),m=cfMidPos();barGo([[3.6,4.6],[3.6,2.4],[m.x,m.z],[p.x,p.z]],'goClear');cfRender();}
-function cfEat(o){if(CF.eat||o.lv<=0)return;ac();CF.eat={o,t:0,dur:o.cup?2.2:1.7,snd:false};cfRender();}
+function cfEat(o){if(CF.eat||o.lv<=0)return;ac();if(CF.seat<0||CF.seat!==CF.tseat){toast('자리에 앉아서 드세요. 자리에 앉기를 누르면 근처 의자에 앉아요.');return;}CF.eat={o,t:0,dur:o.cup?2.2:1.7,snd:false};cfRender();}
 function grinder(){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime,s=c.createBufferSource();s.buffer=A.brown;const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=900;f.Q.value=2;const g=c.createGain();
   g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.12,now+.1);g.gain.setValueAtTime(.12,now+1.3);g.gain.linearRampToValueAtTime(0,now+1.6);s.connect(f);f.connect(g);g.connect(A.master);s.start(now);s.stop(now+1.7);}
 function steamSnd(){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime,s=c.createBufferSource();s.buffer=A.white;const f=c.createBiquadFilter();f.type='highpass';f.frequency.value=3200;const g=c.createGain();
@@ -2659,16 +2659,16 @@ function cafeMusic(){const c=A.ctx;if(!c||!A.on||!CF.music)return;const prog=[[2
   const k=c.createOscillator();k.type='sine';k.frequency.value=ch[0]/4;const kg=c.createGain();kg.gain.setValueAtTime(.04,now);kg.gain.exponentialRampToValueAtTime(.0001,now+1.2);k.connect(kg);kg.connect(A.master);k.start(now);k.stop(now+1.3);}
 /* ---------- per-frame ---------- */
 function stepBar(dt){const F=BAR;let mv=false;if(F.path.length){const [tx,tz]=F.path[0],dx=tx-F.x,dz=tz-F.z,d=Math.hypot(dx,dz);if(d<.05){F.path.shift();}else{const sp=Math.min(d,1.35*dt);F.x+=dx/d*sp;F.z+=dz/d*sp;F.yaw+=angDiff(Math.atan2(-dx,-dz),F.yaw)*Math.min(1,dt*8);mv=true;
-    const tgt=CF.seat>=0?CSEATS[CF.seat].ti:-1,[px,pz]=pushOut(F.x,F.z,CF.tabs.map((tb,i)=>[tb.x,tb.z,i===tgt?.6:.98]));F.x=px;F.z=pz;}}
+    const tgt=CF.tseat>=0?CSEATS[CF.tseat].ti:-1,[px,pz]=pushOut(F.x,F.z,CF.tabs.map((tb,i)=>[tb.x,tb.z,i===tgt?.6:.98]));F.x=px;F.z=pz;}}
   F.amt+=((mv?1:0)-F.amt)*Math.min(1,dt*7);if(mv)F.wph+=dt*1.35*4.4;F.g.position.set(F.x,0,F.z);F.g.rotation.y=F.yaw;
   const arrived=!F.path.length;F.t+=dt;
   if(F.st==='toMachine'&&arrived){F.st='prep';F.t=0;F.yaw=0;grinder();setTimeout(steamSnd,1700);}
   else if(F.st==='prep'){F.yaw+=angDiff(0,F.yaw)*Math.min(1,dt*6);if(F.t>2.6+CF.ord.length*.9){F.carry=CF.ord.map(id=>{const o=makeFood(id);o.g.scale.setScalar(FOOD_S);F.g.add(o.g);return o;});F.carry.forEach((o,i)=>{const a=i/F.carry.length*Math.PI*2+.4,r=F.carry.length>1?.12:0;o.g.position.set(Math.cos(a)*r,1.206,-.36+Math.sin(a)*r);});
       const p=cfServePos(),m=cfMidPos();barGo([[3.6,4.6],[3.6,2.4],[m.x,m.z],[p.x,p.z]],'carry');CF.st='serve';cfSay('주문하신 메뉴가 나가요!');}}
-  else if(F.st==='carry'&&arrived){F.st='serve';F.t=0;const s=CSEATS[CF.seat],tc=CTAB[s.ti];F.ty=Math.atan2(-(tc[0]-F.x),-(tc[1]-F.z));F.si=0;}
-  else if(F.st==='serve'){F.yaw+=angDiff(F.ty,F.yaw)*Math.min(1,dt*6);if(F.t>.5+F.si*.45&&F.carry.length){const o=F.carry.shift();CF.myT.attach(o.g);const k=CF.items.length,sl=CSLOT[k%4];o.from=o.g.position.clone();o.to=P3(sl[0],.638,-.62+sl[1]);o.mt=0;CF.items.push(o);F.si++;}
+  else if(F.st==='carry'&&arrived){F.st='serve';F.t=0;const s=CSEATS[CF.tseat],tc=CTAB[s.ti];F.ty=Math.atan2(-(tc[0]-F.x),-(tc[1]-F.z));F.si=0;}
+  else if(F.st==='serve'){F.yaw+=angDiff(F.ty,F.yaw)*Math.min(1,dt*6);if(F.t>.5+F.si*.45&&F.carry.length){const o=F.carry.shift();CF.myT.attach(o.g);o.g.rotation.set(0,0,0);const k=CF.items.length,sl=CSLOT[k%4];o.from=o.g.position.clone();o.to=P3(sl[0],.638,-.62+sl[1]);o.mt=0;CF.items.push(o);F.si++;}
     if(!F.carry.length&&F.t>.9+F.si*.45){{const m=cfMidPos();F.st='back';barGo([[m.x,m.z],[3.6,2.4],[3.6,4.6],[5.5,4.6]],'back');}CF.st='idle';CF.pend=0;CF.served++;CF.menuOpen=false;store.cafeOrders=(store.cafeOrders||0)+1;save();cfSay('맛있게 드세요! 메뉴를 눌러 한 모금, 한 입 즐겨 보세요.');toast('바리스타: 주문하신 메뉴 나왔습니다. 맛있게 드세요!',3600);netCafe();cfRender();}}
-  else if(F.st==='goClear'&&arrived){F.st='clear';F.t=0;const s=CSEATS[CF.seat],tc=CTAB[s.ti];F.ty=Math.atan2(-(tc[0]-F.x),-(tc[1]-F.z));}
+  else if(F.st==='goClear'&&arrived){F.st='clear';F.t=0;const s=CSEATS[CF.tseat],tc=CTAB[s.ti];F.ty=Math.atan2(-(tc[0]-F.x),-(tc[1]-F.z));}
   else if(F.st==='clear'){F.yaw+=angDiff(F.ty,F.yaw)*Math.min(1,dt*6);if(F.t>.8){CF.items.forEach(o=>CF.myT.remove(o.g));CF.items=[];{const m=cfMidPos();F.st='back';barGo([[m.x,m.z],[3.6,2.4],[3.6,4.6],[5.5,4.6]],'back');}CF.st='idle';clink();cfSay('깨끗해졌어요. 더 드시고 싶은 게 있으면 주문해 주세요.');netCafe();cfRender();}}
   else if(F.st==='back'&&arrived){F.st='idle';}
   if(F.st==='idle')F.yaw+=angDiff(0,F.yaw)*Math.min(1,dt*3);
@@ -2677,12 +2677,13 @@ function frameCafe(dt){const S=CF.scene;stepBar(dt);
   CF.items.forEach(o=>{if(o.to&&o.mt<1){o.mt=Math.min(1,o.mt+dt*2.4);const q=ease(o.mt);o.g.position.lerpVectors(o.from,o.to,q);o.g.position.y+=Math.sin(Math.PI*q)*.08;if(o.mt>=1)clink();}if(o.to&&o.mt>=1&&(!CF.eat||CF.eat.o!==o)&&o.g.position.y<o.to.y)o.g.position.y=o.to.y;});
   /* eating */
   let hr=null;const E=CF.eat;if(E){E.t+=dt;const o=E.o,u=E.t/E.dur,up=u<.3?ease(u/.3):u<.7?1:1-ease((u-.7)/.3),home=o.to||o.g.position;
-    if(o.cup){const mouth=P3(.02,.98,-.3);o.g.position.copy(home).lerp(mouth,up);o.g.rotation.x=-.45*up;hr=o.g.position.clone().add(P3(.07,.08,.02));MEC.look=-.12*up;}
+    if(o.cup){const mouth=P3(.02,.98,-.3);o.g.position.copy(home).lerp(mouth,up);o.g.rotation.set(-.45*up,0,0);hr=o.g.position.clone().add(P3(.07,.08,.02));MEC.look=-.12*up;}
     else{if(!E.piece){E.piece=new THREE.Mesh(new THREE.SphereGeometry(.022,8,6),new THREE.MeshLambertMaterial({color:o.bite||'#d8a860'}));CF.myT.add(E.piece);}const mouth=P3(.02,1.15,-.22),from=home.clone().add(P3(0,.06,0));E.piece.position.copy(from).lerp(mouth,up);E.piece.visible=u<.6||up>.2&&u<.55;hr=E.piece.position.clone().add(P3(.02,-.01,.02));MEC.look=-.1*up;}
     if(!E.snd&&u>.45){E.snd=true;sipSnd(o.cup);o.lv=Math.max(0,+(o.lv-(o.cup?.2:.2)).toFixed(2));o.set(o.lv);if(E.piece)E.piece.visible=false;}
-    if(u>=1){if(E.piece)CF.myT.remove(E.piece);o.g.rotation.x=0;if(o.to)o.g.position.copy(o.to);CF.eat=null;MEC.look=0;if(o.lv<=0)toast(josa(MENU_BY[o.id].n,'을','를')+(o.cup?' 다 마셨어요. 경치가 더 좋아 보여요.':' 맛있게 다 먹었어요.'));cfRender();netCafe();}}
+    if(u>=1){if(E.piece)CF.myT.remove(E.piece);o.g.rotation.set(0,0,0);if(o.to)o.g.position.copy(o.to);CF.eat=null;MEC.look=0;if(o.lv<=0)toast(josa(MENU_BY[o.id].n,'을','를')+(o.cup?' 다 마셨어요. 경치가 더 좋아 보여요.':' 맛있게 다 먹었어요.'));cfRender();netCafe();}}
   else MEC.look=lerp(MEC.look||0,0,dt*3);
-  poseSit(MEC,hr,null);
+  if(CF.seat>=0){const st=CSEATS[CF.seat];MEC.g.position.set(st.x,0,st.z);MEC.g.rotation.y=st.yaw;poseSit(MEC,hr,null);}
+  else{stepWalker(CW,dt,cafeCollide,CF.fp?CAM.yaw:CAM.yaw);MEC.g.position.set(CW.x,0,CW.z);MEC.g.rotation.y=CW.yaw;posePersonStand(MEC,CW.ph,CW.amt,dt);}
   /* steam from hot drinks & machine */
   CF.items.forEach(o=>{if(o.steam&&o.lv>0&&Math.random()<dt*3){const s=sprite(TEX.glow,'#ffffff',0,false);const w=new THREE.Vector3();o.g.getWorldPosition(w);s.position.set(w.x,w.y+.08,w.z);s.scale.setScalar(.04);S.add(s);CF.steam.push({s,a:0});}});
   if(BAR.st==='prep'&&BAR.t>1.7&&Math.random()<dt*10){const s=sprite(TEX.glow,'#ffffff',0,false);s.position.copy(CF.steamAt);s.scale.setScalar(.08);S.add(s);CF.steam.push({s,a:0,big:1});}
@@ -2696,24 +2697,42 @@ function frameCafe(dt){const S=CF.scene;stepBar(dt);
   netFrameCafe(dt);
   /* camera */
   CAM.yaw+=angDiff(CAM.ty,CAM.yaw)*Math.min(1,dt*5);CAM.pitch+=(CAM.tp-CAM.pitch)*Math.min(1,dt*5);CAM.dist+=(CAM.td-CAM.dist)*Math.min(1,dt*5);
-  const s=CSEATS[CF.seat]||CSEATS[0],sy=s.yaw,fx=-Math.sin(sy),fz=-Math.cos(sy);
+  if(CF.seat<0){const c2=Math.cos(CAM.pitch);if(CF.fp){const p=.1-CAM.pitch*.9;cam.position.set(CW.x,1.55,CW.z);cam.lookAt(CW.x-Math.sin(CAM.yaw)*Math.cos(p)*10,1.55+Math.sin(p)*10,CW.z-Math.cos(CAM.yaw)*Math.cos(p)*10);}
+    else{cam.position.set(CW.x+Math.sin(CAM.yaw)*c2*CAM.dist,1.1+Math.sin(CAM.pitch)*CAM.dist,CW.z+Math.cos(CAM.yaw)*c2*CAM.dist);cam.lookAt(CW.x,1.1,CW.z);}}
+  else{const s=CSEATS[CF.seat]||CSEATS[0],sy=s.yaw,fx=-Math.sin(sy),fz=-Math.cos(sy);
   if(CF.fp){const ex=s.x+fx*.1,ez=s.z+fz*.1,yy=sy+(CAM.yaw+.4),p=.1-CAM.pitch*.9;cam.position.set(ex,1.3,ez);cam.lookAt(ex-Math.sin(yy)*Math.cos(p)*10,1.3+Math.sin(p)*10,ez-Math.cos(yy)*Math.cos(p)*10);}
-  else{const tx=s.x+fx*.9,tz=s.z+fz*.9,c2=Math.cos(CAM.pitch),yy=sy+CAM.yaw;cam.position.set(tx+Math.sin(yy)*c2*CAM.dist,1.0+Math.sin(CAM.pitch)*CAM.dist,tz+Math.cos(yy)*c2*CAM.dist);cam.lookAt(tx,1.0,tz);}
+  else{const tx=s.x+fx*.9,tz=s.z+fz*.9,c2=Math.cos(CAM.pitch),yy=sy+CAM.yaw;cam.position.set(tx+Math.sin(yy)*c2*CAM.dist,1.0+Math.sin(CAM.pitch)*CAM.dist,tz+Math.cos(yy)*c2*CAM.dist);cam.lookAt(tx,1.0,tz);}}
   {const dh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dockH'))||0,sh=clamp(dh*.3-10,0,H*.22);if(CF.sh===undefined)CF.sh=sh;CF.sh+=(sh-CF.sh)*Math.min(1,dt*4);cam.setViewOffset(W,H,0,CF.sh,W,H);}
   R.render(S,cam);}
 /* ---------- multiplayer: others sit at other tables ---------- */
-function netCafe(){pres({cp:{seat:CF.seat,it:CF.items.map(o=>o.id).join(',')}});}
+function netCafe(){pres({cp:{seat:CF.seat,it:CF.items.map(o=>o.id).join(','),x:+CW.x.toFixed(2),z:+CW.z.toFixed(2),y:+CW.yaw.toFixed(2),mv:CW.mv?1:0}});}
 function cafeSeatTaken(i){for(const r of NET.peers.values()){if(r.pr.scene==='cafe'&&r.pr.cp&&r.pr.cp.seat===i)return true;}return false;}
-function netFrameCafe(dt){if(t-NET.tk>.5){NET.tk=t;netCafe();}
-  for(const r of NET.peers.values()){const o=r.obj;if(!o||!o.F||o.scene!=='cafe')continue;const cp=r.pr.cp||{},si=typeof cp.seat==='number'&&CSEATS[cp.seat]&&cp.seat!==CF.seat?cp.seat:-1;o.F.g.visible=si>=0;if(si<0)continue;const s=CSEATS[si];
+function netFrameCafe(dt){if(t-NET.tk>(CF.seat<0?.2:.5)){NET.tk=t;netCafe();}
+  for(const r of NET.peers.values()){const o=r.obj;if(!o||!o.F||o.scene!=='cafe')continue;const cp=r.pr.cp||{},si=typeof cp.seat==='number'&&CSEATS[cp.seat]&&cp.seat!==CF.seat?cp.seat:-1;if(!o.wk)o.wk={x:num(cp.x),z:num(cp.z),yaw:num(cp.y),ph:0,amt:0};wkFollow(o,cp,dt);o.F.g.visible=true;(o.foods||[]).forEach(f=>f.g.visible=si>=0);
+    if(si<0){o.F.g.position.set(o.wk.x,0,o.wk.z);o.F.g.rotation.y=o.wk.yaw;posePersonStand(o.F,o.wk.ph,o.wk.amt,dt);o.lab.position.set(0,1.98,0);continue;}const s=CSEATS[si];
     o.F.g.position.set(s.x,0,s.z);o.F.g.rotation.y=s.yaw;poseSit(o.F,null,null);o.lab.position.set(0,1.62,-.09);
     const it=typeof cp.it==='string'?cp.it.slice(0,40):'';if(it!==o.it){o.it=it;(o.foods||[]).forEach(f=>o.F.g.remove(f.g));o.foods=it.split(',').filter(id=>MENU_BY[id]).slice(0,4).map((id,k)=>{const f=makeFood(id),sl=CSLOT[k];f.g.scale.setScalar(FOOD_S);f.g.position.set(sl[0],.638,-.62+sl[1]);o.F.g.add(f.g);return f;});}}}
 /* ---------- enter / UI ---------- */
-function enterCafe(){ac();if(scene==='cafe')return;commitFire();commitOnsen();let si=CSEATS.findIndex((s,i)=>!cafeSeatTaken(i));if(si<0)si=0;CF.seat=si;const s=CSEATS[si];MEC.g.position.set(s.x,0,s.z);MEC.g.rotation.y=s.yaw;CF.myT.position.set(s.x,0,s.z);CF.myT.rotation.y=s.yaw;
+function enterCafe(){ac();if(scene==='cafe')return;commitFire();commitOnsen();let si=CSEATS.findIndex((s,i)=>!cafeSeatTaken(i));if(si<0)si=0;CF.seat=si;const s=CSEATS[si];MEC.g.position.set(s.x,0,s.z);MEC.g.rotation.y=s.yaw;CF.myT.position.set(s.x,0,s.z);CF.myT.rotation.y=s.yaw;CF.tseat=si;CW.x=s.x;CW.z=s.z+.5;CW.tx=null;syncCafeSit();
   showScene('cafe');CAM.yaw=CAM.ty=W<H?-.3:-.4;CAM.pitch=CAM.tp=.2;CAM.dist=CAM.td=W<H?4.6:3.8;CF.sh=undefined;startAmb('cafe');CF.nextChord=t+1;cfRender();setCafeView(CF.fp);
   cfSay(CF.items.length?'다시 오셨네요. 천천히 즐기다 가세요.':'어서 오세요, 햇살 테라스예요! 무엇을 드릴까요?');toast('경치 좋은 자리로 안내해 드렸어요. 메뉴를 골라 주문해 보세요.',3600);netCafe();}
+const CW=mkWalker(0,0,0);CW.spd=1.6;
+const CF_OBST=(()=>{const o=[];CTAB.forEach(([x,z])=>o.push([x,z,.58]));CSEATS.forEach(st=>o.push([st.x+Math.sin(st.yaw)*.05,st.z+Math.cos(st.yaw)*.05,.3]));[[4.2,3.8],[4.9,3.8],[5.6,3.8],[6.3,3.8]].forEach(([x,z])=>o.push([x,z,.55]));
+  o.push([3.4,3.2,.4],[-7,4.8,.45],[7,-3.6,.45],[-7,-3.8,.45]);[-6.4,-4.6,4.6,6.4].forEach(x=>{o.push([x-.35,-4.6,.35],[x+.35,-4.6,.35]);});return o;})();
+function cafeCollide(x,z){x=clamp(x,-7.25,7.25);z=clamp(z,-4.65,5.35);return pushOut(x,z,CF_OBST);}
+function cafeEndEat(){const E=CF.eat;if(!E)return;if(E.piece)CF.myT.remove(E.piece);E.o.g.rotation.set(0,0,0);if(E.o.to)E.o.g.position.copy(E.o.to);CF.eat=null;MEC.look=0;cfRender();}
+function cafeStand(){if(CF.seat<0)return;cafeEndEat();const st=CSEATS[CF.seat],a=st.yaw;const ab=CAM.yaw+a;CW.x=st.x+Math.cos(a)*.5;CW.z=st.z-Math.sin(a)*.5;const c=cafeCollide(CW.x,CW.z);CW.x=c[0];CW.z=c[1];CW.yaw=a;CW.tx=null;CW.amt=0;CF.seat=-1;
+  CAM.yaw=CAM.ty=ab;CAM.td=Math.max(CAM.td,W<H?4.4:3.6);syncCafeSit();netCafe();}
+function cafeGotoSeat(){let best=-1,bd=1e9;CSEATS.forEach((st,i)=>{if(cafeSeatTaken(i))return;const d=Math.hypot(st.x-CW.x,st.z-CW.z);if(d<bd){bd=d;best=i;}});if(CF.st==='serve'||CF.st==='clear')best=CF.tseat;
+  if(best<0){toast('빈 의자가 없어요.');return;}const st=CSEATS[best],a=st.yaw,ax=st.x+Math.cos(a)*.48,az=st.z-Math.sin(a)*.48,c=cafeCollide(ax,az);
+  walkTo(CW,c[0],c[1],()=>cafeSitAt(best));CW.force=true;}
+function cafeSitAt(i){const st=CSEATS[i],ab=CAM.yaw;CF.seat=i;CW.tx=null;CW.amt=0;if(CF.st==='idle'||CF.st==='prep'){if(CF.tseat!==i&&CF.items.length)toast('드시던 메뉴를 새 자리로 옮겼어요.');CF.tseat=i;CF.myT.position.set(st.x,0,st.z);CF.myT.rotation.y=st.yaw;}
+  CAM.yaw=angDiff(ab-st.yaw,0);CAM.ty=-.4;syncCafeSit();cfRender();netCafe();softTone(880,.012,.4);}
+function cafeSitToggle(){if(CF.seat>=0)cafeStand();else cafeGotoSeat();}
+function cafeTapWalk(x,z){if(CF.seat>=0)cafeStand();const c=cafeCollide(x,z);walkTo(CW,c[0],c[1]);showMark(CF.scene,c[0],0,c[1]);}
+function syncCafeSit(){const b=$('#cfSit');b.textContent=CF.seat>=0?'자리에서 일어나기':'자리에 앉기';}
 function setCafeView(fp){CF.fp=fp;$('#cfView').textContent=fp?'내 모습 보기':'경치만 보기';$('#cfView').setAttribute('aria-pressed',String(fp));CAM.ty=-.4;CAM.tp=fp?.15:.2;MEC.g.visible=!fp;}
-$('#cfOrder').onclick=cfOrder;$('#cfMenuBtn').onclick=()=>{CF.menuOpen=!CF.menuOpen;cfRender();};$('#cfClear').onclick=()=>{CF.cart=[];cfRender();};$('#cfBus').onclick=cfBus;$('#cfView').onclick=()=>setCafeView(!CF.fp);
+$('#cfOrder').onclick=cfOrder;$('#cfSit').onclick=cafeSitToggle;$('#cfMenuBtn').onclick=()=>{CF.menuOpen=!CF.menuOpen;cfRender();};$('#cfClear').onclick=()=>{CF.cart=[];cfRender();};$('#cfBus').onclick=cfBus;$('#cfView').onclick=()=>setCafeView(!CF.fp);
 $('#cfMusic').checked=CF.music;$('#cfMusic').onchange=e=>{CF.music=e.target.checked;store.cafeMusic=CF.music;save();};
 $('#goCafe').onclick=enterCafe;
 function cafeTap(x,y){if(!CF.items.length||CF.eat)return false;ray.setFromCamera({x:x/W*2-1,y:-(y/H)*2+1},cam);const hits=ray.intersectObjects(CF.items.map(o=>o.g),true)[0];if(!hits)return false;let ob=hits.object;const it=CF.items.find(o=>{let p=ob;while(p){if(p===o.g)return true;p=p.parent;}return false;});if(it&&it.lv>0){cfEat(it);return true;}return false;}
@@ -2853,8 +2872,8 @@ cv.addEventListener('pointermove',e=>{const p=ptrs.get(e.pointerId);if(!p)return
 function endPtr(e){if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);M.press=false;cv.classList.remove('dragging');if(ptrs.size<2)pinch0=0;
   if(e.type==='pointerup'&&moved<6&&dragStart){if(!pickTag(e.clientX,e.clientY))groundTap(e.clientX,e.clientY);}dragStart=null;}
 const GPLANE=new THREE.Plane(V3(0,1,0),0),gHit=V3(0,0,0);
-function groundTap(x,y){if(scene!=='temple'&&scene!=='fire'&&scene!=='onsen')return;ray.setFromCamera({x:x/W*2-1,y:-(y/H)*2+1},cam);GPLANE.constant=scene==='onsen'?.02:0;if(!ray.ray.intersectPlane(GPLANE,gHit))return;
-  if(scene==='temple')templeTapWalk(gHit.x,gHit.z);else if(scene==='fire')fireTapWalk(gHit.x,gHit.z);else onsenTapWalk(gHit.x,gHit.z);}
+function groundTap(x,y){if(scene!=='temple'&&scene!=='fire'&&scene!=='onsen'&&scene!=='cafe')return;ray.setFromCamera({x:x/W*2-1,y:-(y/H)*2+1},cam);GPLANE.constant=scene==='onsen'?.02:0;if(!ray.ray.intersectPlane(GPLANE,gHit))return;
+  if(scene==='temple')templeTapWalk(gHit.x,gHit.z);else if(scene==='fire')fireTapWalk(gHit.x,gHit.z);else if(scene==='cafe')cafeTapWalk(gHit.x,gHit.z);else onsenTapWalk(gHit.x,gHit.z);}
 cv.addEventListener('pointerup',endPtr);cv.addEventListener('pointercancel',endPtr);addEventListener('blur',()=>{M.press=false;KEYS.clear();});
 function zoomClamp(v){return scene==='fire'?clamp(v,2.6,7.2):scene==='cafe'?clamp(v,1.8,6.5):clamp(v,3,13);}
 cv.addEventListener('wheel',e=>{if(scene!=='temple'&&scene!=='fire'&&scene!=='onsen'&&scene!=='sea'&&scene!=='cafe')return;if(scene==='cafe'&&CF.fp)return;if(scene==='fire'&&!FV.third)return;e.preventDefault();CAM.td=zoomClamp(CAM.td*(1+e.deltaY*.001));},{passive:false});
@@ -2862,7 +2881,8 @@ function pickTag(x,y){if(scene==='fort')return tarotTap(x,y);if(scene==='cafe')r
   ray.setFromCamera({x:x/W*2-1,y:-(y/H)*2+1},cam);ray.camera=cam;const hit=ray.intersectObjects(list,false)[0];if(hit){const w=hit.object.userData.wish;toast('“'+w.text+'”  ·  '+w.d,5000);softTone(523,.04,1.8);return true;}return false;}
 addEventListener('keydown',e=>{if(!$('#modal').hidden||!$('#wishModal').hidden){if(e.key==='Escape')$('#wishModal').hidden=true;return;}
   if(e.target.matches('textarea,input[type=text],input[type=number],select'))return;
-  {const km=KEYMAP[e.code];if(km&&(scene==='temple'||scene==='fire'||scene==='onsen')){KEYS.add(km);e.preventDefault();return;}}
+  {const km=KEYMAP[e.code];if(km&&(scene==='temple'||scene==='fire'||scene==='onsen'||scene==='cafe')){if(scene==='cafe'&&CF.seat>=0)cafeStand();KEYS.add(km);e.preventDefault();return;}}
+  if(scene==='cafe'&&e.code==='KeyC'){cafeSitToggle();return;}
   if(e.key==='Escape'){if(scene!=='home')goHome();return;}
   if(scene!=='home'&&scene!=='fire'&&scene!=='onsen'&&scene!=='sea'&&scene!=='fort'&&scene!=='cafe'&&e.code==='KeyM'){ac();if($('#malaPanel').hidden)setMala(true);advanceBead();return;}
   if(scene==='med'&&M.running&&e.code==='Space'){e.preventDefault();M.press=true;}
