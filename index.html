@@ -171,6 +171,7 @@ summary{cursor:pointer;font-size:13px;color:var(--paper-dim)}
 body.at-home .people{left:auto;right:max(16px,env(safe-area-inset-right,0px));top:calc(env(safe-area-inset-top,0px) + 14px);align-items:flex-end}
 .ppl-btn{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 10px;font-size:13px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .ppl-dot{width:7px;height:7px;border-radius:50%;background:#58d08a;box-shadow:0 0 8px #58d08a;flex:none}
+.people.off .ppl-dot{background:#c9a24e;box-shadow:none}
 .ppl-av{display:inline-flex}
 .ppl-av img{width:24px;height:24px;border-radius:50%;border:2px solid #15161f;margin-left:-7px;object-fit:cover;background:#2a2b36}
 .ppl-av img:first-child{margin-left:0}
@@ -559,8 +560,9 @@ function resolveNames(){if(!NET.user)return;const ids=[...NET.peers.values()].ma
 function updateBowAll(){const el=document.getElementById('bowAll');if(!el)return;let sum=T.count,n=0;for(const r of NET.peers.values())if(r.pr.scene==='temple'){n++;sum+=num((r.pr.tp||{}).bows);}
   el.hidden=!n;if(n)el.textContent=' · 함께 '+sum+'배';}
 let pplOpen=false;
-function renderPeople(){const box=$('#people');const list=[...NET.peers.values()];if(!NET.room||!list.length||scene==='med'){box.hidden=true;return;}box.hidden=false;
-  const here=list.filter(r=>r.pr.scene===scene).length;$('#pplTxt').textContent='함께 '+(list.length+1)+'명'+(scene!=='home'?' · 이곳 '+(here+1)+'명':'');
+function renderPeople(){const box=$('#people');const list=[...NET.peers.values()];if(!NET.room||scene==='med'){box.hidden=true;return;}box.hidden=false;
+  const on=typeof NET.room.connected!=='function'||NET.room.connected();box.classList.toggle('off',!on);
+  const here=list.filter(r=>r.pr.scene===scene).length;$('#pplTxt').textContent=!on?'연결하는 중…':!list.length?'온라인 · 지금은 나 혼자예요':'함께 '+(list.length+1)+'명'+(scene!=='home'?' · 이곳 '+(here+1)+'명':'');
   const av=$('#pplAv');av.textContent='';[NET.meAv].concat(list.slice(0,3).map(r=>NET.avs[r.peer]||'')).forEach(u=>{if(!u)return;const im=document.createElement('img');im.src=u;im.alt='';av.appendChild(im);});
   const ul=$('#pplList');ul.textContent='';const row=(who,where)=>{const li=document.createElement('li');const a=document.createElement('span');a.textContent=who;const b=document.createElement('small');b.textContent=where;li.append(a,b);ul.appendChild(li);};
   row('나 · '+MY_NICK,SCENE_LABEL[scene]||'');list.forEach(r=>row(nm(r),r.pr.scene==='med'?'혼자 명상 중':(SCENE_LABEL[r.pr.scene]||'')));ul.hidden=!pplOpen;}
@@ -616,16 +618,16 @@ function supaRoom(cfg){const me='p'+Math.random().toString(36).slice(2,10);let s
   const push=()=>{if(!ready)return;const w=260-(Date.now()-last);if(w>0){if(!timer)timer=setTimeout(()=>{timer=null;push();},w);return;}last=Date.now();try{ch.track({s:state}).catch(()=>{});}catch(e){}};
   const peers=()=>{const ps=ch.presenceState(),out=[];for(const k in ps){const arr=ps[k],p=arr&&arr[arr.length-1];out.push({peer:k,isMe:k===me,sameTab:k===me,kind:'viewer',by:null,guest:false,presence:(p&&p.s&&typeof p.s==='object')?p.s:{}});}return out;};
   const fire=()=>{if(handler)handler({peers:peers(),joined:[],left:[],updated:[]});};
-  ch.on('presence',{event:'sync'},fire);ch.subscribe(st=>{if(st==='SUBSCRIBED'){ready=true;push();}});
+  ch.on('presence',{event:'sync'},fire);ch.subscribe(st=>{if(st==='SUBSCRIBED'){ready=true;push();}else if(st==='CLOSED'||st==='CHANNEL_ERROR'||st==='TIMED_OUT')ready=false;renderPeople();});
   addEventListener('pagehide',()=>{try{ch.untrack();sb.removeChannel(ch);}catch(e){}});
-  return {presence(patch){for(const k in patch){if(patch[k]===null)delete state[k];else state[k]=patch[k];}push();return Promise.resolve();},
+  return {connected(){return ready;},presence(patch){for(const k in patch){if(patch[k]===null)delete state[k];else state[k]=patch[k];}push();return Promise.resolve();},
     onPeers(h){handler=h;setTimeout(fire,0);return ()=>{handler=null;};}};}
 async function netInit(){let room=null;
   if(window.claude&&typeof window.claude.use==='function'){try{room=await window.claude.use('room');}catch(e){room=null;}}
   const rt=window.SANSA_RT;if(!room&&rt&&rt.url&&rt.key&&window.supabase)room=supaRoom(rt);
   if(!room)return;NET.room=room;
   NET.st.scene=scene;NET.st.nick=MY_NICK;NET.sent=JSON.stringify(NET.st);room.presence(Object.assign({},NET.st)).catch(()=>{});
-  room.onPeers(onPeersChange,()=>{NET.room=null;renderPeople();});setTimeout(()=>{NET.ready=true;},3000);}
+  room.onPeers(onPeersChange,()=>{NET.room=null;renderPeople();});renderPeople();setInterval(renderPeople,2000);setTimeout(()=>{NET.ready=true;},3000);}
 
 let toastTimer;function toast(msg,ms=3600){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),ms);}
 renderTally();
