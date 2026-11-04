@@ -71,7 +71,7 @@ h1{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(52px,9vw,
 .g-num{font-family:var(--ui);font-weight:400;font-size:.55em;opacity:.7;margin-left:.35em;font-variant-numeric:tabular-nums}
 .g-sub{margin-top:6px;font-size:13.5px;color:var(--paper-dim);min-height:1.4em;text-shadow:0 1px 10px rgba(0,0,0,.7)}
 #ring{position:fixed;left:0;top:0;pointer-events:none;overflow:visible}
-.toast{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 190px);transform:translate(-50%,6px);opacity:0;transition:opacity .5s,transform .5s;
+.toast{position:absolute;left:50%;bottom:calc(var(--dockH,calc(env(safe-area-inset-bottom,0px) + 176px)) + 14px);z-index:30;transform:translate(-50%,6px);opacity:0;transition:opacity .5s,transform .5s;
   background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 18px;font-size:14px;line-height:1.5;text-align:center;
   max-width:min(440px,calc(100% - 32px));width:max-content;pointer-events:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -198,7 +198,6 @@ body.at-home .people{left:auto;right:max(16px,env(safe-area-inset-right,0px));to
   .chant{top:36px}
   .mcount b{font-size:18px}
   .ghost{padding:7px 11px}
-  .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 230px)}
   .guide{top:30%;max-width:60%}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -629,7 +628,9 @@ async function netInit(){let room=null;
   NET.st.scene=scene;NET.st.nick=MY_NICK;NET.sent=JSON.stringify(NET.st);room.presence(Object.assign({},NET.st)).catch(()=>{});
   room.onPeers(onPeersChange,()=>{NET.room=null;renderPeople();});renderPeople();setInterval(renderPeople,2000);setTimeout(()=>{NET.ready=true;},3000);}
 
-let toastTimer;function toast(msg,ms=3600){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),ms);}
+function dockFit(){let top=innerHeight;document.querySelectorAll('.dock').forEach(d=>{if(d.offsetParent===null)return;const r=d.getBoundingClientRect();if(r.height>0)top=Math.min(top,r.top);});document.documentElement.style.setProperty('--dockH',Math.max(16,innerHeight-top)+'px');}
+(function(){const ro=window.ResizeObserver?new ResizeObserver(dockFit):null;document.querySelectorAll('.dock').forEach(d=>ro&&ro.observe(d));addEventListener('resize',dockFit);setInterval(dockFit,700);})();
+let toastTimer;function toast(msg,ms=3600){dockFit();const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),ms);}
 renderTally();
 
 /* ---------- WebGL setup ---------- */
