@@ -254,8 +254,17 @@ body.at-home .people{left:auto;right:max(16px,env(safe-area-inset-right,0px));to
 .bj-chip:disabled{opacity:.35}
 .bj-betv{font-size:13px;color:var(--paper-dim);margin-left:auto}.bj-betv b{color:var(--gold);font-size:17px;margin-left:4px}
 #bjActRow .primary,#bjActRow .ghost{flex:1;min-width:84px}
+.bj-hands{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 10px}
+.bj-hands.empty{display:none}
+.bj-hand{display:flex;flex-direction:column;gap:5px;min-width:0}
+.bj-hand>span{font-size:12px;color:var(--paper-dim)}
+.bj-hand>div{display:flex;min-height:84px}
+.bj-card{width:60px;height:84px;border-radius:6px;box-shadow:0 3px 10px rgba(0,0,0,.5);transition:transform .3s,opacity .3s;flex:none}
+.bj-card+.bj-card{margin-left:-22px}
+.bj-card.in{transform:translateY(-14px) scale(.9);opacity:0}
+.bj-card.flip{transform:rotateY(90deg)}
 .bj-note{margin:10px 2px 0;font-size:11.5px;color:var(--paper-dim)}
-@media (max-width:640px){.bj-chip{width:42px;height:42px;font-size:12px}.bj-betv{margin-left:0}}
+@media (max-width:640px){.bj-card{width:48px;height:67px}.bj-card+.bj-card{margin-left:-18px}.bj-hand>div{min-height:67px}.bj-chip{width:42px;height:42px;font-size:12px}.bj-betv{margin-left:0}}
 /* 점술방 */
 .ft-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .seg[data-key="trTopic"]{flex-wrap:wrap}
@@ -530,6 +539,7 @@ select.ft-in option{background:#1a1420;color:var(--paper)}
 
   <div class="dock bj" id="dockBj" hidden>
     <div class="ft-say"><span class="ft-who bj-who">딜러 레오</span><p id="bjSay" aria-live="polite"></p></div>
+    <div class="bj-hands empty" id="bjHands"><div class="bj-hand"><span>딜러</span><div id="bjHD"></div></div><div class="bj-hand"><span>나</span><div id="bjHP"></div></div></div>
     <div class="bj-score"><span>딜러 <b id="bjD">–</b></span><span>나 <b id="bjP">–</b></span><span>칩 <b id="bjChips">1,000</b></span><span>전적 <b id="bjRec">0승 0패</b></span></div>
     <div class="row between bj-row" id="bjBetRow"><div class="bj-chips"><button type="button" class="bj-chip c10" data-v="10">+10</button><button type="button" class="bj-chip c50" data-v="50">+50</button><button type="button" class="bj-chip c100" data-v="100">+100</button><button type="button" class="ghost sm" id="bjClr">베팅 지우기</button></div><span class="bj-betv">베팅 <b id="bjBet">0</b></span><button type="button" class="primary" id="bjDeal">딜</button></div>
     <div class="row bj-row" id="bjActRow" hidden><button type="button" class="primary" id="bjHit">히트</button><button type="button" class="ghost" id="bjStand">스탠드</button><button type="button" class="ghost" id="bjDbl">더블</button></div>
@@ -2995,7 +3005,11 @@ async function bjDealCard(who,faceUp){if(BJ.shoe.length<20)bjShoe();const c=BJ.s
   const fx=g.position.x,fz=g.position.z,fy=g.position.y;await bjTween(.42,k=>{const q=ease(k);g.position.set(lerp(fx,tx,q),lerp(fy,ty,q)+Math.sin(Math.PI*q)*.12,lerp(fz,tz,q));g.rotation.y=lerp(-.4,(Math.random()-.5)*.02,q);});
   if(faceUp)await bjFlip(c);bjScore();return c;}
 async function bjFlip(c){if(c.up)return;c.up=true;bjFlick();const y0=c.g.position.y;await bjTween(.32,k=>{const q=ease(k);c.m.rotation.z=Math.PI*q;c.g.position.y=y0+Math.sin(Math.PI*q)*.06;});c.g.position.y=y0;}
-function bjScore(){const p=bjVal(BJ.p),dUp=BJ.d.filter(c=>c.up),dv=bjVal(dUp);$('#bjP').textContent=BJ.p.length?(p.v+(p.soft&&p.v<21?' (소프트)':'')):'–';$('#bjD').textContent=BJ.d.length?(dv.v+(dUp.length<BJ.d.length?' + ?':'')):'–';}
+const BJURL={};function bjImg(c){const k=c.up?c.r+c.s:'back';if(!BJURL[k])BJURL[k]=(c.up?bjFace(c.r,c.s):BJ_BACK).image.toDataURL('image/png');return BJURL[k];}
+function bjHandsUI(){[['#bjHD',BJ.d],['#bjHP',BJ.p]].forEach(([sel,h])=>{const el=$(sel),imgs=el.querySelectorAll('img');h.forEach((c,i)=>{let im=imgs[i];const src=bjImg(c);if(!im){im=document.createElement('img');im.className='bj-card in';el.appendChild(im);setTimeout(()=>im.classList.remove('in'),20);}
+    if(im.dataset.k!==(c.up?c.r+c.s:'back')){if(im.dataset.k){im.classList.add('flip');setTimeout(()=>im.classList.remove('flip'),300);}im.dataset.k=c.up?c.r+c.s:'back';im.src=src;im.alt=c.up?({S:'스페이드',H:'하트',D:'다이아',C:'클로버'})[c.s]+' '+c.r:'엎어진 카드';}});
+    for(let i=h.length;i<imgs.length;i++)imgs[i].remove();});$('#bjHands').classList.toggle('empty',!BJ.p.length&&!BJ.d.length);}
+function bjScore(){bjHandsUI();const p=bjVal(BJ.p),dUp=BJ.d.filter(c=>c.up),dv=bjVal(dUp);$('#bjP').textContent=BJ.p.length?(p.v+(p.soft&&p.v<21?' (소프트)':'')):'–';$('#bjD').textContent=BJ.d.length?(dv.v+(dUp.length<BJ.d.length?' + ?':'')):'–';}
 function bjSay(s){const el=$('#bjSay');el.textContent=s;}
 function bjUI(){$('#bjChips').textContent=BJ.bank.toLocaleString();$('#bjBet').textContent=BJ.bet.toLocaleString();$('#bjRec').textContent=BJ.rec.w+'승 '+BJ.rec.l+'패'+(BJ.rec.p?' '+BJ.rec.p+'무':'');
   const betting=BJ.st==='bet';$('#bjBetRow').hidden=!betting;$('#bjActRow').hidden=BJ.st!=='play';$('#bjDeal').disabled=!BJ.bet;$('#bjDbl').disabled=BJ.p.length!==2||BJ.bank<BJ.bet;
