@@ -271,7 +271,7 @@ body.at-home .people{left:auto;right:max(16px,env(safe-area-inset-right,0px));to
 .bb-row{gap:8px;flex-wrap:wrap;margin-top:8px}
 .bb-row .ft-in{flex:1;min-width:12em}
 #bbYell{background:#e8a04a;border-color:#e8a04a}
-#bbCry,#bbWipe{flex:1;min-width:96px}
+#bbCry,#bbWipe,#bbPound{flex:1;min-width:96px}
 .bb-cnt{font-size:12.5px;color:var(--paper-dim);margin-left:auto}.bb-cnt b{color:#a8d88a;font-size:15px;margin-left:4px}
 .bb-note{margin:10px 2px 0;font-size:11.5px;color:var(--paper-dim)}
 @media (max-width:640px){.bb-cnt{margin-left:0;width:100%}}
@@ -414,7 +414,7 @@ select.ft-in option{background:#1a1420;color:var(--paper)}
       <button class="choice" id="goBB">
         <span class="c-tag">대숲 · 竹</span>
         <span class="c-name">소리 질러도 되는 대나무 숲</span>
-        <span class="c-desc">바람이 세게 부는 대나무 숲. 실컷 울고, 코 풀고, 하고 싶은 말을 크게 외쳐도 바람 소리에 다 묻혀요. 나 혼자만 있는 곳이에요.</span>
+        <span class="c-desc">바람이 세게 부는 대나무 숲. 실컷 울고, 훌쩍이며 코 풀고, 엎드려 땅을 치고, 하고 싶은 말을 크게 외쳐 봐요. 내 소리는 바람과 함께 숲으로 흩어져요. 나 혼자만 있는 곳이에요.</span>
       </button>
     </div>
   </div>
@@ -564,8 +564,8 @@ select.ft-in option{background:#1a1420;color:var(--paper)}
   <div class="dock bb" id="dockBb" hidden>
     <div class="ft-say"><span class="ft-who bb-who">대나무 숲</span><p id="bbSay" aria-live="polite"></p></div>
     <div class="row ft-r bb-row"><input id="bbTxt" class="ft-in" type="text" maxlength="40" placeholder="외치고 싶은 말 (비워 둬도 돼요)" aria-label="외치고 싶은 말"><button type="button" class="primary" id="bbYell">소리 지르기</button></div>
-    <div class="row bb-row"><button type="button" class="ghost" id="bbCry">울기</button><button type="button" class="ghost" id="bbWipe">콧물 닦기</button><span class="bb-cnt">털어놓은 횟수 <b id="bbCnt">0</b></span></div>
-    <p class="bb-note">적은 말은 저장되지 않고 누구에게도 보이지 않아요. 여기는 나 혼자만 있는 숲이에요.</p>
+    <div class="row bb-row"><button type="button" class="ghost" id="bbCry">울기</button><button type="button" class="ghost" id="bbWipe">콧물 닦기</button><button type="button" class="ghost" id="bbPound">엎드려 땅 치기</button><span class="bb-cnt">털어놓은 횟수 <b id="bbCnt">0</b></span></div>
+    <p class="bb-note">우는 소리, 외치는 소리가 바람 소리와 함께 들려요. 적은 말은 저장되지 않고 누구에게도 보이지 않아요. 여기는 나 혼자만 있는 숲이에요.</p>
   </div>
 
   <div class="dock fort" id="dockFort" hidden>
@@ -3101,7 +3101,10 @@ const BB={scene:new THREE.Scene(),wind:.25,gust:0,act:null,t:0,tears:[],leaves:[
 BB.u={uTime:{value:0},uWind:{value:.25}};
 function bbSway(mat,leaf){mat.onBeforeCompile=sh=>{sh.uniforms.uTime=BB.u.uTime;sh.uniforms.uWind=BB.u.uWind;sh.vertexShader='uniform float uTime;uniform float uWind;\n'+sh.vertexShader.replace('#include <begin_vertex>',
   '#include <begin_vertex>\n vec4 ip=instanceMatrix*vec4(0.,0.,0.,1.);float ph=ip.x*.37+ip.z*.29;float hh='+(leaf?'clamp(ip.y/11.,0.,1.4)':'clamp((position.y+6.)/12.,0.,1.)')+';float sw=(sin(uTime*1.25+ph)*.22+sin(uTime*2.9+ph*1.7)*.07)*(.25+uWind*1.6)+uWind*.35;\n transformed.x+=sw*hh*hh*'+(leaf?'3.2':'1.1')+';transformed.z+=sw*.4*hh*hh*'+(leaf?'3.2':'1.1')+(leaf?';transformed.y+=sin(uTime*6.+ph*3.)*.05*uWind;':';'));};}
-(function buildBB(){const S=BB.scene,L=c=>new THREE.MeshLambertMaterial({color:c});S.background=new THREE.Color('#a9c4a2');S.fog=new THREE.Fog('#a9c4a2',5,42);
+(function buildBB(){const S=BB.scene,L=c=>new THREE.MeshLambertMaterial({color:c});S.background=new THREE.Color('#a9c4a2');
+  {const sky=new THREE.Mesh(new THREE.SphereGeometry(80,32,16),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,fog:false,uniforms:{},vertexShader:'varying vec3 vP;void main(){vP=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader:'varying vec3 vP;void main(){vec3 d=normalize(vP);float h=d.y;vec3 c=mix(vec3(.66,.77,.64),vec3(.42,.66,.9),smoothstep(.1,.75,h));float s=max(dot(d,normalize(vec3(-.3,.9,-.3))),0.);c+=vec3(1.,.97,.85)*(pow(s,40.)*1.2+pow(s,6.)*.25);gl_FragColor=vec4(c,1.);}'}));sky.renderOrder=-5;S.add(sky);
+    for(let i=0;i<8;i++){const cl=sprite(TEX.glow,'#ffffff',.55,false);cl.scale.set(rand(18,30),rand(8,12),1);cl.position.set(rand(-30,30),rand(45,60),rand(-30,30));cl.material.fog=false;S.add(cl);}}S.fog=new THREE.Fog('#a9c4a2',5,42);
   S.add(new THREE.HemisphereLight('#e6f4d8','#3a4a2a',.85));const sun=new THREE.DirectionalLight('#fff6dc',.6);sun.position.set(-6,20,-8);S.add(sun);
   /* ground: soil, fallen leaves, moss and a path */
   const gtx=canvasTex(1024,1024,(g,w,h)=>{g.fillStyle='#5a5034';g.fillRect(0,0,w,h);for(let i=0;i<120;i++){g.fillStyle='rgba(70,96,46,'+rand(.2,.5)+')';g.beginPath();g.ellipse(rand(0,w),rand(0,h),rand(20,90),rand(14,60),rand(0,3),0,7);g.fill();}
@@ -3134,7 +3137,14 @@ function bbSway(mat,leaf){mat.onBeforeCompile=sh=>{sh.uniforms.uTime=BB.u.uTime;
   BB.F=makePerson(S,'#8aa0c8','#e8dcc8',false,false,'fire');BB.F.g.position.set(0,0,0);const F=BB.F;F.eyes=[];F.mouths=[];F.p.head.children.forEach(o=>{if(o.material===makeHead.m.eye)F.eyes.push(o);if(o.material===makeHead.m.mouth)F.mouths.push(o);});
   F.tissue=new THREE.Mesh(new THREE.IcosahedronGeometry(.05,1),new THREE.MeshLambertMaterial({color:'#fbfaf6',flatShading:true}));F.tissue.visible=false;F.g.add(F.tissue);
 })();
-function bbPose(dt){const F=BB.F,P=F.p,a=BB.act,u=a?BB.t/a.dur:0;posePersonStand(F,0,0,dt);const shake=a&&a.k==='cry'?Math.sin(t*26)*.012:a&&a.k==='scream'&&u>.15&&u<.85?Math.sin(t*40)*.01:0;F.g.position.y=shake;
+function bbKneel(F,k,dt){const P=F.p,pf=F.pf,hit=BB.act?Math.sin(BB.t*Math.PI*2*1.55):0;const lean=.28+.04*Math.abs(hit);
+  [-1,1].forEach(s=>{const L=P.L[s],hip=P3(s*.11,.44,.04),knee=P3(s*.14,.09,-.18),ank=P3(s*.14,.07,.28),toe=P3(s*.14,.03,.4);seg(L.th,hip,knee,.085*F.tf);seg(L.sh,knee,ank,.065);seg(L.ft,ank,toe,.055);L.kn.position.copy(knee);L.kn.scale.setScalar(.085*F.tf);
+    const sh=P3(s*.2,.84-lean*.2,-.26),up=Math.max(0,s>0?hit:-hit),hd=P3(s*.16,.06+up*.32,-.58),el=sh.clone().lerp(hd,.5);el.x+=s*.12;el.y+=.04;
+    seg(L.ua,sh,el,.062);seg(L.fa,el,hd,.052);L.el.position.copy(el);L.el.scale.setScalar(.058);L.so.position.copy(sh);L.so.scale.setScalar(.08);L.hd.position.copy(hd);L.hd.scale.setScalar(.055);});
+  seg(P.torso,P3(0,.46,0),P3(0,.82-lean*.2,-.28),.2*pf,.15*pf);P.chest.position.set(0,.82-lean*.2,-.28);P.chest.scale.set(.2*pf,.08*pf,.15*pf);P.belly.position.set(0,.5,-.04);P.belly.scale.set(.21*pf*F.bf,.11*F.bf,.17*pf*F.bf);poseWrap(F,.46,0);
+  P.scarf.position.set(0,.88-lean*.2,-.32);P.scarf.rotation.x=Math.PI/2+.5;P.scarf.scale.setScalar(.075);const hy=1.0-lean*.25,shk=Math.sin(t*24)*.02;P.head.position.set(shk,hy,-.44);P.head.scale.setScalar(.17);P.head.rotation.set(.75,0,shk);poseHat(F,shk,hy,-.44,0);
+  F.stick.visible=F.mallow.visible=false;F.mFire.material.opacity=0;}
+function bbPose(dt){const F=BB.F,P=F.p,a=BB.act,u=a?BB.t/a.dur:0;if(a&&a.k==='pound'){bbKneel(F,1,dt);F.g.position.y=0;F.mouths.forEach(m=>{m.scale.y=.07;});F.eyes.forEach(e=>{e.scale.y=.05;});F.tissue.visible=false;return;}posePersonStand(F,0,0,dt);const shake=a&&a.k==='cry'?Math.sin(t*26)*.012:a&&a.k==='scream'&&u>.15&&u<.85?Math.sin(t*40)*.01:0;F.g.position.y=shake;
   let hr=null,hl=null,headX=0,mouth=.035,eye=.16;
   if(a&&a.k==='cry'){const k=Math.min(1,u*5)*Math.min(1,(1-u)*5);hr=P3(.09,1.66-Math.abs(Math.sin(t*5))*.02,-.17);hl=P3(-.09,1.66-Math.abs(Math.sin(t*5+1))*.02,-.17);headX=.32*k;mouth=.05;eye=.05;}
   else if(a&&a.k==='wipe'){const k=Math.min(1,u*4)*Math.min(1,(1-u)*3);hr=P3(.06+Math.sin(t*14)*.05*(u>.25&&u<.7?1:0),1.58,-.21).lerp(P3(.24,.95,-.1),1-k);headX=.12*k;}
@@ -3145,39 +3155,54 @@ function bbPose(dt){const F=BB.F,P=F.p,a=BB.act,u=a?BB.t/a.dur:0;posePersonStand
   F.tissue.visible=!!(a&&a.k==='wipe'&&u<.78);if(F.tissue.visible&&hr)F.tissue.position.copy(hr).add(P3(0,.02,-.05));}
 function bbKnock(){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime;for(let i=0;i<(Math.random()<.5?2:3);i++){const t0=now+i*rand(.12,.22),o=c.createOscillator();o.type='sine';o.frequency.value=rand(180,320);const g=c.createGain();g.gain.setValueAtTime(.05,t0);g.gain.exponentialRampToValueAtTime(.0001,t0+.12);o.connect(g);g.connect(A.master);o.start(t0);o.stop(t0+.14);}}
 function bbSay(s){$('#bbSay').textContent=s;}
-function bbBusy(b){['#bbCry','#bbWipe','#bbYell'].forEach(q=>$(q).disabled=b);}
-function bbStart(k){if(BB.act)return;ac();const dur={cry:4.2,wipe:3,scream:3.6}[k];BB.act={k,dur,fired:{}};BB.t=0;bbBusy(true);
+function bbBusy(b){['#bbCry','#bbWipe','#bbYell','#bbPound'].forEach(q=>$(q).disabled=b);}
+function bbStart(k){if(BB.act)return;ac();const dur={cry:4.6,wipe:3.4,scream:3.6,pound:4.8}[k];BB.act={k,dur,fired:{}};BB.t=0;bbBusy(true);
   if(k==='cry'){bbSay('실컷 울어도 괜찮아요. 바람이 다 덮어 줄게요.');BB.gust=Math.max(BB.gust,.55);}
-  else if(k==='wipe'){bbSay('휴지 한 장 꺼내서… 흥!');}
+  else if(k==='wipe'){bbSay('훌쩍… 휴지 한 장 꺼내서…');}
+  else if(k==='pound'){bbSay('털썩 엎드려서 땅을 쾅쾅! 다 쏟아내요.');BB.gust=Math.max(BB.gust,.7);}
   else{const txt=$('#bbTxt').value.trim().slice(0,40);BB.act.txt=txt||'아아아아아!';$('#bbTxt').value='';bbSay('크게 숨을 들이쉬고…');}}
 function bbEnd(){const k=BB.act.k;BB.act=null;bbBusy(false);BB.count++;store.bbCount=BB.count;save();$('#bbCnt').textContent=BB.count;
-  bbSay(k==='cry'?pick(['울고 나니 조금 가벼워졌나요? 바람만 들었어요.','눈물은 바람이 닦아 갔어요. 천천히 숨 쉬어요.']):k==='wipe'?pick(['흥! 휴지는 바람에 날려 보냈어요.','시원하게 풀었네요. 휴지는 바람이 가져갔어요.']):pick(['바람이 다 가져갔어요. 아무도 못 들었어요.','대나무만 들었어요. 아무에게도 말하지 않을 거예요.','속이 조금 시원해졌나요? 한 번 더 질러도 돼요.']));}
+  bbSay(k==='pound'?pick(['땅이 다 받아 줬어요. 손은 괜찮아요?','실컷 쳤네요. 바람이 다 쓸어 갔어요.']):k==='cry'?pick(['울고 나니 조금 가벼워졌나요? 바람만 들었어요.','눈물은 바람이 닦아 갔어요. 천천히 숨 쉬어요.']):k==='wipe'?pick(['흥! 휴지는 바람에 날려 보냈어요.','시원하게 풀었네요. 휴지는 바람이 가져갔어요.']):pick(['바람이 다 가져갔어요. 아무도 못 들었어요.','대나무만 들었어요. 아무에게도 말하지 않을 거예요.','속이 조금 시원해졌나요? 한 번 더 질러도 돼요.']));}
 /* sounds: sobs, honk, scream — all swallowed by the wind */
-function bbSob(){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime;for(let i=0;i<2;i++){const t0=now+i*.18,o=c.createOscillator();o.type='triangle';o.frequency.setValueAtTime(420,t0);o.frequency.exponentialRampToValueAtTime(260,t0+.14);const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=900;f.Q.value=3;const g=c.createGain();g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(.035,t0+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+.15);o.connect(f);f.connect(g);g.connect(A.master);o.start(t0);o.stop(t0+.17);}}
-function bbHonk(){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime,o=c.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(190,now);o.frequency.linearRampToValueAtTime(150,now+.45);const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=600;f.Q.value=4;const g=c.createGain();g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.07,now+.04);g.gain.exponentialRampToValueAtTime(.0001,now+.5);o.connect(f);f.connect(g);g.connect(A.master);o.start(now);o.stop(now+.55);}
-function bbScream(){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime,dur=2.1,o=c.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(300,now);o.frequency.linearRampToValueAtTime(340,now+.4);o.frequency.linearRampToValueAtTime(280,now+dur);
-  const vib=c.createOscillator();vib.frequency.value=6;const vg=c.createGain();vg.gain.value=9;vib.connect(vg);vg.connect(o.frequency);const g=c.createGain();g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.06,now+.12);g.gain.setTargetAtTime(.006,now+.5,.35);g.gain.linearRampToValueAtTime(0,now+dur);
-  [800,1200,2500].forEach((fq,i)=>{const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=fq;f.Q.value=6;const fg=c.createGain();fg.gain.value=[1,.7,.3][i];o.connect(f);f.connect(fg);fg.connect(g);});g.connect(A.master);o.start(now);vib.start(now);o.stop(now+dur+.05);vib.stop(now+dur+.05);}
+function bbVoice(o){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime+(o.at||0),d=o.dur,src=c.createOscillator();src.type='sawtooth';src.frequency.setValueAtTime(o.f0,now);(o.glide||[]).forEach(([k,f])=>src.frequency.linearRampToValueAtTime(f,now+d*k));
+  const vib=c.createOscillator();vib.frequency.value=o.vr||5.5;const vg=c.createGain();vg.gain.value=o.vd||10;vib.connect(vg);vg.connect(src.frequency);const out=c.createGain();out.gain.setValueAtTime(0,now);out.gain.linearRampToValueAtTime(o.vol,now+(o.att||.06));
+  (o.env||[]).forEach(([k,v])=>out.gain.linearRampToValueAtTime(o.vol*v,now+d*k));out.gain.linearRampToValueAtTime(0,now+d);
+  o.fm.forEach(([fq,q,gn])=>{const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=fq;f.Q.value=q;const g=c.createGain();g.gain.value=gn;src.connect(f);f.connect(g);g.connect(out);});
+  if(o.breath){const n=c.createBufferSource();n.buffer=A.white;const nf=c.createBiquadFilter();nf.type='bandpass';nf.frequency.value=1600;nf.Q.value=.8;const ng=c.createGain();ng.gain.value=o.breath;n.connect(nf);nf.connect(ng);ng.connect(out);n.start(now,Math.random());n.stop(now+d+.05);}
+  out.connect(A.master);src.start(now);vib.start(now);src.stop(now+d+.05);vib.stop(now+d+.05);}
+function bbGasp(at,vol,f1,f2){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime+(at||0),s=c.createBufferSource();s.buffer=A.white;const f=c.createBiquadFilter();f.type='bandpass';f.frequency.setValueAtTime(f1||1400,now);f.frequency.linearRampToValueAtTime(f2||3200,now+.2);f.Q.value=2.2;
+  const g=c.createGain();g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(vol||.12,now+.05);g.gain.exponentialRampToValueAtTime(.0001,now+.24);s.connect(f);f.connect(g);g.connect(A.master);s.start(now,Math.random()*2);s.stop(now+.26);}
+function bbSob(){bbGasp(0,.1,1200,2600);bbGasp(.16,.08,1300,2800);bbVoice({at:.36,dur:.85,f0:420,glide:[[.25,380],[1,290]],vr:6,vd:14,vol:.13,env:[[.3,1],[.7,.6]],fm:[[520,5,1],[1050,6,.7],[2700,7,.25]],breath:.05});}
+function bbSniff(at){bbGasp(at||0,.11,2600,4600);}
+function bbScream(){bbGasp(0,.14,900,2200);bbVoice({at:.22,dur:2.1,f0:320,glide:[[.12,390],[.7,360],[1,280]],vr:6.5,vd:12,vol:.2,att:.08,env:[[.2,1],[.8,.85]],fm:[[820,5,1],[1180,5,.8],[2900,7,.35]],breath:.08});}
+function bbThump(){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime,o=c.createOscillator();o.type='sine';o.frequency.setValueAtTime(110,now);o.frequency.exponentialRampToValueAtTime(42,now+.16);const g=c.createGain();g.gain.setValueAtTime(.32,now);g.gain.exponentialRampToValueAtTime(.0001,now+.25);o.connect(g);g.connect(A.master);o.start(now);o.stop(now+.27);
+  const s=c.createBufferSource();s.buffer=A.brown;const f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=500;const ng=c.createGain();ng.gain.setValueAtTime(.18,now);ng.gain.exponentialRampToValueAtTime(.0001,now+.14);s.connect(f);f.connect(ng);ng.connect(A.master);s.start(now,Math.random()*2);s.stop(now+.16);}
+function bbWail(){bbVoice({dur:1.3,f0:360,glide:[[.2,400],[1,260]],vr:5,vd:16,vol:.14,env:[[.3,1],[.8,.7]],fm:[[600,5,1],[1100,6,.6],[2600,7,.2]],breath:.06});}
+function bbHonk(){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime,o=c.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(190,now);o.frequency.linearRampToValueAtTime(150,now+.45);const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=600;f.Q.value=4;const g=c.createGain();g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.12,now+.04);g.gain.exponentialRampToValueAtTime(.0001,now+.5);o.connect(f);f.connect(g);g.connect(A.master);o.start(now);o.stop(now+.55);}
 function bbText(txt,origin){const chars=[...txt],sz=.32,w=chars.length*sz*.9;chars.forEach((ch,i)=>{const tx=canvasTex(128,128,(g,W2,H2)=>{g.font='900 96px "IBM Plex Sans KR",sans-serif';g.textAlign='center';g.textBaseline='middle';g.lineWidth=10;g.strokeStyle='rgba(30,50,20,.6)';g.strokeText(ch,64,68);g.fillStyle='#fffbe8';g.fillText(ch,64,68);});
   const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthWrite:false,opacity:0}));s.scale.set(sz,sz,1);const rt=new THREE.Vector3().setFromMatrixColumn(cam.matrixWorld,0).setY(0).normalize(),fw=new THREE.Vector3().setFromMatrixColumn(cam.matrixWorld,2).setY(0).normalize();s.position.copy(origin).addScaledVector(rt,-w/2+i*sz*.9).addScaledVector(fw,.5).add(V3(0,.12,0));BB.scene.add(s);BB.chars.push({s,a:0,i,vx:rand(2.5,5),vy:rand(.2,1.2),vz:rand(-1,1),spin:rand(-4,4)});});}
 function bbLeafBurst(n,x,z){for(let i=0;i<n;i++){const m=new THREE.Mesh(new THREE.PlaneGeometry(.12,.04),new THREE.MeshLambertMaterial({color:pick(['#8ab04a','#a8b858','#c8b860','#6a9a3a']),side:THREE.DoubleSide}));m.position.set(x+rand(-6,6),rand(3,9),z+rand(-6,6));BB.scene.add(m);BB.leaves.push({m,v:rand(.4,.9),ph:rand(0,6),life:rand(4,7)});}}
 function frameBB(dt){const S=BB.scene,a=BB.act;BB.u.uTime.value=t;
   if(a){BB.t+=dt;const u=BB.t/a.dur,F=BB.F;
     if(a.k==='cry'){if(Math.random()<dt*7){[-1,1].forEach(s=>{const w=new THREE.Vector3();F.p.head.getWorldPosition(w);const d=new THREE.Mesh(new THREE.SphereGeometry(.014,6,4),new THREE.MeshPhongMaterial({color:'#bfe4ff',transparent:true,opacity:.85,shininess:120}));d.position.set(w.x+s*.07,w.y-.02,w.z+.14);S.add(d);BB.tears.push({m:d,vy:0,vx:s*.15});});}
-      if(Math.floor(BB.t*2.4)!==a.fired.sob){a.fired.sob=Math.floor(BB.t*2.4);bbSob();}BB.gust=Math.max(BB.gust,.5);}
-    else if(a.k==='wipe'){if(u>.42&&!a.fired.h){a.fired.h=1;bbHonk();BB.gust=Math.max(BB.gust,.6);}
+      if(Math.floor(BB.t/1.35)!==a.fired.sob){a.fired.sob=Math.floor(BB.t/1.35);bbSob();}BB.gust=Math.max(BB.gust,.5);}
+    else if(a.k==='wipe'){if(u>.04&&!a.fired.s1){a.fired.s1=1;bbSniff();bbSniff(.32);}if(u>.24&&!a.fired.s2){a.fired.s2=1;bbSniff();}if(u>.86&&!a.fired.s3){a.fired.s3=1;bbSniff();}
+      if(u>.42&&!a.fired.h){a.fired.h=1;bbHonk();BB.gust=Math.max(BB.gust,.6);}
       if(u>.78&&!a.fired.t){a.fired.t=1;const w=new THREE.Vector3();F.tissue.getWorldPosition(w);const m=F.tissue.clone();m.material=F.tissue.material.clone();m.material.transparent=true;m.position.copy(w);S.add(m);BB.tissue={m,a:0};BB.gust=Math.max(BB.gust,.9);}}
+    else if(a.k==='pound'){const n=Math.floor(BB.t*1.55*2+.25);if(n!==a.fired.th&&BB.t>.2){a.fired.th=n;bbThump();BB.shake=Math.max(BB.shake,.6);BB.gust=Math.max(BB.gust,.75);const w=new THREE.Vector3();F.p.L[n%2?-1:1].hd.getWorldPosition(w);
+        for(let i=0;i<6;i++){const d=sprite(TEX.glow,'#c8b890',.5,false);d.position.set(w.x+rand(-.08,.08),.06,w.z+rand(-.08,.08));d.scale.setScalar(.12);BB.scene.add(d);BB.rings.push({m:d,a:0,dust:1,vx:rand(-.4,.4),vz:rand(-.4,.4)});}bbLeafBurst(4,0,-1);}
+      if(Math.floor(BB.t/1.5)!==a.fired.w){a.fired.w=Math.floor(BB.t/1.5);bbWail();}}
     else if(a.k==='scream'){if(u>.15&&!a.fired.s){a.fired.s=1;bbScream();bbSay('휘이잉— 바람이 소리를 몽땅 삼켜요.');BB.gust=1.6;BB.shake=1.6;const w=new THREE.Vector3();F.p.head.getWorldPosition(w);bbText(a.txt,w);bbLeafBurst(90,0,-2);}
       if(u>.15&&u<.85&&Math.floor(BB.t*4)!==a.fired.r){a.fired.r=Math.floor(BB.t*4);const w=new THREE.Vector3();F.p.head.getWorldPosition(w);const r=new THREE.Mesh(new THREE.RingGeometry(.2,.26,40),new THREE.MeshBasicMaterial({color:'#fffbe8',transparent:true,opacity:.5,depthWrite:false,side:THREE.DoubleSide}));r.position.set(w.x,w.y-.05,w.z-.25);S.add(r);BB.rings.push({m:r,a:0});}
       if(u>.15&&u<.9)BB.gust=Math.max(BB.gust,1.4);}
     if(BB.t>=a.dur)bbEnd();}
   /* wind: gusts swell the noise and bend the grove */
   BB.gust=Math.max(0,BB.gust-dt*.32);const W2=.25+BB.gust;BB.u.uWind.value+=(W2-BB.u.uWind.value)*Math.min(1,dt*2.2);
-  if(A.ctx&&BB.amb&&t-(BB.wt||0)>.08){BB.wt=t;const now=A.ctx.currentTime,g=BB.gust;BB.amb.forEach((n,i)=>{if(!n)return;n.g.gain.setTargetAtTime(n.vol*(1+g*(i===0?5.5:i===1?9:6)),now,.12);if(n.f)n.f.frequency.setTargetAtTime(n.f0*(1+g*(i===0?2.2:.8)),now,.2);});}
+  if(A.ctx&&BB.amb&&t-(BB.wt||0)>.08){BB.wt=t;const now=A.ctx.currentTime,g=BB.gust;BB.amb.forEach((n,i)=>{if(!n)return;n.g.gain.setTargetAtTime(n.vol*(1+g*(i===0?2.6:i===1?5:3)),now,.12);if(n.f)n.f.frequency.setTargetAtTime(n.f0*(1+g*(i===0?2.2:.8)),now,.2);});}
   if(Math.random()<dt*(1.2+BB.gust*14))bbLeafBurst(1,rand(-4,4),rand(-6,3));
   BB.tears=BB.tears.filter(p=>{p.vy-=dt*3.2;p.m.position.y+=p.vy*dt;p.m.position.x+=p.vx*dt+BB.gust*dt*.6;if(p.m.position.y<.02){S.remove(p.m);return false;}return true;});
   if(BB.tissue){const T=BB.tissue;T.a+=dt;T.m.position.x+=dt*(2+BB.gust*4);T.m.position.y+=dt*(1.2-T.a*.3);T.m.rotation.x+=dt*6;T.m.rotation.z+=dt*4;T.m.material.opacity=Math.max(0,1-T.a/3);if(T.a>3){S.remove(T.m);BB.tissue=null;}}
-  BB.rings=BB.rings.filter(r=>{r.a+=dt;const k=r.a/1.1;r.m.scale.setScalar(1+k*9);r.m.material.opacity=.5*(1-k);r.m.lookAt(cam.position);if(k>=1){S.remove(r.m);return false;}return true;});
+  BB.rings=BB.rings.filter(r=>{r.a+=dt;if(r.dust){const k=r.a/.9;r.m.position.x+=r.vx*dt;r.m.position.z+=r.vz*dt;r.m.position.y+=dt*.25;r.m.scale.setScalar(.12+k*.4);r.m.material.opacity=.5*(1-k);if(k>=1){BB.scene.remove(r.m);return false;}return true;}const k=r.a/1.1;r.m.scale.setScalar(1+k*9);r.m.material.opacity=.5*(1-k);r.m.lookAt(cam.position);if(k>=1){S.remove(r.m);return false;}return true;});
   BB.chars=BB.chars.filter(c=>{c.a+=dt;const k=c.a;c.s.material.opacity=k<.3?k/.3:Math.max(0,1-(k-1.1)/1.2);if(k<.9){c.s.position.y+=dt*.25;c.s.scale.setScalar(.32*(1+k*.6));}else{c.s.position.x+=dt*c.vx*(k-.8);c.s.position.y+=dt*c.vy;c.s.position.z+=dt*c.vz;c.s.material.rotation+=dt*c.spin;c.s.scale.multiplyScalar(1-dt*.25);}
     if(k>2.4){S.remove(c.s);c.s.material.map.dispose();return false;}return true;});
   BB.leaves=BB.leaves.filter(l=>{l.life-=dt;l.m.position.y-=l.v*dt;l.m.position.x+=dt*(.3+BB.gust*5)*(.6+.4*Math.sin(t+l.ph));l.m.position.z+=Math.sin(t*2+l.ph)*dt*.3;l.m.rotation.x+=dt*3;l.m.rotation.y+=dt*2;if(l.m.position.y<.02||l.life<0){S.remove(l.m);return false;}return true;});
@@ -3185,13 +3210,13 @@ function frameBB(dt){const S=BB.scene,a=BB.act;BB.u.uTime.value=t;
   bbPose(dt);
   /* camera orbit with a shake when screaming */
   BB.shake=Math.max(0,BB.shake-dt*1.2);CAM.yaw+=angDiff(CAM.ty,CAM.yaw)*Math.min(1,dt*5);CAM.pitch+=(CAM.tp-CAM.pitch)*Math.min(1,dt*5);CAM.dist+=(CAM.td-CAM.dist)*Math.min(1,dt*5);
-  const c2=Math.cos(CAM.pitch),sk=BB.shake*.04;cam.position.set(Math.sin(CAM.yaw)*c2*CAM.dist+rand(-sk,sk),1.25+Math.sin(CAM.pitch)*CAM.dist+rand(-sk,sk),Math.cos(CAM.yaw)*c2*CAM.dist);cam.lookAt(0,1.25,0);
+  const pp=Math.max(CAM.pitch,.02),up=Math.max(0,-CAM.pitch),c2=Math.cos(pp),sk=BB.shake*.04,dd=CAM.dist*(1-up*.35);cam.position.set(Math.sin(CAM.yaw)*c2*dd+rand(-sk,sk),Math.max(.35,1.25+Math.sin(pp)*dd-up*.8)+rand(-sk,sk),Math.cos(CAM.yaw)*c2*dd);cam.lookAt(0,1.25+up*up*9+up*3,0);
   {const dh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dockH'))||0,sh=clamp(dh*.42-10,0,H*.3);if(BB.sh===undefined)BB.sh=sh;BB.sh+=(sh-BB.sh)*Math.min(1,dt*4);cam.setViewOffset(W,H,0,BB.sh,W,H);}
   R.render(S,cam);}
 function enterBB(){ac();if(scene==='bb')return;commitFire();commitOnsen();showScene('bb');CAM.yaw=CAM.ty=Math.PI-.55;CAM.pitch=CAM.tp=.18;CAM.dist=CAM.td=W<H?4.6:4;BB.sh=undefined;
   startAmb('bb');BB.amb=[ambNoise(A.brown,'lowpass',380,.7,.06,.09,120),ambNoise(A.white,'highpass',2600,.5,.006,.3,600),ambNoise(A.white,'bandpass',900,.8,.012,.13,300)];BB.amb.forEach(n=>{if(n){n.f0=n.f.frequency.value;}});
   $('#bbCnt').textContent=BB.count;bbSay('바람이 세게 부는 대나무 숲이에요. 여기선 뭘 해도 바람이 다 덮어 줘요.');}
-$('#bbCry').onclick=()=>bbStart('cry');$('#bbWipe').onclick=()=>bbStart('wipe');$('#bbYell').onclick=()=>bbStart('scream');$('#bbTxt').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();bbStart('scream');}});$('#goBB').onclick=enterBB;
+$('#bbCry').onclick=()=>bbStart('cry');$('#bbPound').onclick=()=>bbStart('pound');$('#bbWipe').onclick=()=>bbStart('wipe');$('#bbYell').onclick=()=>bbStart('scream');$('#bbTxt').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();bbStart('scream');}});$('#goBB').onclick=enterBB;
 function cafeTap(x,y){if(!CF.items.length||CF.eat)return false;ray.setFromCamera({x:x/W*2-1,y:-(y/H)*2+1},cam);const hits=ray.intersectObjects(CF.items.map(o=>o.g),true)[0];if(!hits)return false;let ob=hits.object;const it=CF.items.find(o=>{let p=ob;while(p){if(p===o.g)return true;p=p.parent;}return false;});if(it&&it.lv>0){cfEat(it);return true;}return false;}
 /* ---------- 타로 (메이저 아르카나 22장) ---------- */
 // [이름, 영문, 상징, 정방향 키워드, 역방향 키워드, 연애, 직업, 재물, 건강, 역방향 한 줄]
@@ -3379,7 +3404,7 @@ cv.addEventListener('pointerdown',e=>{ac();ptrs.set(e.pointerId,{x:e.clientX,y:e
 cv.addEventListener('pointermove',e=>{const p=ptrs.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
   if(scene==='med'&&M.running&&M.follow)return;
   if(ptrs.size===2&&(scene==='temple'||scene==='fire'||scene==='onsen'||scene==='sea'||scene==='cafe'||scene==='bb')){const [a,b]=[...ptrs.values()],d=Math.hypot(a.x-b.x,a.y-b.y);if(pinch0&&d)CAM.td=zoomClamp(CAM.td*pinch0/d);pinch0=d;return;}
-  if(scene==='temple'||scene==='onsen'||scene==='sea'||scene==='cafe'||scene==='bb'){CAM.ty-=dx*.005;CAM.tp=clamp(CAM.tp+dy*.004,scene==='cafe'?-.3:.06,.9);}
+  if(scene==='temple'||scene==='onsen'||scene==='sea'||scene==='cafe'||scene==='bb'){CAM.ty-=dx*.005;CAM.tp=clamp(CAM.tp+dy*.004,scene==='cafe'?-.3:scene==='bb'?-1.15:.06,.9);}
   else if(scene==='fire'){if(FV.third){CAM.ty-=dx*.005;CAM.tp=clamp(CAM.tp+dy*.003,.08,.8);}else{CAM.ty=clamp(CAM.ty+dx*.004,-1.3,1.3);CAM.tp=clamp(CAM.tp-dy*.003,-.3,.85);}}
   else{CAM.ty=clamp(CAM.ty-dx*.003,-.75,.75);CAM.tp=clamp(CAM.tp+dy*.002,-.2,.3);}});
 function endPtr(e){if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);M.press=false;cv.classList.remove('dragging');if(ptrs.size<2)pinch0=0;
