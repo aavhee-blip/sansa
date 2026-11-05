@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@900&family=Nanum+Brush+Script&display=swap">
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0;font-size:14px}
@@ -226,6 +226,22 @@ body.at-home .people{left:auto;right:max(16px,env(safe-area-inset-right,0px));to
 .cf-lv{height:5px;border-radius:3px;background:rgba(255,255,255,.14);overflow:hidden}.cf-lv i{display:block;height:100%;background:#9ad8c0}
 .cf-mine[disabled]{opacity:.55;cursor:default}
 @media (max-width:640px){.cf-table{display:grid;grid-template-columns:1fr 1fr}.cf-mine{grid-template-columns:1fr auto;gap:4px 6px;padding:7px 10px;border-radius:12px;font-size:12px;text-align:left}.cf-mine b{grid-column:1/-1}.cf-mine .cf-lv{align-self:center}.cf-menu{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}.cf-item{flex:0 0 128px;scroll-snap-align:start}.cf-item span{display:none}#cfSt{font-size:14px}}
+/* 복채 & 부적 */
+.ft-whorow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ft-whorow .ft-me{margin:8px 2px 4px}
+.bok-btn{flex:none;border:1px solid rgba(220,174,85,.5);color:var(--gold);background:rgba(220,174,85,.08);border-radius:999px;padding:5px 11px;font-size:12.5px}
+.bok-btn:hover{background:rgba(220,174,85,.18)}
+.modal.bok{width:min(100%,380px)}
+.bk-step{display:flex;flex-direction:column;gap:14px}
+.bk-qr{align-self:center;width:180px;height:180px;border-radius:12px;background:#fbf7ee;display:grid;place-items:center;overflow:hidden;padding:8px;box-sizing:border-box}
+.bk-qr img{width:100%;height:100%;object-fit:contain}
+.bk-qr span{color:#6a5a3a;font-size:13px;text-align:center;line-height:1.55}
+.bk-open{display:block;text-align:center;text-decoration:none;padding:11px 16px;border-radius:999px;background:#fee500;color:#191600;font-weight:600}
+.bk-note{font-size:12.5px!important}
+.bk-seg{flex-wrap:wrap}
+.bk-lbl{display:grid;gap:6px;font-size:13px;color:var(--paper-dim)}
+.bk-cv{align-self:center;height:min(56vh,520px);width:auto;aspect-ratio:2/5;border-radius:3px;box-shadow:0 10px 32px rgba(0,0,0,.45)}
+#bkMsg{color:var(--paper);font-family:var(--display);font-size:15px;text-align:center}
 /* 점술방 */
 .ft-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .seg[data-key="trTopic"]{flex-wrap:wrap}
@@ -506,7 +522,7 @@ select.ft-in option{background:#1a1420;color:var(--paper)}
     </form>
     <div id="ftOut" hidden>
       <div class="row between ft-head"><div class="ft-tabs" id="ftTabs" role="tablist"><button type="button" data-t="today" role="tab">오늘의 운세</button><button type="button" data-t="life" role="tab">평생 사주</button><button type="button" data-t="ask" role="tab">물어보기</button><button type="button" data-t="tarot" role="tab">타로</button></div><button type="button" class="ghost sm" id="ftRedo">다시 입력</button></div>
-      <p class="ft-me" id="ftWho"></p>
+      <div class="ft-whorow"><p class="ft-me" id="ftWho"></p><button type="button" class="bok-btn" id="ftBok">복채 드리기</button></div>
       <div class="ft-body" id="ftBody">
         <div id="ftToday"></div><div id="ftLife" hidden></div>
         <div id="ftTarot" hidden>
@@ -544,6 +560,31 @@ select.ft-in option{background:#1a1420;color:var(--paper)}
     <dl id="mStats"></dl>
     <p id="mNote"></p>
     <div class="m-actions"><button class="primary" id="mAgain">다시 앉기</button><button class="ghost" id="mTemple">법당으로</button><button class="ghost" id="mHome">처음으로</button></div>
+  </div>
+</div>
+
+<div class="modal-wrap" id="bokModal" hidden>
+  <div class="modal bok" role="dialog" aria-modal="true" aria-labelledby="bkTitle">
+    <div id="bkPay" class="bk-step">
+      <h2 id="bkTitle">복채 드리기</h2>
+      <p>점은 재미있게 보셨나요? 복채는 마음 가는 만큼만 놓고 가요. 복채를 드리면 달님 보살이 행운 부적을 한 장 써 드려요.</p>
+      <div class="bk-qr" id="bkQr"></div>
+      <a class="primary bk-open" id="bkOpen" target="_blank" rel="noopener" hidden>카카오페이로 복채 보내기</a>
+      <p class="bk-note" id="bkNote"></p>
+      <div class="m-actions"><button type="button" class="primary" id="bkPaid">복채를 드렸어요</button><button type="button" class="ghost" id="bkClose">닫기</button></div>
+    </div>
+    <div id="bkPick" class="bk-step" hidden>
+      <h2>어떤 부적을 써 드릴까요?</h2>
+      <div class="seg bk-seg" data-key="bkType"><button type="button" data-v="luck">행운</button><button type="button" data-v="money">재물</button><button type="button" data-v="love">사랑</button><button type="button" data-v="health">건강</button><button type="button" data-v="pass">합격</button><button type="button" data-v="wish">소원</button></div>
+      <p id="bkTDesc">좋은 기운과 기회가 찾아오게 써 드려요.</p>
+      <label class="bk-lbl">부적에 쓸 이름 (선택)<input id="bkName" class="ft-in" maxlength="10" placeholder="비워 두면 '손님'으로 써요"></label>
+      <div class="m-actions"><button type="button" class="primary" id="bkWriteBtn">부적 써 주세요</button><button type="button" class="ghost" id="bkClose3">닫기</button></div>
+    </div>
+    <div id="bkDone" class="bk-step" hidden>
+      <canvas id="bkCv" class="bk-cv" width="360" height="900" role="img" aria-label="달님 보살이 써 준 부적"></canvas>
+      <p id="bkMsg" aria-live="polite"></p>
+      <div class="m-actions"><button type="button" class="primary" id="bkSave">부적 저장하기</button><button type="button" class="ghost" id="bkClose2">닫기</button></div>
+    </div>
   </div>
 </div>
 
@@ -2854,6 +2895,62 @@ document.querySelectorAll('.seg[data-key="trTopic"] button').forEach(b=>b.onclic
 $('#trGo').onclick=tarotStart;$('#trAuto').onclick=trAuto;$('#trAgain').onclick=()=>{tarotReset();ftSay('다시 섞어 볼까요? 주제를 골라 주세요.');};
 $('#trQ').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();tarotStart();}});
 $('#ftTarotOnly').onclick=()=>{ac();ftShow('tarot');};
+/* ---------- 복채 & 행운 부적 ---------- */
+const PAY={url:'',img:''};// 카카오페이 송금 링크와 QR 이미지(data URL)
+const BUJEOK={
+  luck:{n:'행운',h:'招福',d:'좋은 기운과 기회가 찾아오게',w:'招福來吉'},
+  money:{n:'재물',h:'財旺',d:'돈이 들어오고 새지 않게',w:'財運大通'},
+  love:{n:'사랑',h:'和合',d:'좋은 인연과 화목을 부르게',w:'情緣和合'},
+  health:{n:'건강',h:'康寧',d:'몸과 마음이 편안하게',w:'身體康寧'},
+  pass:{n:'합격',h:'登科',d:'시험·면접에 붙게',w:'所望登科'},
+  wish:{n:'소원',h:'成就',d:'마음속 소원이 이루어지게',w:'所願成就'}};
+const BK={type:'luck',dl:undefined,cv:null,tx:null};
+(async()=>{try{if(window.claude&&typeof window.claude.use==='function')BK.dl=await window.claude.use('downloads');else BK.dl=null;}catch(e){BK.dl=null;}})();
+function bkOpen(){ac();$('#bkPay').hidden=false;$('#bkPick').hidden=true;$('#bkDone').hidden=true;
+  const q=$('#bkQr');q.innerHTML='';if(PAY.img){const im=new Image();im.src=PAY.img;im.alt='카카오페이 송금 QR 코드';q.appendChild(im);}else{q.innerHTML='<span>복채 받을 QR을<br>준비하고 있어요</span>';}
+  const o=$('#bkOpen');o.hidden=!PAY.url;if(PAY.url)o.href=PAY.url;$('#bkNote').textContent=PAY.url||PAY.img?'휴대폰 카메라로 QR을 찍거나 버튼을 누르면 카카오페이 송금 화면이 열려요. 금액은 마음 가는 만큼이에요.':'아직 송금 QR이 준비되지 않았어요. 마음으로 내는 복채도 괜찮다며 보살이 웃네요.';
+  $('#bokModal').hidden=false;ftSay('복채는 마음 가는 만큼만 놓고 가요. 대신 좋은 부적 한 장 써 드릴게요.');}
+function bkPicked(){$('#bkPay').hidden=true;$('#bkPick').hidden=false;$('#bkName').value=(store.fortName||'');setSeg('bkType',BK.type);ftSay('고마워요. 어떤 부적을 써 드릴까요?');chime();}
+/* draw the talisman: returns list of parts, each draws onto g (360x900 logical) */
+function bkParts(type,name){const B=BUJEOK[type],R='#c21d1b',r=seedRng(type+name+todayJ()),parts=[];const tj=todayJ(),ti=(tj+49)%60;
+  const brush=(g,pts,w)=>{g.strokeStyle=R;g.lineCap='round';g.lineJoin='round';for(let i=1;i<pts.length;i++){g.lineWidth=w*(.75+.5*Math.sin(i*.9+r()*.4));g.beginPath();g.moveTo(pts[i-1][0],pts[i-1][1]);g.lineTo(pts[i][0],pts[i][1]);g.stroke();}};
+  const curve=(x0,y0,x1,y1,x2,y2,n=18)=>{const p=[];for(let i=0;i<=n;i++){const k=i/n,a=(1-k)*(1-k),b=2*(1-k)*k,c=k*k;p.push([a*x0+b*x1+c*x2,a*y0+b*y1+c*y2]);}return p;};
+  parts.push(g=>{g.strokeStyle=R;g.lineWidth=6;g.strokeRect(18,18,324,864);g.lineWidth=2;g.strokeRect(30,30,300,840);});
+  parts.push(g=>{g.fillStyle=R;g.beginPath();g.arc(70,78,22,0,7);g.fill();g.fillStyle='#f3d564';g.beginPath();g.arc(70,78,9,0,7);g.fill();g.strokeStyle='#f3d564';g.lineWidth=2;for(let i=0;i<8;i++){const a=i/8*Math.PI*2;g.beginPath();g.moveTo(70+Math.cos(a)*12,78+Math.sin(a)*12);g.lineTo(70+Math.cos(a)*18,78+Math.sin(a)*18);g.stroke();}
+    g.fillStyle=R;g.beginPath();g.arc(290,78,22,0,7);g.fill();g.fillStyle='#f3d564';g.beginPath();g.arc(286,78,14,0,7);g.fill();g.fillStyle=R;g.beginPath();g.arc(293,73,12,0,7);g.fill();});
+  parts.push(g=>{g.fillStyle=R;g.font='900 64px "Noto Serif KR",serif';g.textAlign='center';g.textBaseline='middle';g.fillText('勅',180,92);g.fillText('令',180,160);});
+  parts.push(g=>{brush(g,curve(60,205,180,180,300,205),5);brush(g,curve(70,222,180,200,290,222),3);});
+  parts.push(g=>{g.fillStyle=R;g.font='900 118px "Noto Serif KR",serif';g.textAlign='center';g.textBaseline='middle';g.fillText(B.h[0],180,300);});
+  parts.push(g=>{brush(g,[[180,360],[180,385]],9);for(let s=-1;s<=1;s+=2){brush(g,curve(180,375,180+s*95,355,180+s*120,420),5);brush(g,curve(180+s*120,420,180+s*140,470,180+s*95,470),4);}});
+  parts.push(g=>{g.fillStyle=R;g.font='900 118px "Noto Serif KR",serif';g.textAlign='center';g.textBaseline='middle';g.fillText(B.h[1],180,470);});
+  parts.push(g=>{const cx=180,cy=600;for(let k=0;k<3;k++){const p=[];for(let i=0;i<=60;i++){const a=i/60*Math.PI*2*1.6+k*2.1,rr=12+i*.75;p.push([cx+Math.cos(a)*rr*1.3,cy+Math.sin(a)*rr*.6]);}brush(g,p,3.4);}
+    brush(g,[[cx,540],[cx,700]],7);brush(g,curve(cx-90,690,cx,650,cx+90,690),4);});
+  parts.push(g=>{const st=[[96,722],[124,708],[152,716],[176,738],[206,752],[238,744],[262,760]];g.strokeStyle=R;g.lineWidth=2.4;g.beginPath();st.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.stroke();g.fillStyle=R;st.forEach(([x,y])=>{g.beginPath();g.arc(x,y,7,0,7);g.fill();});});
+  parts.push(g=>{g.fillStyle=R;g.font='900 30px "Noto Serif KR",serif';g.textAlign='center';g.textBaseline='middle';[...B.w].forEach((c,i)=>g.fillText(c,58,300+i*44));[...(GAN[ti%10]+JI[ti%12]+'日')].forEach((c,i)=>g.fillText(c,302,300+i*44));});
+  parts.push(g=>{g.fillStyle=R;g.font='40px "Nanum Brush Script","Gowun Batang",cursive';g.textAlign='center';g.textBaseline='middle';g.fillText((name||'손님')+' 님',150,812);
+    g.save();g.translate(272,812);g.rotate(-.06);g.fillStyle=R;g.fillRect(-34,-34,68,68);g.strokeStyle='#f3d564';g.lineWidth=2;g.strokeRect(-28,-28,56,56);g.fillStyle='#f3d564';g.font='700 21px "Gowun Batang",serif';g.fillText('달님',0,-10);g.fillText('보살',0,14);g.restore();});
+  return parts;}
+function bkPaper(g){const r=seedRng('paper');const gr=g.createLinearGradient(0,0,360,900);gr.addColorStop(0,'#f6dc6c');gr.addColorStop(1,'#eec84e');g.fillStyle=gr;g.fillRect(0,0,360,900);
+  for(let i=0;i<2600;i++){g.fillStyle='rgba(150,110,20,'+(r()*.08)+')';g.fillRect(r()*360,r()*900,r()*3+.5,r()*10+1);}
+  const v=g.createRadialGradient(180,450,200,180,450,560);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(120,80,10,.25)');g.fillStyle=v;g.fillRect(0,0,360,900);}
+async function bkWrite(){const type=BK.type,name=$('#bkName').value.trim().slice(0,10);store.fortName=name;save();$('#bkPick').hidden=true;$('#bkDone').hidden=false;$('#bkSave').disabled=true;$('#bkMsg').textContent='보살이 붓에 주사를 묻혀 부적을 쓰고 있어요…';
+  try{await Promise.race([Promise.all(['900 64px "Noto Serif KR"','40px "Nanum Brush Script"','700 21px "Gowun Batang"'].map(f=>document.fonts.load(f,'勅令招福財旺和合康寧登科成就日月所願來吉運大通情緣身體望甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥님손달보살'+name))),new Promise(r=>setTimeout(r,2500))]);}catch(e){}
+  const cv=$('#bkCv'),S2=2;cv.width=360*S2;cv.height=900*S2;const g=cv.getContext('2d');g.setTransform(S2,0,0,S2,0,0);bkPaper(g);
+  const parts=bkParts(type,name),off=document.createElement('canvas');off.width=cv.width;off.height=cv.height;const og=off.getContext('2d');
+  FT.busy=true;ftSay(BUJEOK[type].n+' 부적이요. 정성껏 써 드릴게요.');
+  for(let i=0;i<parts.length;i++){og.setTransform(1,0,0,1,0,0);og.clearRect(0,0,off.width,off.height);og.setTransform(S2,0,0,S2,0,0);parts[i](og);brushSnd();
+    const steps=RM?1:6;for(let k=1;k<=steps;k++){await new Promise(r=>setTimeout(r,55));g.save();g.setTransform(1,0,0,1,0,0);g.globalAlpha=1/(steps-k+1);g.drawImage(off,0,0);g.restore();}}
+  FT.busy=false;BK.cv=cv;bkOnTable(cv);$('#bkSave').disabled=false;const msg=pick(['이 부적을 지니고 다니면 좋은 기운이 따라와요. '+BUJEOK[type].d+' 정성껏 빌어 놨어요.','지갑이나 휴대폰 배경에 두고 자주 봐 줘요. '+BUJEOK[type].d+' 빌어 놨어요.','복채 고마워요. '+BUJEOK[type].d+' 써 드렸으니 좋은 일만 생길 거예요.']);
+  $('#bkMsg').textContent=msg;ftSay(msg);chime();store.bujeok=(store.bujeok||0)+1;save();}
+function bkOnTable(cv){if(!BK.mesh){BK.tx=new THREE.CanvasTexture(cv);BK.mesh=new THREE.Mesh(new THREE.PlaneGeometry(.12,.3),new THREE.MeshLambertMaterial({map:BK.tx,emissive:'#3a2a08'}));BK.mesh.rotation.set(-Math.PI/2,0,0);BK.mesh.position.set(.42,.664,.42);FT.scene.add(BK.mesh);}else{BK.tx.image=cv;}BK.tx.needsUpdate=true;BK.mesh.visible=true;}
+function brushSnd(){const c=A.ctx;if(!c||!A.on)return;const now=c.currentTime,s=c.createBufferSource();s.buffer=A.white;const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=rand(1600,2600);f.Q.value=.9;const g=c.createGain();
+  g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.035,now+.05);g.gain.exponentialRampToValueAtTime(.0001,now+.34);s.connect(f);f.connect(g);g.connect(A.master);s.start(now,Math.random()*2);s.stop(now+.4);}
+async function bkSave(){if(!BK.cv)return;const name='달님보살_'+BUJEOK[BK.type].n+'부적.png';const blob=await new Promise(r=>BK.cv.toBlob(r,'image/png'));if(!blob)return;
+  if(BK.dl){try{await BK.dl.save({filename:name,data:blob});toast('부적을 저장했어요.');return;}catch(e){if(e&&e.code==='declined')return;}}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);}
+document.querySelectorAll('.seg[data-key="bkType"] button').forEach(b=>b.onclick=()=>{BK.type=b.dataset.v;setSeg('bkType',b.dataset.v);$('#bkTDesc').textContent=BUJEOK[BK.type].d+' 써 드려요.';});
+$('#bkPaid').onclick=bkPicked;$('#bkWriteBtn').onclick=bkWrite;$('#bkSave').onclick=bkSave;['#bkClose','#bkClose2','#bkClose3'].forEach(s=>$(s).onclick=()=>{$('#bokModal').hidden=true;});
+$('#ftBok').onclick=bkOpen;
 
 /* ==========================================================
    input
@@ -2879,7 +2976,7 @@ function zoomClamp(v){return scene==='fire'?clamp(v,2.6,7.2):scene==='cafe'?clam
 cv.addEventListener('wheel',e=>{if(scene!=='temple'&&scene!=='fire'&&scene!=='onsen'&&scene!=='sea'&&scene!=='cafe')return;if(scene==='cafe'&&CF.fp)return;if(scene==='fire'&&!FV.third)return;e.preventDefault();CAM.td=zoomClamp(CAM.td*(1+e.deltaY*.001));},{passive:false});
 function pickTag(x,y){if(scene==='fort')return tarotTap(x,y);if(scene==='cafe')return cafeTap(x,y);const list=(scene==='temple'?TS.wishL:scene==='med'?NS.wishL:[]).map(l=>l.userData.tag);if(!list.length)return false;
   ray.setFromCamera({x:x/W*2-1,y:-(y/H)*2+1},cam);ray.camera=cam;const hit=ray.intersectObjects(list,false)[0];if(hit){const w=hit.object.userData.wish;toast('“'+w.text+'”  ·  '+w.d,5000);softTone(523,.04,1.8);return true;}return false;}
-addEventListener('keydown',e=>{if(!$('#modal').hidden||!$('#wishModal').hidden){if(e.key==='Escape')$('#wishModal').hidden=true;return;}
+addEventListener('keydown',e=>{if(!$('#modal').hidden||!$('#wishModal').hidden||!$('#bokModal').hidden){if(e.key==='Escape'){$('#wishModal').hidden=true;$('#bokModal').hidden=true;}return;}
   if(e.target.matches('textarea,input[type=text],input[type=number],select'))return;
   {const km=KEYMAP[e.code];if(km&&(scene==='temple'||scene==='fire'||scene==='onsen'||scene==='cafe')){if(scene==='cafe'&&CF.seat>=0)cafeStand();KEYS.add(km);e.preventDefault();return;}}
   if(scene==='cafe'&&e.code==='KeyC'){cafeSitToggle();return;}
@@ -2912,7 +3009,7 @@ function enterMed(){ac();commitFire();commitOnsen();showScene('med');M.running=f
 function enterTemple(){ac();commitFire();commitOnsen();showScene('temple');T.pose=cp(POSE.STAND);T.hap=false;T.sit=false;TW.x=0;TW.z=7.4;TW.yaw=0;TW.tx=null;TW.pendWalk=null;TW.amt=0;TW.resv=-1;T.queue=[];T.to=null;T.auto=false;$('#auto').checked=false;startAmb('temple');if(CH.on)chantStart();
   setTimeout(()=>{if(scene==='temple')bowl(165,8,.15);},300);syncActs();toast('바닥을 누르면 걸어가요. 큰절을 누르면 빈 방석을 찾아가 절을 올립니다.',4200);}
 function goHome(){cam.clearViewOffset();commitFire();commitOnsen();onsenSndStop();seaSndStop();if(scene==='med'&&M.running)commitMinutes();M.running=false;T.auto=false;T.queue=[];stopAmb();chantStop();bowlDroneStop();fireSndStop();scene='home';ringEl.hidden=true;
-  $('#scene').hidden=true;$('#modal').hidden=true;$('#wishModal').hidden=true;$('#home').hidden=false;CAM.ty=CAM.tp=0;renderTally();document.body.classList.add('at-home');netScene('home');}
+  $('#scene').hidden=true;$('#modal').hidden=true;$('#wishModal').hidden=true;$('#bokModal').hidden=true;$('#home').hidden=false;CAM.ty=CAM.tp=0;renderTally();document.body.classList.add('at-home');netScene('home');}
 function startMed(){M.running=true;M.phase=0;M.pt=0;M.good=0;M.tot=0;M.cg=0;M.ct=0;M.breaths=0;M.elapsed=0;clearLotus();M.follow=$('#follow').checked;
   $('#sFocusWrap').hidden=!M.follow;$('#medSetup').hidden=true;$('#medLive').hidden=false;$('#guide').hidden=false;lastGuide='';lastLive='';bowlStrike(.22);if(!BW.on)cue(0);if(document.activeElement)document.activeElement.blur();}
 function commitMinutes(){store.minutes+=M.elapsed/60;save();}
